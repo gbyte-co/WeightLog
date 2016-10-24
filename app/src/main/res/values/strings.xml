@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Weight Log</string>
+    <string name="weight_note_hint">Enter a note</string>
+    <string name="weight_title_label">Weight</string>
+    <string name="date_button_text">Date</string>
+    <string name="time_button_text">Time</string>
+    <string name="weight_button_text">Weight</string>
+    <string name="weight_units_kg">kg</string>
+    <string name="date_picker_title">Taken on:</string>
+    <string name="new_weight">New</string>
+    <string name="weight_picker_title">Set weight</string>
+    <string name="time_picker_title">Time</string>
+    <string name="delete_weight">Delete</string>
+    <string name="accept_changes">Accept</string>
+    <string name="confirm_delete_title">Delete entry</string>
+    <string name="confirm_delete_text">The following entry will be removed:</string>
+    <string name="confirm_delete_question">Proceed?</string>
+    <string name="cancel">Cancel</string>
+</resources>

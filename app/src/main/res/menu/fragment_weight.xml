@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_delete_weight"
+        android:icon="@drawable/ic_menu_delete"
+        android:title="@string/delete_weight"
+        app:showAsAction="ifRoom|withText"
+        />
+    <item
+        android:id="@+id/menu_item_cancel_weight"
+        android:icon="@drawable/ic_menu_cancel"
+        android:title="@string/cancel"
+        app:showAsAction="ifRoom|withText"
+        />
+    <item
+        android:id="@+id/menu_item_accept_weight"
+        android:icon="@drawable/ic_menu_accept"
+        android:title="@string/accept_changes"
+        app:showAsAction="ifRoom|withText"
+        />
+</menu>

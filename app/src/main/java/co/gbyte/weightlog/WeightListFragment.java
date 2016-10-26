@@ -154,5 +154,7 @@ public class WeightListFragment extends Fragment {
         void setWeights(List<Weight> weights) {
             mWeights = weights;
         }
+
+
     }
 }

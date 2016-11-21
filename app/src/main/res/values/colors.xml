@@ -9,5 +9,11 @@
     <color name="colorDivider">#BDBDBD</color>
     <color name="colorIcons">#ffffff</color>
 
+    <color name="colorWeightLoss">#4caf50</color>
+    <color name="colorWeightLossDark">#1b5e20</color>
+    <color name="colorWeightGain">#f44336</color>
+    <color name="colorWeightGainDark">#b71c1c</color>
+
+
 
 </resources>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
@@ -99,6 +100,7 @@ public class WeightListFragment extends Fragment {
         TextView mDateTextView;
         TextView mTimeTextView;
         TextView mWeightTextView;
+        TextView mWeightChangeTextView;
 
         WeightHolder(View itemView) {
             super(itemView);
@@ -108,15 +110,44 @@ public class WeightListFragment extends Fragment {
             mTimeTextView = (TextView) itemView.findViewById(R.id.list_item_weight_time_text_view);
             mWeightTextView =
                     (TextView) itemView.findViewById(R.id.list_item_weight_weight_text_view);
+            mWeightChangeTextView =
+                    (TextView) itemView.findViewById(R.id.list_item_weight_change_text_view);
         }
 
-        void bindWeight(Weight weight) {
+        void bindWeight(Weight weight, Double weightChange) {
             mWeight = weight;
+
             mDateTextView.setText(DateFormat.getDateFormat(getActivity())
                                   .format(mWeight.getTime()));
             mTimeTextView.setText(DateFormat.getTimeFormat(getActivity())
                                   .format(mWeight.getTime()));
             mWeightTextView.setText(mWeight.getWeightString());
+            if (weightChange != null) {
+                mWeightChangeTextView.setText(weightChange.toString());
+                if (weightChange < 0) {
+                    mWeightChangeTextView.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorWeightLoss));
+                    mWeightTextView.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorWeightLossDark));
+                } else if (weightChange > 0) {
+                    mWeightChangeTextView.setText("+" + weightChange.toString());
+                    mWeightChangeTextView.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorWeightGain));
+                    mWeightTextView.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorWeightGainDark));
+                } else {
+                    mWeightChangeTextView.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorSecondaryText));
+                    mWeightTextView.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorSecondaryText));
+                }
+
+
+            } else {
+                mWeightChangeTextView.setText("");
+                mWeightTextView.setTextColor(ContextCompat.getColor(getContext(),
+                        R.color.colorPrimaryText));
+            }
         }
 
         @Override
@@ -143,7 +174,15 @@ public class WeightListFragment extends Fragment {
         @Override
         public void onBindViewHolder(WeightHolder holder, int position) {
             Weight weight = mWeights.get(position);
-            holder.bindWeight(weight);
+            Double difference;
+            if (position < mWeights.size() - 1) {
+                Weight prevWeight = mWeights.get(position + 1);
+                difference =  (double) (weight.getWeight() - prevWeight.getWeight()) / 1000.0;
+            } else {
+                difference = null;
+            }
+
+            holder.bindWeight(weight, difference);
         }
 
         @Override
@@ -154,7 +193,5 @@ public class WeightListFragment extends Fragment {
         void setWeights(List<Weight> weights) {
             mWeights = weights;
         }
-
-
     }
 }

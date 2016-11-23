@@ -64,9 +64,16 @@ public class WeightListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
+            /*
+            case R.id.menu_item_settings:
+                intent = new Intent(this.getActivity(), SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            */
             case R.id.menu_item_new_weight:
-                Intent intent = WeightActivity.newIntent(getActivity());
+                intent = WeightActivity.newIntent(getActivity());
                 startActivity(intent);
                 return true;
             default:

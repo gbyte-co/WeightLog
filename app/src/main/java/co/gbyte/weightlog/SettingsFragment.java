@@ -3,8 +3,12 @@ package co.gbyte.weightlog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
+
+import static co.gbyte.weightlog.R.string.height_pref_key;
+import static co.gbyte.weightlog.R.string.bmi_pref_key;
 
 /**
  * Created by walt on 22/11/16.
@@ -13,8 +17,10 @@ import android.preference.PreferenceGroup;
 
 public class SettingsFragment extends PreferenceFragment {
 
-    SharedPreferences mPrefs;
-    SharedPreferences.OnSharedPreferenceChangeListener mListener;
+    private SharedPreferences mPrefs;
+    private SharedPreferences.OnSharedPreferenceChangeListener mListener;
+    private PreferenceCategory mAssessmentPrefCategory;
+    private HeightPreference mHeightPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,10 @@ public class SettingsFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preferences);
 
         mPrefs = getPreferenceManager().getSharedPreferences();
+        mAssessmentPrefCategory = (PreferenceCategory)
+                findPreference(getResources().getString(R.string.assessment_pref_category_key));
+        mHeightPref = (HeightPreference)
+                findPreference(getResources().getString(R.string.height_pref_key));
 
         // Use instance field for listener
         // It will not be gc'd as long as this instance is kept referenced
@@ -35,6 +45,7 @@ public class SettingsFragment extends PreferenceFragment {
 
         mPrefs.registerOnSharedPreferenceChangeListener(mListener);
     }
+
 
     @Override
     public void onPause(){
@@ -66,13 +77,18 @@ public class SettingsFragment extends PreferenceFragment {
             return;
         }
 
-        switch (preference.getKey()) {
-            case ("preference_height") :
-                String s = mPrefs.getString(preference.getKey(), "");
-                preference.setSummary("Set to " + s + " cm");
-                break;
+        if(preference.getKey().equals(getResources().getString(bmi_pref_key))) {
+            boolean isOn = mPrefs.getBoolean(preference.getKey(), false);
+            if(isOn) {
+                mAssessmentPrefCategory.addPreference(mHeightPref);
+            } else {
+                mAssessmentPrefCategory.removePreference(mHeightPref);
+            }
+        }
 
-            default :
+        if(preference.getKey().equals(getString(height_pref_key))) {
+            Integer height = mPrefs.getInt(preference.getKey(), 0);
+            preference.setSummary("Set to " + height.toString() + " cm");
         }
     }
 }

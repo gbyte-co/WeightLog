@@ -59,7 +59,7 @@ public class LogFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_weight_list, menu);
+        inflater.inflate(R.menu.fragment_log_menu, menu);
     }
 
     @Override

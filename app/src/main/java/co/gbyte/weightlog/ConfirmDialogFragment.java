@@ -3,9 +3,7 @@ package co.gbyte.weightlog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -63,7 +61,7 @@ public class ConfirmDialogFragment extends DialogFragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 WeightLab.get(getActivity()).deleteWeight(id);
-                                Intent intent = new Intent(getActivity(), WeightListActivity.class);
+                                Intent intent = new Intent(getActivity(), LogActivity.class);
                                 startActivity(intent);
                             }
                         })

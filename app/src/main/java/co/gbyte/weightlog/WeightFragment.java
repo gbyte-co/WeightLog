@@ -150,7 +150,7 @@ public class WeightFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_weight, menu);
+        inflater.inflate(R.menu.fragment_weight_menu, menu);
         if(mIsNew) {
             menu.getItem(0).setVisible(false);
         }
@@ -184,7 +184,7 @@ public class WeightFragment extends Fragment {
     }
 
     private void goBackToList() {
-        Intent intent = new Intent(getActivity(), WeightListActivity.class);
+        Intent intent = new Intent(getActivity(), LogActivity.class);
         // Set the new task and clear flags in order to prevent previous activities from
         // being kept in a queue (stack of activities) - kill all the previous activities:
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

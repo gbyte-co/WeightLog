@@ -67,6 +67,8 @@ public class WeightPickerFragment extends DialogFragment {
                 .create();
     }
 
+
+
     private void sendResult(int resultCode, int weight) {
         if (getTargetFragment() == null) {
             return;

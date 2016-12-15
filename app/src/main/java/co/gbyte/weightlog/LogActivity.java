@@ -7,9 +7,9 @@ import android.support.v4.app.Fragment;
  *
  */
 
-public class WeightListActivity extends SingleFragmentActivity {
+public class LogActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
-        return new WeightListFragment();
+        return new LogFragment();
     }
 }

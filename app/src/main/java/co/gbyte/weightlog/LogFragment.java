@@ -25,9 +25,10 @@ import co.gbyte.weightlog.model.WeightLab;
  * Created by walt on 19/10/16.
  *
  */
-public class WeightListFragment extends Fragment {
+public class LogFragment extends Fragment {
 
     private RecyclerView mWeightRecycleView;
+
     private WeightAdapter mAdapter;
 
     @Override
@@ -61,17 +62,14 @@ public class WeightListFragment extends Fragment {
         inflater.inflate(R.menu.fragment_weight_list, menu);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
-            /*
             case R.id.menu_item_settings:
                 intent = new Intent(this.getActivity(), SettingsActivity.class);
                 startActivity(intent);
                 return true;
-            */
             case R.id.menu_item_new_weight:
                 intent = WeightActivity.newIntent(getActivity());
                 startActivity(intent);

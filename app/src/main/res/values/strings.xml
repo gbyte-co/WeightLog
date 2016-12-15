@@ -19,4 +19,6 @@
     <string name="settings">Settings</string>
     <string name="preference_category_measurements">Measurements</string>
     <string name="preference_height">Height</string>
+    <string name="set_height_preference">Set height (body length)</string>
+    <string name="summary_height_preference">Necessery to calculate BMI</string>
 </resources>

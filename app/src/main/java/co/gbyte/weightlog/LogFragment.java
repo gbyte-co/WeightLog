@@ -126,7 +126,7 @@ public class LogFragment extends Fragment {
                                   .format(mWeight.getTime()));
             mTimeTextView.setText(DateFormat.getTimeFormat(getActivity())
                                   .format(mWeight.getTime()));
-            mWeightTextView.setText(mWeight.getWeightString());
+            mWeightTextView.setText(mWeight.getWeightStringKg());
             if (weightChange != null) {
                 mWeightChangeTextView.setText(weightChange.toString());
                 if (weightChange < 0) {

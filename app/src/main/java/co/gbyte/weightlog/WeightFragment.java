@@ -106,7 +106,7 @@ public class WeightFragment extends Fragment {
         });
 
         mWeightButton = (Button) v.findViewById(R.id.weight_button);
-        mWeightButton.setText(mWeight.getWeightString());
+        mWeightButton.setText(mWeight.getWeightStringKg());
         mWeightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -211,7 +211,7 @@ public class WeightFragment extends Fragment {
 
         if (requestCode == REQUEST_WEIGHT) {
             mWeight.setWeight(data.getIntExtra(WeightPickerFragment.EXTRA_WEIGHT, 0));
-            mWeightButton.setText(mWeight.getWeightString());
+            mWeightButton.setText(mWeight.getWeightStringKg());
         }
     }
 

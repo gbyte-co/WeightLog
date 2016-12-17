@@ -45,7 +45,7 @@ public class ConfirmDialogFragment extends DialogFragment {
 
         TextView weightTextView =
                 (TextView) v.findViewById(R.id.dialog_confirm_delete_weight_weight);
-        weightTextView.setText(weight.getWeightString());
+        weightTextView.setText(weight.getWeightStringKg());
 
         TextView dateTextView = (TextView) v.findViewById(R.id.dialog_confirm_delete_weight_date);
         dateTextView.setText(DateFormat.getDateFormat(getActivity()).format(weight.getTime()));

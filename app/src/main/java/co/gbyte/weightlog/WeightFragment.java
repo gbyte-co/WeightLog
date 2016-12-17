@@ -1,7 +1,11 @@
 package co.gbyte.weightlog;
 
 import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -68,10 +72,30 @@ public class WeightFragment extends Fragment {
         setHasOptionsMenu(true);
         mIsNew = (getArguments() == null);
         if (mIsNew) {
-            // New entry:
+            // new entry:
             mWeight = new Weight();
-            mWeight.setWeight(WeightLab.get(getActivity()).getLastWeight());
+            int weight = WeightLab.get(getActivity()).getLastWeight();
+
+            if (weight != 0) {
+                // start with most recently taken weight
+                mWeight.setWeight(weight);
+            } else {
+                Context context = getActivity();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                String heightPrefKey = getString(R.string.height_pref_key);
+                int height = prefs.getInt(
+                        heightPrefKey, getResources().getInteger(R.integer.average_human_height));
+                // get average height and calculate weight from optimal BMI
+                double bmi = getResources().getFraction(R.fraction.optimal_bmi, 1, 1);
+                // round to hundreds
+                // ToDo: tested only manually
+                weight =  (int) ((bmi * height * height / 10 + 50) / 100) * 100;
+
+                mWeight.setWeight(weight);
+            }
+
         } else {
+            // picked an existing weight
             UUID weightId = (UUID) getArguments().getSerializable(ARG_WEIGHT_ID);
             mWeight = WeightLab.get(getActivity()).getWeight(weightId);
         }

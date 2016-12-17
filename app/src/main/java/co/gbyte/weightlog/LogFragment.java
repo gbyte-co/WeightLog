@@ -1,7 +1,10 @@
 package co.gbyte.weightlog;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -15,11 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import co.gbyte.weightlog.model.Weight;
 import co.gbyte.weightlog.model.WeightLab;
+
+import static co.gbyte.weightlog.R.string.height_pref_key;
 
 /**
  * Created by walt on 19/10/16.
@@ -30,6 +36,8 @@ public class LogFragment extends Fragment {
     private RecyclerView mWeightRecycleView;
 
     private WeightAdapter mAdapter;
+    private SharedPreferences mUserPrefs;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +53,14 @@ public class LogFragment extends Fragment {
         mWeightRecycleView = (RecyclerView) view.findViewById(R.id.weight_recycler_view);
         mWeightRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        mUserPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        if(mUserPrefs.contains(getString(height_pref_key))) {
+            Toast.makeText(getActivity(), "Height has been set up", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getActivity(), "No height yet", Toast.LENGTH_LONG).show();
+        }
+
         updateUI();
 
         return view;
@@ -53,6 +69,7 @@ public class LogFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         updateUI();
     }
 

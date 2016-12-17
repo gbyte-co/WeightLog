@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="average_human_height">169</integer>
+    <fraction name="optimal_bmi">2175%</fraction>
+</resources>

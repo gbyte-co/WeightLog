@@ -4,16 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.UUID;
 
 import co.gbyte.weightlog.db.WeightBaseHelper;
 import co.gbyte.weightlog.db.WeightCursorWrapper;
-import co.gbyte.weightlog.db.WeightDbSchema;
 import co.gbyte.weightlog.db.WeightDbSchema.WeightTable;
 
 /**

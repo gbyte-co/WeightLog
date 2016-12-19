@@ -19,10 +19,11 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="horizontal"
-              android:layout_gravity="center_vertical"
+              android:orientation="vertical"
+              android:layout_gravity="center_horizontal"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              android:layout_centerInParent="true"
 >
     <!-- metric -->
     <LinearLayout
@@ -42,13 +43,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="cm"
-            tools:ignore="HardcodedText"
+            android:text="@string/unit_centimeters_short"
         />
 
     </LinearLayout>
 
-    <!-- metric -->
+    <!-- imperial -->
+    <!-- not functional and disabled for now -->
+    <!-- ToDo: make it functional (of course) -->
     <LinearLayout
         android:id="@+id/body_length_picker_imperial"
         android:layout_width="wrap_content"

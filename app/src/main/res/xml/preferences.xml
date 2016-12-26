@@ -2,11 +2,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:key="@string/assessment_pref_category_key"
+        android:persistent="true"
         android:title="@string/assessment_pref_title"
         >
 
         <SwitchPreference
+            android:defaultValue="false"
             android:key="@string/bmi_pref_key"
+            android:persistent="true"
             android:title="@string/bmi_pref_title"
             android:summary="@string/bmi_pref_summary"
             />
@@ -15,6 +18,8 @@
         <co.gbyte.weightlog.HeightPreference
             android:key="@string/height_pref_key"
             android:dependency="@string/bmi_pref_key"
+            android:defaultValue="2200"
+            android:persistent="true"
             android:title="@string/height_pref_title"
             android:summary="@string/not_set"
             />
@@ -22,6 +27,8 @@
 </PreferenceScreen>
 
 <!--
+            android:defaultValue="@integer/average_human_height"
+
         <ListPreference
             android:dialogTitle="@string/gender_preference_title"
             android:entries="@array/genders"

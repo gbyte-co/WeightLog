@@ -14,6 +14,20 @@
     <color name="colorWeightGain">#f44336</color>
     <color name="colorWeightGainDark">#b71c1c</color>
 
+    <!-- assessment -->
+    <color name="colorHealthyWeight">#2e7d32</color>
+
+    <color name="colorOverweight">#9e9d24</color>
+    <color name="colorUnderweight">#9e9d24</color>
+
+    <color name="colorModeratelyObese">#ff8f00</color>
+    <color name="colorSeverelyUnderweight">#ff8f00</color>
+
+    <color name="colorSeverelyObese">#f44336</color>
+    <color name="colorVerySeverelyUnderweight">#f44336</color>
+
+    <color name="colorVerySeverelyObese">#b71c1c</color>
+
 
 
 </resources>

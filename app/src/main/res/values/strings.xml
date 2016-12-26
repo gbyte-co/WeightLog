@@ -25,7 +25,7 @@
 
     <string name="bmi_pref_key">bmi_pref_key</string>
     <string name="bmi_pref_title">Body Mass Index (BMI)</string>
-    <string name="bmi_pref_summary">Requires height (body length)</string>
+    <string name="bmi_pref_summary">Requires body length</string>
 
     <string name="height_pref_key">height_pref_key</string>
     <string name="height_pref_title">Height</string>
@@ -34,5 +34,19 @@
     <string name="height_pref_set">Set</string>
     <string name="height_pref_cancel">Cancel</string>
     <string name="not_set">Not set</string>
+    <string name="unit_centimeters_short">cm</string>
+
+    <!-- assessment -->
+    <string name="bmi_label">BMI:</string>
+    <string name="assessment_tv">Assessment:</string>
+    <string name="assessment_title">Assessment</string>
+    <string name="healthy_weight">healthy weight</string>
+    <string name="underweight">underweight</string>
+    <string name="severely_underweight">severely underweight</string>
+    <string name="very_severely_underweight">very severely underweight</string>
+    <string name="overweight">overweight</string>
+    <string name="moderately_obese">moderately obese</string>
+    <string name="severely_obese">severely obese</string>
+    <string name="very_severely_obese">very severely obese</string>
 
 </resources>

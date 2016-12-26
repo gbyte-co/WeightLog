@@ -1,14 +1,16 @@
 package co.gbyte.weightlog;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -20,6 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,12 +51,11 @@ public class WeightFragment extends Fragment {
     private static final int REQUEST_TIME   = 1;
     private static final int REQUEST_WEIGHT = 2;
 
-    private Weight mWeight;
+    private Weight mWeight = null;
     private boolean mIsNew = false;
-    private Button mDateButton;
-    private Button mTimeButton;
-    private Button mWeightButton;
-    private EditText mNoteField;
+    private Button mDateButton = null;
+    private Button mTimeButton = null;
+    private Button mWeightButton = null;
 
     public static WeightFragment newInstance() {
         return new WeightFragment();
@@ -83,13 +87,14 @@ public class WeightFragment extends Fragment {
                 Context context = getActivity();
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 String heightPrefKey = getString(R.string.height_pref_key);
+                // get height if stored in shared preferences or get average if not
                 int height = prefs.getInt(
                         heightPrefKey, getResources().getInteger(R.integer.average_human_height));
-                // get average height and calculate weight from optimal BMI
+                // propose weight calculated from *optimal* BMI
                 double bmi = getResources().getFraction(R.fraction.optimal_bmi, 1, 1);
-                // round to hundreds
+                // weight is stored in grams, round it to hundreds
                 // ToDo: tested only manually
-                weight =  (int) ((bmi * height * height / 10 + 50) / 100) * 100;
+                weight =  (int) ((bmi * height * height / 1000 + 50) / 100) * 100;
 
                 mWeight.setWeight(weight);
             }
@@ -141,9 +146,9 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        mNoteField = (EditText) v.findViewById(R.id.weight_note);
-        mNoteField.setText(mWeight.getNote());
-        mNoteField.addTextChangedListener(new TextWatcher() {
+        EditText noteField = (EditText) v.findViewById(R.id.weight_note);
+        noteField.setText(mWeight.getNote());
+        noteField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -160,7 +165,64 @@ public class WeightFragment extends Fragment {
             }
         });
 
+        updateAssessmentView(v);
+
         return v;
+    }
+
+    private void updateAssessmentView(View v) {
+        LinearLayout assessmentLayout = (LinearLayout) v.findViewById(R.id.assessment_layout);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        boolean bmiIsSet = settings.getBoolean(getString(R.string.bmi_pref_key), false);
+
+        if (bmiIsSet) {
+            int height = settings.getInt(getString(R.string.height_pref_key), 0);
+            Weight.setHeight(height);
+            TextView bmiTv = (TextView) v.findViewById(R.id.bmi_tv);
+            TextView assessmentTv = (TextView) v.findViewById(R.id.assessment_tv);
+            double bmi = mWeight.bmi();
+
+            String assessment;
+            int color = ContextCompat.getColor(getContext(), R.color.colorPrimaryText);
+
+            if (bmi >= getResources().getFraction(R.fraction.overweight_bmi, 1, 1)) {
+                if (bmi < getResources().getFraction(R.fraction.moderately_obese_bmi, 1, 1)) {
+                    assessment = getString(R.string.overweight);
+                    color = ContextCompat.getColor(getContext(), R.color.colorOverweight);
+
+                } else if (bmi < getResources().getFraction(R.fraction.severely_obese_bmi, 1, 1)) {
+                    assessment = getString(R.string.moderately_obese);
+                    color = ContextCompat.getColor(getContext(), R.color.colorModeratelyObese);
+                } else if (bmi < getResources().getFraction(R.fraction.very_severely_obese_bmi, 1, 1)) {
+                    assessment = getString(R.string.severely_obese);
+                    color = ContextCompat.getColor(getContext(), R.color.colorSeverelyObese);
+                } else {
+                    assessment = getString(R.string.very_severely_obese);
+                    color = ContextCompat.getColor(getContext(), R.color.colorVerySeverelyObese);
+                }
+            } else if (bmi < getResources().getFraction(R.fraction.underweight_bmi, 1, 1)) {
+                if (bmi > getResources().getFraction(R.fraction.severely_underweight_bmi, 1, 1)) {
+                    assessment = getString(R.string.underweight);
+                    color = ContextCompat.getColor(getContext(), R.color.colorUnderweight);
+                } else if (bmi > getResources().getFraction(R.fraction.very_severely_underweight_bmi, 1, 1)) {
+                    assessment = getString(R.string.severely_underweight);
+                    color = ContextCompat.getColor(getContext(), R.color.colorSeverelyUnderweight);
+                } else {
+                    assessment = getString(R.string.very_severely_underweight);
+                    color = ContextCompat.getColor(getContext(), R.color.colorVerySeverelyUnderweight);
+                }
+            } else {
+                assessment = getString(R.string.healthy_weight);
+                color = ContextCompat.getColor(getContext(), R.color.colorHealthyWeight);
+            }
+
+            bmiTv.setText(String.format(Locale.getDefault(), " %.2f - ",  bmi));
+            assessmentTv.setText(assessment);
+            assessmentTv.setTextColor(color);
+            assessmentLayout.setVisibility(View.VISIBLE);
+        } else {
+            assessmentLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -201,6 +263,13 @@ public class WeightFragment extends Fragment {
                 }
                 goBackToList();
                 return true;
+
+            /* ... I am not sure yet:
+            case R.id.menu_item_settings:
+                Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            */
 
             default:
             return super.onOptionsItemSelected(item);

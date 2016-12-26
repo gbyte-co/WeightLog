@@ -76,4 +76,34 @@
         tools:ignore="TextFields"
         />
 
+    <LinearLayout
+        android:id="@+id/assessment_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:visibility="visible"
+        android:layout_gravity="center_horizontal"
+    >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bmi_label"
+        />
+        <TextView
+            android:id="@+id/bmi_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text=""
+        />
+        <TextView
+            android:id="@+id/assessment_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text=""
+        />
+    </LinearLayout>
 </LinearLayout>

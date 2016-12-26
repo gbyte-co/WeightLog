@@ -53,6 +53,7 @@ public class WeightFragment extends Fragment {
     private Button mDateButton = null;
     private Button mTimeButton = null;
     private Button mWeightButton = null;
+    private View mView = null;
 
     public static WeightFragment newInstance() {
         return new WeightFragment();
@@ -106,8 +107,8 @@ public class WeightFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_weight, container, false);
-        mDateButton = (Button) v.findViewById(R.id.weight_date_button);
+        mView = inflater.inflate(R.layout.fragment_weight, container, false);
+        mDateButton = (Button) mView.findViewById(R.id.weight_date_button);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +120,7 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        mTimeButton = (Button) v.findViewById(R.id.weight_time_button);
+        mTimeButton = (Button) mView.findViewById(R.id.weight_time_button);
         updateTime();
         mTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +132,7 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        mWeightButton = (Button) v.findViewById(R.id.weight_button);
+        mWeightButton = (Button) mView.findViewById(R.id.weight_button);
         mWeightButton.setText(mWeight.getWeightStringKg());
         mWeightButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +144,7 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        EditText noteField = (EditText) v.findViewById(R.id.weight_note);
+        EditText noteField = (EditText) mView.findViewById(R.id.weight_note);
         noteField.setText(mWeight.getNote());
         noteField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -162,9 +163,9 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        updateAssessmentView(v);
+        updateAssessmentView(mView);
 
-        return v;
+        return mView;
     }
 
     private void updateAssessmentView(View v) {
@@ -305,6 +306,7 @@ public class WeightFragment extends Fragment {
         if (requestCode == REQUEST_WEIGHT) {
             mWeight.setWeight(data.getIntExtra(WeightPickerFragment.EXTRA_WEIGHT, 0));
             mWeightButton.setText(mWeight.getWeightStringKg());
+            updateAssessmentView(mView);
         }
     }
 

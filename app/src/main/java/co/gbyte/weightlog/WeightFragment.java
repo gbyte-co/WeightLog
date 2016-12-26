@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -24,7 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -183,7 +180,7 @@ public class WeightFragment extends Fragment {
             double bmi = mWeight.bmi();
 
             String assessment;
-            int color = ContextCompat.getColor(getContext(), R.color.colorPrimaryText);
+            int color;
 
             if (bmi >= getResources().getFraction(R.fraction.overweight_bmi, 1, 1)) {
                 if (bmi < getResources().getFraction(R.fraction.moderately_obese_bmi, 1, 1)) {
@@ -193,7 +190,8 @@ public class WeightFragment extends Fragment {
                 } else if (bmi < getResources().getFraction(R.fraction.severely_obese_bmi, 1, 1)) {
                     assessment = getString(R.string.moderately_obese);
                     color = ContextCompat.getColor(getContext(), R.color.colorModeratelyObese);
-                } else if (bmi < getResources().getFraction(R.fraction.very_severely_obese_bmi, 1, 1)) {
+                } else if (bmi < getResources().getFraction(R.fraction.very_severely_obese_bmi,
+                                                            1, 1)) {
                     assessment = getString(R.string.severely_obese);
                     color = ContextCompat.getColor(getContext(), R.color.colorSeverelyObese);
                 } else {
@@ -204,12 +202,14 @@ public class WeightFragment extends Fragment {
                 if (bmi > getResources().getFraction(R.fraction.severely_underweight_bmi, 1, 1)) {
                     assessment = getString(R.string.underweight);
                     color = ContextCompat.getColor(getContext(), R.color.colorUnderweight);
-                } else if (bmi > getResources().getFraction(R.fraction.very_severely_underweight_bmi, 1, 1)) {
+                } else if (bmi > getResources().getFraction(R.fraction.
+                                                            very_severely_underweight_bmi, 1, 1)) {
                     assessment = getString(R.string.severely_underweight);
                     color = ContextCompat.getColor(getContext(), R.color.colorSeverelyUnderweight);
                 } else {
                     assessment = getString(R.string.very_severely_underweight);
-                    color = ContextCompat.getColor(getContext(), R.color.colorVerySeverelyUnderweight);
+                    color = ContextCompat.getColor(getContext(),
+                                                   R.color.colorVerySeverelyUnderweight);
                 }
             } else {
                 assessment = getString(R.string.healthy_weight);

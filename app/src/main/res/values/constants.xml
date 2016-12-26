@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="average_human_height">169</integer>
-    <fraction name="optimal_bmi">2175%</fraction>
+    <integer name="min_human_height">540</integer>
+    <integer name="max_human_height">2750</integer>
+    <integer name="average_human_height">1690</integer>
+    <fraction name="optimal_bmi">2200%</fraction>
+    <fraction name="underweight_bmi">1850%</fraction>
+    <fraction name="severely_underweight_bmi">1600%</fraction>
+    <fraction name="very_severely_underweight_bmi">1500%</fraction>
+    <fraction name="overweight_bmi">2500%</fraction>
+    <fraction name="moderately_obese_bmi">3000%</fraction>
+    <fraction name="severely_obese_bmi">3500%</fraction>
+    <fraction name="very_severely_obese_bmi">4000%</fraction>
 </resources>

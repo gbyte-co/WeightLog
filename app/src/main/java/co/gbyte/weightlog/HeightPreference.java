@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.NumberPicker;
 
 /**
  * Created by walt on 2/12/16.
@@ -14,12 +14,10 @@ import android.widget.NumberPicker;
 
 public class HeightPreference extends DialogPreference {
 
-    private static final int DEFAULT_HEIGHT = 169;
-    private static final int MAX_HEIGHT = 275;
-    private static final int MIN_HEIGHT = 40;
+    private int mLastHeight = 0;
+    private Context mContext;
+    private BodyLengthPicker mPicker = null;
 
-    private NumberPicker mPicker = null;
-    private int mLastHeight;
 
     public HeightPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -30,51 +28,27 @@ public class HeightPreference extends DialogPreference {
 
     @Override
     protected View onCreateDialogView() {
-        mPicker = new NumberPicker(getContext());
+        mContext = getContext();
+        mPicker = new BodyLengthPicker(mContext);
+        mPicker.setGravity(Gravity.CENTER);
         return (mPicker);
     }
 
     @Override
     protected  void onBindDialogView(View v) {
         super.onBindDialogView(v);
-        mPicker.setMinValue(MIN_HEIGHT);
-        mPicker.setMaxValue(MAX_HEIGHT);
-        mPicker.setValue(mLastHeight);
-    }
 
-    @Override
-    protected Object onGetDefaultValue(TypedArray a, int index) {
-         return (a.getInt(index, 0));
-    }
+        // ToDo: reconsider using Weight class for storing min and max weight
+        mPicker.setMinValue(mContext.getResources().getInteger(R.integer.min_human_height));
+        mPicker.setMaxValue(mContext.getResources().getInteger(R.integer.max_human_height));
 
-    @Override
-    protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        mLastHeight = (restoreValue ? getPersistedInt(mLastHeight) : DEFAULT_HEIGHT);
-    }
-
-
-    /*
-    @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        if (positiveResult) {
-            // needed when user edits the text field and clicks OK
-            mPicker.clearFocus();
-
-            setValue(mPicker.getValue());
+        /*
+        if (mLastHeight == 0) {
+            //mLastHeight = (mContext.getResources().getInteger(R.integer.average_human_height));
+            mLastHeight = mPicker.getValue();
         }
+        */
     }
-
-    private void setValue(int value) {
-        if (shouldPersist()) {
-            persistInt(value);
-        }
-
-        if (value != mLastHeight) {
-            mLastHeight = value;
-            notifyChanged();
-        }
-    }
-    */
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
@@ -82,10 +56,27 @@ public class HeightPreference extends DialogPreference {
 
         if(positiveResult) {
             if(callChangeListener(mPicker.getValue())) {
+
+                // needed when user edits the text field and clicks OK
+                mPicker.clearFocus();
+
                 mLastHeight = mPicker.getValue();
                 persistInt(mLastHeight);
             }
         }
     }
-}
 
+    @Override
+    protected Object onGetDefaultValue(TypedArray a, int index) {
+//        return (a.getInt(index,
+//                mContext.getResources().getInteger(R.integer.average_human_height)));
+        return 2750;
+    }
+
+    @Override
+    protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
+        mLastHeight = 1800;
+        //mLastHeight = restoreValue ? getPersistedInt(mLastHeight) : (Integer)defaultValue ;
+
+    }
+}

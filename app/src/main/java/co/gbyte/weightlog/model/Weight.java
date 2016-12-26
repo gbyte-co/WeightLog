@@ -1,8 +1,6 @@
 package co.gbyte.weightlog.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -19,8 +17,8 @@ public class Weight {
     // body height is stored in millimeters
     private static int sHeight = 0;
 
-    private static final int sHeightMin =  700;
-    private static final int sHeightMax = 2400;
+    private static final int sHeightMin =  550;
+    private static final int sHeightMax = 2750;
 
     private static final int sWeightMin =   2000;
     private static final int sWeightMax = 640000;
@@ -79,6 +77,7 @@ public class Weight {
     }
 
     public static void resetHeight() {
+
         sHeight = 0;
     }
 

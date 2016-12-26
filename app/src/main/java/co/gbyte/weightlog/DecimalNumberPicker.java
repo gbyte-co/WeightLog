@@ -106,6 +106,7 @@ public class DecimalNumberPicker extends LinearLayout {
             @Override
             public void onValueChange(NumberPicker picker,
                                       int oldVal, int newVal) {
+
                 if (newVal == (oldVal - getRange(mDecimalPicker))) {
                     mCurrentInteger ++;
                     //mIntegerPicker.setValue(mIntegerPicker.getValue() + 1);
@@ -114,6 +115,7 @@ public class DecimalNumberPicker extends LinearLayout {
                     mCurrentInteger --;
                     //mIntegerPicker.setValue(mIntegerPicker.getValue() - 1);
                 }
+
                 mIntegerPicker.setValue(mCurrentInteger);
                 mCurrentDecimal = newVal;
                 onValueChanged();

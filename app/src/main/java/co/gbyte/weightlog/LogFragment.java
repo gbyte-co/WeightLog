@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,14 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import co.gbyte.weightlog.model.Weight;
 import co.gbyte.weightlog.model.WeightLab;
-
-import static co.gbyte.weightlog.R.string.height_pref_key;
 
 /**
  * Created by walt on 19/10/16.
@@ -36,7 +34,7 @@ public class LogFragment extends Fragment {
     private RecyclerView mWeightRecycleView;
 
     private WeightAdapter mAdapter;
-    private SharedPreferences mUserPrefs;
+    private Context mContext;
 
 
     @Override
@@ -49,16 +47,21 @@ public class LogFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        mContext = getActivity();
+
         View view = inflater.inflate(R.layout.fragment_weight_list, container, false);
         mWeightRecycleView = (RecyclerView) view.findViewById(R.id.weight_recycler_view);
-        mWeightRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mWeightRecycleView.setLayoutManager(new LinearLayoutManager(mContext));
 
-        mUserPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
+        PreferenceCategory cat;
 
-        if(mUserPrefs.contains(getString(height_pref_key))) {
-            Toast.makeText(getActivity(), "Height has been set up", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getActivity(), "No height yet", Toast.LENGTH_LONG).show();
+
+
+        if(!settings.contains(getString(R.string.bmi_pref_key))) {
+            // The app is running for the first time. Ask user for basic settings.
+            showSettings();
+
         }
 
         updateUI();
@@ -81,14 +84,12 @@ public class LogFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
         switch (item.getItemId()) {
             case R.id.menu_item_settings:
-                intent = new Intent(this.getActivity(), SettingsActivity.class);
-                startActivity(intent);
+                showSettings();
                 return true;
             case R.id.menu_item_new_weight:
-                intent = WeightActivity.newIntent(getActivity());
+                Intent intent = WeightActivity.newIntent(mContext);
                 startActivity(intent);
                 return true;
             default:
@@ -96,8 +97,13 @@ public class LogFragment extends Fragment {
         }
     }
 
+    private void showSettings() {
+        Intent intent = new Intent(mContext, SettingsActivity.class);
+        startActivity(intent);
+    }
+
     private void updateUI() {
-        WeightLab weightLab = WeightLab.get(getActivity());
+        WeightLab weightLab = WeightLab.get(mContext);
         List<Weight> weights = weightLab.getWeights();
 
         if (mAdapter == null) {
@@ -139,9 +145,9 @@ public class LogFragment extends Fragment {
         void bindWeight(Weight weight, Double weightChange) {
             mWeight = weight;
 
-            mDateTextView.setText(DateFormat.getDateFormat(getActivity())
+            mDateTextView.setText(DateFormat.getDateFormat(mContext)
                                   .format(mWeight.getTime()));
-            mTimeTextView.setText(DateFormat.getTimeFormat(getActivity())
+            mTimeTextView.setText(DateFormat.getTimeFormat(mContext)
                                   .format(mWeight.getTime()));
             mWeightTextView.setText(mWeight.getWeightStringKg());
             if (weightChange != null) {
@@ -174,7 +180,7 @@ public class LogFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Intent intent = WeightActivity.newIntent(getActivity(), mWeight.getId());
+            Intent intent = WeightActivity.newIntent(mContext, mWeight.getId());
             startActivity(intent);
         }
     }
@@ -188,7 +194,7 @@ public class LogFragment extends Fragment {
 
         @Override
         public WeightHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             View view = layoutInflater.inflate(R.layout.list_item_weight, parent, false);
             return new WeightHolder(view);
         }

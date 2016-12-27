@@ -6,6 +6,7 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
+import android.preference.SwitchPreference;
 import android.support.v7.app.AppCompatActivity;
 
 import static co.gbyte.weightlog.R.string.bmi_pref_key;
@@ -17,6 +18,7 @@ import static co.gbyte.weightlog.R.string.height_pref_key;
  */
 
 public class SettingsActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,8 @@ public class SettingsActivity extends AppCompatActivity {
         private PreferenceCategory mAssessmentPrefCategory;
         private HeightPreference mHeightPref;
 
+        private SwitchPreference mBmiPref = null;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -44,6 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
             mPrefs = getPreferenceManager().getSharedPreferences();
             mAssessmentPrefCategory = (PreferenceCategory)
                     findPreference(getResources().getString(R.string.assessment_pref_category_key));
+            mBmiPref = (SwitchPreference)  findPreference(getString(R.string.bmi_pref_key));
             mHeightPref = (HeightPreference)
                     findPreference(getResources().getString(height_pref_key));
 
@@ -86,6 +91,7 @@ public class SettingsActivity extends AppCompatActivity {
             mPrefs.registerOnSharedPreferenceChangeListener(mListener);
         }
 
+
         private void updatePreference(Preference preference) {
             if (preference == null) {
                 return;
@@ -98,6 +104,7 @@ public class SettingsActivity extends AppCompatActivity {
                     updatePreference(mHeightPref);
                 } else {
                     mAssessmentPrefCategory.removePreference(mHeightPref);
+                    mBmiPref.setChecked(isOn);
                 }
             }
 

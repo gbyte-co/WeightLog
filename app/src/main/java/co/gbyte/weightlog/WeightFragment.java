@@ -295,12 +295,14 @@ public class WeightFragment extends Fragment {
             Date date = (Date)  data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mWeight.setTime(date);
             updateDate();
+            return;
         }
 
         if (requestCode == REQUEST_TIME) {
             Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
             mWeight.setTime(time);
             updateTime();
+            return;
         }
 
         if (requestCode == REQUEST_WEIGHT) {

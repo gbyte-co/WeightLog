@@ -49,7 +49,7 @@ public class LogFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         mContext = getActivity();
 
-        View view = inflater.inflate(R.layout.fragment_weight_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_weight_log, container, false);
         mWeightRecycleView = (RecyclerView) view.findViewById(R.id.weight_recycler_view);
         mWeightRecycleView.setLayoutManager(new LinearLayoutManager(mContext));
 

@@ -1,6 +1,7 @@
 package co.gbyte.weightlog;
 
 
+import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -43,33 +44,33 @@ public class ChartFragment extends Fragment {
 
         mLineChart  = (LineChart) v.findViewById(R.id.lineChart);
 
-        WeightLab weightLab = WeightLab.get(getActivity());
-        List<Weight> weightList = weightLab.getWeights();
-
-        Weight weightArray[] = new Weight[weightList.size()];
-        weightArray = weightList.toArray(weightArray);
-
-
-        List<Entry>  weightEntries = new ArrayList<>();
-        for (int i = weightArray.length - 1 ; i >= 0; i--) {
-            Date time = weightArray[i].getTime();
-            float interval = time.getTime() / 1000;
-            Entry entry = new Entry( interval, (float) weightList.get(i).getWeight() / 1000);
-            weightEntries.add(entry);
-        }
-
-        LineDataSet weights = new LineDataSet(weightEntries, "Weight");
-        weights.setAxisDependency(YAxis.AxisDependency.RIGHT);
-        weights.setColor(Color.BLUE);
-
-        List<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(weights);
-
-        LineData data = new LineData(dataSets);
-        mLineChart.setData(data);
+        mLineChart.setData(updateChart(mLineChart));
         mLineChart.invalidate();
 
         return v;
     }
 
+    private LineData  updateChart(LineChart chart) {
+        List<Weight> weights = WeightLab.get(getContext()).getWeights();
+        Weight weightArray[] = new Weight[weights.size()];
+        weightArray = weights.toArray(weightArray);
+
+        List<Entry>  weightEntries = new ArrayList<>();
+
+        for (int i = weightArray.length - 1 ; i >= 0; i--) {
+            Date time = weightArray[i].getTime();
+            float interval = time.getTime() / 1000;
+            Entry entry = new Entry( interval, (float) weights.get(i).getWeight() / 1000);
+            weightEntries.add(entry);
+        }
+
+        LineDataSet weightDataSet = new LineDataSet(weightEntries, "Weight");
+        weightDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        weightDataSet.setColor(Color.BLUE);
+
+        List<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(weightDataSet);
+
+        return new LineData(weightDataSet);
+    }
 }

@@ -21,7 +21,6 @@ import co.gbyte.weightlog.db.WeightDbSchema.WeightTable;
 public class WeightLab {
     private static WeightLab sWeightLab;
 
-    private Context mContext;
     private SQLiteDatabase mDb;
 
     public static WeightLab get(Context context) {
@@ -32,8 +31,8 @@ public class WeightLab {
     }
 
     private WeightLab(Context context) {
-        mContext = context.getApplicationContext();
-        mDb = new WeightBaseHelper(mContext).getWritableDatabase();
+
+        mDb = new WeightBaseHelper(context).getWritableDatabase();
     }
 
     public void addWeight(Weight w) {
@@ -61,12 +60,9 @@ public class WeightLab {
     }
 
     public Weight getWeight(UUID id) {
-        WeightCursorWrapper cursor = queryWeights(
-                WeightTable.Cols.UUID + " = ?",
-                new String[] { id.toString() },
-                null
-        );
-
+        WeightCursorWrapper cursor = queryWeights(WeightTable.Cols.UUID + " = ?",
+                                                  new String[] { id.toString() },
+                                                  null);
         try {
             if(cursor.getCount() == 0) {
                 return null;
@@ -82,10 +78,7 @@ public class WeightLab {
     public int getLastWeight() {
         Weight weight = new Weight();
 
-        WeightCursorWrapper cursor = queryWeights(null, null,
-                WeightTable.Cols.TIME + " DESC"
-                );
-
+        WeightCursorWrapper cursor = queryWeights(null, null, WeightTable.Cols.TIME + " DESC");
         try {
             if (cursor.getCount() == 0) {
                 return 0;

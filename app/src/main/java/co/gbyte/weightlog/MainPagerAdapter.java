@@ -5,11 +5,11 @@ package co.gbyte.weightlog;
  *
  */
 
-public class MainPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
+class MainPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
 
-    private static final String KEY_POSITION = "key_position";
+    //private static final String KEY_POSITION = "key_position";
 
-    public MainPagerAdapter(android.support.v4.app.FragmentManager mgr) {
+    MainPagerAdapter(android.support.v4.app.FragmentManager mgr) {
         super(mgr);
     }
 

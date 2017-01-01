@@ -61,7 +61,7 @@ public class ConfirmDialogFragment extends DialogFragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 WeightLab.get(getActivity()).deleteWeight(id);
-                                Intent intent = new Intent(getActivity(), LogActivity.class);
+                                Intent intent = new Intent(getActivity(), PagerActivity.class);
                                 startActivity(intent);
                             }
                         })

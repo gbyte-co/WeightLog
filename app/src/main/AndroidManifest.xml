@@ -17,11 +17,11 @@
 
         <activity android:name=".WeightActivity"
                   android:label="@string/weight_title_label"
-                  android:parentActivityName=".LogActivity"
+                  android:parentActivityName=".PagerActivity"
         >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LogActivity"
+                android:value=".PagerActivity"
             />
         </activity>
 
@@ -30,7 +30,7 @@
         >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LogActivity"
+                android:value=".PagerActivity"
             />
         </activity>
     </application>

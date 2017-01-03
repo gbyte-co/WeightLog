@@ -1,29 +1,22 @@
-## Credits:
-##     https://medium.com/@kunalsagar/perfect-gitignore-for-android-studio-projects-5518b06bda09#.2dt8fvpub
-##     https://www.gitignore.io/api/android,intellij+iml,gradle
+### Credits:
+### https://medium.com/@kunalsagar/perfect-gitignore-for-android-studio-projects-5518b06bda09#.2dt8fvpub
+###    https://www.gitignore.io/api/android,intellij+iml,gradle
 
 ## Local res
 /res
 
 ### Android ###
 ## Built application files
-*.apk
-*.ap_
-
-## ART/Dalvik VM
-*.dex
-
-# Java class files
-*.class
-
-## Generated files
-bin/
-gen/
-out/
-
-## Gradle files
-.gradle/
 build/
+
+### Gradle files
+.gradle/
+
+## Ignore Gradle GUI config
+#gradle-app.setting
+
+## Don't ignore Gradle wrapper jar file (other .jar files are ignored)
+!gradle-wrapper.jar
 
 ## Local configuration file (sdk path, etc)
 local.properties
@@ -41,29 +34,18 @@ proguard/
 captures/
 
 ## Intellij
+/out/
+
 *.iml
 .idea/workspace.xml
 .idea/vcs.xml
 .idea/libraries
+.idea/misc.xml 
 
-## Keystore files
-*.jks
-
-## External native build folder generated in Android Studio 2.2 and later
-.externalNativeBuild
-
-### Android Patch ###
-gen-external-apklibs
-
-
-### Intellij+iml ###
-## Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, ##                        PyCharm, CLion, Android Studio and Webstorm
-## Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
-
-## User-specific stuff:
+# User-specific stuff:
 .idea/tasks.xml
 
-## Sensitive or high-churn files:
+# Sensitive or high-churn files:
 .idea/dataSources.ids
 .idea/dataSources.xml
 .idea/dataSources.local.xml
@@ -71,24 +53,30 @@ gen-external-apklibs
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 
-## Gradle:
+# Gradle:
 .idea/gradle.xml
 
-## Mongo Explorer plugin:
+# Mongo Explorer plugin:
 .idea/mongoSettings.xml
+
+## Keystore files
+*.jks
+
+## External native build folder generated in Android Studio 2.2 and later
+#.externalNativeBuild
+
+### Android Patch ###
+gen-external-apklibs
+
 
 ## File-based project format:
 *.iws
 
-## Plugin-specific files:
-
-## IntelliJ
-/out/
-
+### Plugin-specific files:
 ## mpeltonen/sbt-idea plugin
 .idea_modules/
 
-# JIRA plugin
+## JIRA plugin
 atlassian-ide-plugin.xml
 
 ## Crashlytics plugin (for Android Studio and IntelliJ)
@@ -99,21 +87,8 @@ fabric.properties
 
 ### Intellij+iml Patch ###
 # Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-249601023 
-
 modules.xml
-.idea/misc.xml 
 *.ipr
-
-
-### Gradle ###
-.gradle
-/build/
-
-## Ignore Gradle GUI config
-gradle-app.setting
-
-## Don't ignore Gradle wrapper jar file (other .jar files are ignored)
-!gradle-wrapper.jar
 
 ## Cache of project
 .gradletasknamecache

@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PagerActivity">
+        <activity android:name=".MainPagerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -17,11 +17,11 @@
 
         <activity android:name=".WeightActivity"
                   android:label="@string/weight_title_label"
-                  android:parentActivityName=".PagerActivity"
+                  android:parentActivityName=".MainPagerActivity"
         >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PagerActivity"
+                android:value=".MainPagerActivity"
             />
         </activity>
 
@@ -30,7 +30,7 @@
         >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PagerActivity"
+                android:value=".MainPagerActivity"
             />
         </activity>
     </application>

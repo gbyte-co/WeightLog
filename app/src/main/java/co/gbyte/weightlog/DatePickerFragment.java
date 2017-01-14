@@ -75,6 +75,7 @@ public class DatePickerFragment extends DialogFragment {
                 })
                 .create();
     }
+
     private void sendResult(int resultCode, Date date) {
         if (getTargetFragment() == null) {
             return;

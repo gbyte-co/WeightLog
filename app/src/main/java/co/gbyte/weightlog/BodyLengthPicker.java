@@ -69,7 +69,6 @@ public class BodyLengthPicker extends LinearLayout {
             a.recycle();
         }
 
-
         /*
         mNumberOfFeetPicker = (NumberPicker) findViewById(R.id.body_length_picker_feet);
         mNumberOfFeetPicker.setMinValue(0);
@@ -113,7 +112,6 @@ public class BodyLengthPicker extends LinearLayout {
     public void setOnValueChangedListener(OnValueChangedListener listener) {
         mListener = listener;
     }
-
 
     public void setValue(int value) throws IllegalArgumentException {
         throwIllegalHeightException(value);

@@ -1,7 +1,5 @@
 package co.gbyte.weightlog;
 
-
-import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,12 +27,10 @@ import co.gbyte.weightlog.model.WeightLab;
  */
 public class ChartFragment extends Fragment {
 
-
     private LineChart mLineChart = null;
 
     // Required empty public constructor
     public ChartFragment() {}
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,13 +40,13 @@ public class ChartFragment extends Fragment {
 
         mLineChart  = (LineChart) v.findViewById(R.id.lineChart);
 
-        mLineChart.setData(updateChart(mLineChart));
+        mLineChart.setData(updateChart());
         mLineChart.invalidate();
 
         return v;
     }
 
-    private LineData  updateChart(LineChart chart) {
+    private LineData  updateChart() {
         List<Weight> weights = WeightLab.get(getContext()).getWeights();
         Weight weightArray[] = new Weight[weights.size()];
         weightArray = weights.toArray(weightArray);
@@ -68,8 +64,10 @@ public class ChartFragment extends Fragment {
         weightDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
         weightDataSet.setColor(Color.BLUE);
 
+        /*
         List<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(weightDataSet);
+        */
 
         return new LineData(weightDataSet);
     }

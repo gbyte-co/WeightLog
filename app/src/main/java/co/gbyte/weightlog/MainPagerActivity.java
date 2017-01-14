@@ -10,10 +10,7 @@ import android.support.v7.app.AppCompatActivity;
  *
  */
 
-public class PagerActivity extends AppCompatActivity {
-
-
-
+public class MainPagerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

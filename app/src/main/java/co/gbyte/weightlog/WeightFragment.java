@@ -278,7 +278,7 @@ public class WeightFragment extends Fragment {
     }
 
     private void goBackToList() {
-        Intent intent = new Intent(getActivity(), PagerActivity.class);
+        Intent intent = new Intent(getActivity(), MainPagerActivity.class);
         // Set the new task and clear flags in order to prevent previous activities from
         // being kept in a queue (stack of activities) - kill all the previous activities:
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

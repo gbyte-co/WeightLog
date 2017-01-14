@@ -35,49 +35,45 @@ captures/
 
 ## Intellij
 /out/
-
+## ALL!
 *.iml
-.idea/workspace.xml
-.idea/vcs.xml
-.idea/libraries
-.idea/misc.xml 
+.idea/
+#.idea/workspace.xml
+#.idea/vcs.xml
+#.idea/libraries
+#.idea/misc.xml 
 
-# User-specific stuff:
-.idea/tasks.xml
+## User-specific stuff:
+#.idea/tasks.xml
+##
+## Sensitive or high-churn files:
+#.idea/dataSources.ids
+#.idea/dataSources.xml
+#.idea/dataSources.local.xml
+#.idea/sqlDataSources.xml
+#.idea/dynamic.xml
+#.idea/uiDesigner.xml
+#.idea_modules/
+#.idea/gradle.xml
+#.idea/mongoSettings.xml
 
-# Sensitive or high-churn files:
-.idea/dataSources.ids
-.idea/dataSources.xml
-.idea/dataSources.local.xml
-.idea/sqlDataSources.xml
-.idea/dynamic.xml
-.idea/uiDesigner.xml
+## Intellij+iml Patch ###
+# Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-249601023 
+modules.xml
+*.ipr
 
-# Gradle:
-.idea/gradle.xml
+atlassian-ide-plugin.xml
 
-# Mongo Explorer plugin:
-.idea/mongoSettings.xml
+## Cache of project
+.gradletasknamecache
 
-## Keystore files
 *.jks
-
-## External native build folder generated in Android Studio 2.2 and later
-#.externalNativeBuild
-
-### Android Patch ###
-gen-external-apklibs
-
 
 ## File-based project format:
 *.iws
 
-### Plugin-specific files:
-## mpeltonen/sbt-idea plugin
-.idea_modules/
-
-## JIRA plugin
-atlassian-ide-plugin.xml
+## Android Patch ###
+gen-external-apklibs
 
 ## Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
@@ -85,13 +81,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-### Intellij+iml Patch ###
-# Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-249601023 
-modules.xml
-*.ipr
+## External native build folder generated in Android Studio 2.2 and later
+#.externalNativeBuild
 
-## Cache of project
-.gradletasknamecache
-
-## Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties

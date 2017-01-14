@@ -105,6 +105,7 @@ public class BodyLengthPicker extends LinearLayout {
         setValue(state.getInt(HEIGHT));
     }
 
+    /*
     public OnValueChangedListener getOnValueChangedListener() {
         return mListener;
     }
@@ -112,6 +113,7 @@ public class BodyLengthPicker extends LinearLayout {
     public void setOnValueChangedListener(OnValueChangedListener listener) {
         mListener = listener;
     }
+    */
 
     public void setValue(int value) throws IllegalArgumentException {
         throwIllegalHeightException(value);

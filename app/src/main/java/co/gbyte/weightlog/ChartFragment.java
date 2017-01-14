@@ -12,7 +12,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,14 +59,10 @@ public class ChartFragment extends Fragment {
             weightEntries.add(entry);
         }
 
+        // ToDo: remove literal string:
         LineDataSet weightDataSet = new LineDataSet(weightEntries, "Weight");
         weightDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
         weightDataSet.setColor(Color.BLUE);
-
-        /*
-        List<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(weightDataSet);
-        */
 
         return new LineData(weightDataSet);
     }

@@ -156,6 +156,10 @@ public class LogFragment extends Fragment {
         RelativeLayout mCompactLayout;
         LinearLayout mExtendedLayout;
 
+        LinearLayout mExtendedWeightChangeView;
+
+        TextView mExtendedNote;
+
         WeightHolder(View itemView) {
             super(itemView);
 
@@ -171,13 +175,15 @@ public class LogFragment extends Fragment {
             mWeightCompactTV = (TextView) itemView.findViewById(R.id.weight_compact_tv);
             mWeightExtendedTV = (TextView) itemView.findViewById(R.id.weight_extended_tv);
 
-
             mWeightChangeCompactTV =
                     (TextView) itemView.findViewById(R.id.weight_change_compact_tv);
             mWeightChangeExtendedTV =
-                    // ToDo: fix:
-                    (TextView) itemView.findViewById(R.id.weight_change_compact_tv);
+                    (TextView) itemView.findViewById(R.id.weight_log_extended_change_tv);
 
+            mExtendedWeightChangeView =
+                    (LinearLayout) itemView.findViewById(R.id.weight_log_extended_change_view);
+
+            mExtendedNote = (TextView) itemView.findViewById(R.id.weight_note_extended_tv);
         }
 
         void bindWeight(Weight weight, Double weightChange) {
@@ -193,11 +199,24 @@ public class LogFragment extends Fragment {
             mWeightCompactTV.setText(weight.getWeightStringKg());
             mWeightExtendedTV.setText(weight.getWeightStringKg());
 
+            String note = weight.getNote();
+            if(note == null || note.isEmpty()) {
+                mExtendedNote.setVisibility(View.GONE);
+            } else {
+                mExtendedNote.setText(note);
+                mExtendedNote.setVisibility(View.VISIBLE);
+            }
+
             if (weightChange != null) {
+                mExtendedWeightChangeView.setVisibility(View.VISIBLE);
                 if (weightChange < 0) {
                     mWeightChangeCompactTV.setText(
                             String.format(Locale.getDefault(), "%.1f", weightChange));
                     mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorWeightLoss));
+                    mWeightChangeExtendedTV.setText(
+                            String.format(Locale.getDefault(), "%.1f", weightChange));
+                    mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorWeightLoss));
                     mWeightCompactTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorWeightLossDark));
@@ -208,6 +227,10 @@ public class LogFragment extends Fragment {
                             String.format(Locale.getDefault(), "+%.1f", weightChange));
                     mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorWeightGain));
+                    mWeightChangeExtendedTV.setText(
+                            String.format(Locale.getDefault(), "+%.1f", weightChange));
+                    mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorWeightGain));
                     mWeightCompactTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorWeightGainDark));
                     mWeightExtendedTV.setTextColor(ContextCompat.getColor(getContext(),
@@ -217,6 +240,10 @@ public class LogFragment extends Fragment {
                             String.format(Locale.getDefault(), "%.1f", weightChange));
                     mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorSecondaryText));
+                    mWeightChangeExtendedTV.setText(
+                            String.format(Locale.getDefault(), "%.1f", weightChange));
+                    mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorSecondaryText));
                     mWeightCompactTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorSecondaryText));
                     mWeightExtendedTV.setTextColor(ContextCompat.getColor(getContext(),
@@ -224,17 +251,19 @@ public class LogFragment extends Fragment {
                 }
             } else {
                 mWeightChangeCompactTV.setText("");
+                mExtendedWeightChangeView.setVisibility(View.GONE);
                 mWeightCompactTV.setTextColor(ContextCompat.getColor(getContext(),
                         R.color.colorPrimaryText));
                 mWeightExtendedTV.setTextColor(ContextCompat.getColor(getContext(),
                         R.color.colorPrimaryText));
             }
+
         }
     }
 
     private class WeightAdapter extends RecyclerView.Adapter<WeightHolder> {
         private List<Weight> mWeights;
-        private int mSelectedPos = 0;
+        private int mSelectedPos = -1;
 
         WeightAdapter(List<Weight> weights) {
             mWeights = weights;
@@ -273,7 +302,7 @@ public class LogFragment extends Fragment {
                         R.id.assessment_extended_layout,
                         R.id.bmi_extended_tv,
                         weight.bmi());
-                // Why do I have to call it twice to make it work ??
+                // ToDo: Why do I have to call it twice to make it work ??
                 Bmi.updateAssessmentView(mContext,
                         holder.itemView,
                         R.id.assessment_extended_layout,

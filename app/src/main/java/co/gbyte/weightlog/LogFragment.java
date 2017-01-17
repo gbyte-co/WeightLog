@@ -11,19 +11,24 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import co.gbyte.weightlog.model.Weight;
 import co.gbyte.weightlog.model.WeightLab;
+import co.gbyte.weightlog.utils.Bmi;
+import co.gbyte.weightlog.utils.Time;
 
 /**
  * Created by walt on 19/10/16.
@@ -34,7 +39,8 @@ public class LogFragment extends Fragment {
     private RecyclerView mWeightRecycleView;
     private WeightAdapter mAdapter;
     private Context mContext;
-
+    private Weight mWeight = null;
+    private Menu mMenu;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +69,6 @@ public class LogFragment extends Fragment {
         });
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
-
         if(!settings.contains(getString(R.string.bmi_pref_key))) {
             // The app is running for the first time. Ask user for basic settings.
             showSettings();
@@ -77,14 +82,16 @@ public class LogFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         updateUI();
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_log_menu, menu);
+        mMenu = menu;
+        updateMenu();
     }
 
     @Override
@@ -92,6 +99,12 @@ public class LogFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_item_settings:
                 showSettings();
+                return true;
+            case R.id.menu_item_edit_weight:
+                if (mWeight != null) {
+                    Intent intent = WeightActivity.newIntent(mContext, mWeight.getId());
+                    startActivity(intent);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -122,72 +135,106 @@ public class LogFragment extends Fragment {
         }
     }
 
-    private class WeightHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private void updateMenu () {
+        MenuItem editMenuItem = mMenu.findItem(R.id.menu_item_edit_weight);
+        editMenuItem.setVisible(mWeight != null);
+    }
 
-        private Weight mWeight;
+    private class WeightHolder extends RecyclerView.ViewHolder {
 
-        TextView mDateTextView;
-        TextView mTimeTextView;
-        TextView mWeightTextView;
-        TextView mWeightChangeTextView;
+        TextView mDateCompactTV;
+        TextView mDateExtendedTV;
+        TextView mTimeCompactTV;
+        TextView mTimeExtendedTV;
+
+        TextView mWeightCompactTV;
+        TextView mWeightExtendedTV;
+
+        TextView mWeightChangeCompactTV;
+        TextView mWeightChangeExtendedTV;
+
+        RelativeLayout mCompactLayout;
+        LinearLayout mExtendedLayout;
 
         WeightHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
 
-            mDateTextView = (TextView) itemView.findViewById(R.id.list_item_weight_date_text_view);
-            mTimeTextView = (TextView) itemView.findViewById(R.id.list_item_weight_time_text_view);
-            mWeightTextView =
-                    (TextView) itemView.findViewById(R.id.list_item_weight_weight_text_view);
-            mWeightChangeTextView =
-                    (TextView) itemView.findViewById(R.id.list_item_weight_change_text_view);
+            mCompactLayout = (RelativeLayout) itemView.findViewById(R.id.list_item_compact);
+            mExtendedLayout = (LinearLayout) itemView.findViewById(R.id.list_item_extended);
+
+            mDateCompactTV = (TextView) itemView.findViewById(R.id.weight_date_compact_tv);
+            mDateExtendedTV = (TextView) itemView.findViewById(R.id.weight_date_extended_tv);
+
+            mTimeCompactTV = (TextView) itemView.findViewById(R.id.weight_time_compact_tv);
+            mTimeExtendedTV = (TextView) itemView.findViewById(R.id.weight_time_extended_tv);
+
+            mWeightCompactTV = (TextView) itemView.findViewById(R.id.weight_compact_tv);
+            mWeightExtendedTV = (TextView) itemView.findViewById(R.id.weight_extended_tv);
+
+
+            mWeightChangeCompactTV =
+                    (TextView) itemView.findViewById(R.id.weight_change_compact_tv);
+            mWeightChangeExtendedTV =
+                    // ToDo: fix:
+                    (TextView) itemView.findViewById(R.id.weight_change_compact_tv);
+
         }
 
         void bindWeight(Weight weight, Double weightChange) {
-            mWeight = weight;
 
-            mDateTextView.setText(DateFormat.getDateFormat(mContext)
-                                  .format(mWeight.getTime()));
-            mTimeTextView.setText(DateFormat.getTimeFormat(mContext)
-                                  .format(mWeight.getTime()));
-            mWeightTextView.setText(mWeight.getWeightStringKg());
+            Date weightTime = weight.getTime();
+            mDateCompactTV.setText(Time.getDateString(mContext, "", weightTime));
+            mDateExtendedTV.setText(Time.getDateString(mContext, "EEE, ", weightTime));
+
+            String time = Time.getTimeString(mContext, weightTime);
+            mTimeCompactTV.setText(time);
+            mTimeExtendedTV.setText(time);
+
+            mWeightCompactTV.setText(weight.getWeightStringKg());
+            mWeightExtendedTV.setText(weight.getWeightStringKg());
+
             if (weightChange != null) {
-                mWeightChangeTextView.setText(weightChange.toString());
                 if (weightChange < 0) {
-                    mWeightChangeTextView.setTextColor(ContextCompat.getColor(getContext(),
+                    mWeightChangeCompactTV.setText(
+                            String.format(Locale.getDefault(), "%.1f", weightChange));
+                    mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorWeightLoss));
-                    mWeightTextView.setTextColor(ContextCompat.getColor(getContext(),
+                    mWeightCompactTV.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorWeightLossDark));
+                    mWeightExtendedTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorWeightLossDark));
                 } else if (weightChange > 0) {
-                    mWeightChangeTextView.setText("+" + weightChange.toString());
-                    mWeightChangeTextView.setTextColor(ContextCompat.getColor(getContext(),
+                    mWeightChangeCompactTV.setText(
+                            String.format(Locale.getDefault(), "+%.1f", weightChange));
+                    mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorWeightGain));
-                    mWeightTextView.setTextColor(ContextCompat.getColor(getContext(),
+                    mWeightCompactTV.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorWeightGainDark));
+                    mWeightExtendedTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorWeightGainDark));
                 } else {
-                    mWeightChangeTextView.setTextColor(ContextCompat.getColor(getContext(),
+                    mWeightChangeCompactTV.setText(
+                            String.format(Locale.getDefault(), "%.1f", weightChange));
+                    mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorSecondaryText));
-                    mWeightTextView.setTextColor(ContextCompat.getColor(getContext(),
+                    mWeightCompactTV.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.colorSecondaryText));
+                    mWeightExtendedTV.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.colorSecondaryText));
                 }
-
-
             } else {
-                mWeightChangeTextView.setText("");
-                mWeightTextView.setTextColor(ContextCompat.getColor(getContext(),
+                mWeightChangeCompactTV.setText("");
+                mWeightCompactTV.setTextColor(ContextCompat.getColor(getContext(),
+                        R.color.colorPrimaryText));
+                mWeightExtendedTV.setTextColor(ContextCompat.getColor(getContext(),
                         R.color.colorPrimaryText));
             }
-        }
-
-        @Override
-        public void onClick(View view) {
-            Intent intent = WeightActivity.newIntent(mContext, mWeight.getId());
-            startActivity(intent);
         }
     }
 
     private class WeightAdapter extends RecyclerView.Adapter<WeightHolder> {
         private List<Weight> mWeights;
+        private int mSelectedPos = 0;
 
         WeightAdapter(List<Weight> weights) {
             mWeights = weights;
@@ -197,12 +244,13 @@ public class LogFragment extends Fragment {
         public WeightHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             View view = layoutInflater.inflate(R.layout.list_item_weight, parent, false);
+
             return new WeightHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(WeightHolder holder, int position) {
-            Weight weight = mWeights.get(position);
+        public void onBindViewHolder(WeightHolder holder, final int position) {
+            final Weight weight = mWeights.get(position);
             Double difference;
             if (position < mWeights.size() - 1) {
                 Weight prevWeight = mWeights.get(position + 1);
@@ -211,7 +259,52 @@ public class LogFragment extends Fragment {
                 difference = null;
             }
 
+            RelativeLayout compactLayout =
+                    (RelativeLayout) holder.itemView.findViewById(R.id.list_item_compact);
+            LinearLayout extendedLayout =
+                    (LinearLayout) holder.itemView.findViewById(R.id.list_item_extended);
+
+            if (mSelectedPos == position){
+                compactLayout.setVisibility(View.GONE);
+                extendedLayout.setVisibility(View.VISIBLE);
+
+                Bmi.updateAssessmentView(mContext,
+                        holder.itemView,
+                        R.id.assessment_extended_layout,
+                        R.id.bmi_extended_tv,
+                        weight.bmi());
+                // Why do I have to call it twice to make it work ??
+                Bmi.updateAssessmentView(mContext,
+                        holder.itemView,
+                        R.id.assessment_extended_layout,
+                        R.id.bmi_extended_tv,
+                        weight.bmi());
+            }else{
+                compactLayout.setVisibility(View.VISIBLE);
+                extendedLayout.setVisibility(View.GONE);
+            }
+            holder.itemView.setSelected(mSelectedPos == position);
+            mWeight = mSelectedPos == -1 ? null : mWeights.get(mSelectedPos);
+
             holder.bindWeight(weight, difference);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(view.isSelected()) {
+                        notifyItemChanged(mSelectedPos);
+                        mSelectedPos = -1;
+                        mWeight = null;
+                        notifyItemChanged(mSelectedPos);
+                    } else {
+                        notifyItemChanged(mSelectedPos);
+                        mSelectedPos = position;
+                        mWeight = weight;
+                        notifyItemChanged(mSelectedPos);
+                    }
+                    updateMenu();
+                }
+            });
         }
 
         @Override
@@ -219,7 +312,7 @@ public class LogFragment extends Fragment {
             return mWeights.size();
         }
 
-        void setWeights(List<Weight> weights) {
+        private void setWeights(List<Weight> weights) {
             mWeights = weights;
         }
     }

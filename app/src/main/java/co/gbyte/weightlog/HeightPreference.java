@@ -56,7 +56,7 @@ public class HeightPreference extends DialogPreference {
         if (mLastHeight == 0) {
             int weight = WeightLab.get(mContext).getLastWeight();
             if (weight != 0) {
-                // calculate height for the last weight and the ideal BMI
+                // calculate height for the last weight and the ideal Bmi
                 double bmi = mContext.getResources().getFraction(R.fraction.optimal_bmi, 1, 1);
 
                 mLastHeight = (int) ((Math.sqrt(weight * 1000 / bmi) + 5) / 10) * 10;
@@ -90,7 +90,7 @@ public class HeightPreference extends DialogPreference {
                 persistInt(mLastHeight);
             }
         } else if (mPrefs.getInt(mContext.getString(R.string.height_pref_key), 0) == 0) {
-            // BMI preference cannot be on if weight is not provided
+            // Bmi preference cannot be on if weight is not provided
             mPrefs.edit().putBoolean(mContext.getString(R.string.bmi_pref_key), false).apply();
         }
     }

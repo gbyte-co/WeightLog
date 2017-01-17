@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,13 +22,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
 import co.gbyte.weightlog.model.Weight;
 import co.gbyte.weightlog.model.WeightLab;
+import co.gbyte.weightlog.utils.Bmi;
+import co.gbyte.weightlog.utils.Time;
 
 /**
  * Created by walt on 18/10/16.
@@ -48,6 +48,7 @@ public class WeightFragment extends Fragment {
     private static final int REQUEST_TIME   = 1;
     private static final int REQUEST_WEIGHT = 2;
 
+    private Context mContext;
     private Weight mWeight = null;
     private boolean mIsNew = false;
     private Button mDateButton = null;
@@ -88,7 +89,7 @@ public class WeightFragment extends Fragment {
                 // get height if stored in shared preferences or get average if not
                 int height = prefs.getInt(
                         heightPrefKey, getResources().getInteger(R.integer.average_human_height));
-                // propose weight calculated from *optimal* BMI
+                // propose weight calculated from *optimal* Bmi
                 double bmi = getResources().getFraction(R.fraction.optimal_bmi, 1, 1);
                 // weight is stored in grams, round it to hundreds
                 // ToDo: tested only manually
@@ -107,6 +108,7 @@ public class WeightFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mContext = getActivity();
         mView = inflater.inflate(R.layout.fragment_weight, container, false);
         mDateButton = (Button) mView.findViewById(R.id.weight_date_button);
         updateDate();
@@ -163,67 +165,13 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        updateAssessmentView(mView);
+        Bmi.updateAssessmentView(mContext,
+                                 mView,
+                                 R.id.assessment_layout,
+                                 R.id.bmi_tv,
+                                 mWeight.bmi());
 
         return mView;
-    }
-
-    private void updateAssessmentView(View v) {
-        LinearLayout assessmentLayout = (LinearLayout) v.findViewById(R.id.assessment_layout);
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        boolean bmiIsSet = settings.getBoolean(getString(R.string.bmi_pref_key), false);
-
-        if (bmiIsSet) {
-            int height = settings.getInt(getString(R.string.height_pref_key), 0);
-            Weight.setHeight(height);
-            TextView bmiTv = (TextView) v.findViewById(R.id.bmi_tv);
-            TextView assessmentTv = (TextView) v.findViewById(R.id.assessment_tv);
-            double bmi = mWeight.bmi();
-
-            String assessment;
-            int color;
-
-            if (bmi >= getResources().getFraction(R.fraction.overweight_bmi, 1, 1)) {
-                if (bmi < getResources().getFraction(R.fraction.moderately_obese_bmi, 1, 1)) {
-                    assessment = getString(R.string.overweight);
-                    color = ContextCompat.getColor(getContext(), R.color.colorOverweight);
-
-                } else if (bmi < getResources().getFraction(R.fraction.severely_obese_bmi, 1, 1)) {
-                    assessment = getString(R.string.moderately_obese);
-                    color = ContextCompat.getColor(getContext(), R.color.colorModeratelyObese);
-                } else if (bmi < getResources().getFraction(R.fraction.very_severely_obese_bmi,
-                                                            1, 1)) {
-                    assessment = getString(R.string.severely_obese);
-                    color = ContextCompat.getColor(getContext(), R.color.colorSeverelyObese);
-                } else {
-                    assessment = getString(R.string.very_severely_obese);
-                    color = ContextCompat.getColor(getContext(), R.color.colorVerySeverelyObese);
-                }
-            } else if (bmi < getResources().getFraction(R.fraction.underweight_bmi, 1, 1)) {
-                if (bmi > getResources().getFraction(R.fraction.severely_underweight_bmi, 1, 1)) {
-                    assessment = getString(R.string.underweight);
-                    color = ContextCompat.getColor(getContext(), R.color.colorUnderweight);
-                } else if (bmi > getResources().getFraction(R.fraction.
-                                                            very_severely_underweight_bmi, 1, 1)) {
-                    assessment = getString(R.string.severely_underweight);
-                    color = ContextCompat.getColor(getContext(), R.color.colorSeverelyUnderweight);
-                } else {
-                    assessment = getString(R.string.very_severely_underweight);
-                    color = ContextCompat.getColor(getContext(),
-                                                   R.color.colorVerySeverelyUnderweight);
-                }
-            } else {
-                assessment = getString(R.string.healthy_weight);
-                color = ContextCompat.getColor(getContext(), R.color.colorHealthyWeight);
-            }
-
-            bmiTv.setText(String.format(Locale.getDefault(), " %.2f - ",  bmi));
-            assessmentTv.setText(assessment);
-            assessmentTv.setTextColor(color);
-            assessmentLayout.setVisibility(View.VISIBLE);
-        } else {
-            assessmentLayout.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -295,6 +243,7 @@ public class WeightFragment extends Fragment {
             Date date = (Date)  data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mWeight.setTime(date);
             updateDate();
+            mDateButton.setText(Time.getDateString(getContext(), "EEE ", mWeight.getTime()));
             return;
         }
 
@@ -308,19 +257,20 @@ public class WeightFragment extends Fragment {
         if (requestCode == REQUEST_WEIGHT) {
             mWeight.setWeight(data.getIntExtra(WeightPickerFragment.EXTRA_WEIGHT, 0));
             mWeightButton.setText(mWeight.getWeightStringKg());
-            updateAssessmentView(mView);
+
+            Bmi.updateAssessmentView(mContext,
+                                     mView,
+                                     R.id.assessment_layout,
+                                     R.id.bmi_tv,
+                                     mWeight.bmi());
         }
     }
 
     private void updateDate() {
-        String dateString =
-                new SimpleDateFormat("EEE, ", Locale.getDefault()).format(mWeight.getTime())
-                + DateFormat.getMediumDateFormat(getActivity()).format(mWeight.getTime());
-        mDateButton.setText(dateString);
+        mDateButton.setText(Time.getDateString(mContext, "EEE, ", mWeight.getTime()));
     }
 
     private void updateTime() {
-        String timeString = DateFormat.getTimeFormat(getActivity()).format(mWeight.getTime());
-        mTimeButton.setText(timeString);
+        mTimeButton.setText(Time.getTimeString(mContext, mWeight.getTime()));
     }
 }

@@ -85,7 +85,6 @@ public class LogFragment extends Fragment {
         updateUI();
     }
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -169,7 +168,6 @@ public class LogFragment extends Fragment {
             mDateCompactTV = (TextView) itemView.findViewById(R.id.weight_date_compact_tv);
             mDateExtendedTV = (TextView) itemView.findViewById(R.id.weight_date_extended_tv);
 
-            mTimeCompactTV = (TextView) itemView.findViewById(R.id.weight_time_compact_tv);
             mTimeExtendedTV = (TextView) itemView.findViewById(R.id.weight_time_extended_tv);
 
             mWeightCompactTV = (TextView) itemView.findViewById(R.id.weight_compact_tv);
@@ -190,10 +188,10 @@ public class LogFragment extends Fragment {
 
             Date weightTime = weight.getTime();
             mDateCompactTV.setText(Time.getDateString(mContext, "", weightTime));
-            mDateExtendedTV.setText(Time.getDateString(mContext, "EEE, ", weightTime));
+            mDateExtendedTV.setText(Time.getShortDateString(mContext, weightTime));
 
             String time = Time.getTimeString(mContext, weightTime);
-            mTimeCompactTV.setText(time);
+            //mTimeCompactTV.setText(time);
             mTimeExtendedTV.setText(time);
 
             mWeightCompactTV.setText(weight.getWeightStringKg());
@@ -292,6 +290,18 @@ public class LogFragment extends Fragment {
                     (RelativeLayout) holder.itemView.findViewById(R.id.list_item_compact);
             LinearLayout extendedLayout =
                     (LinearLayout) holder.itemView.findViewById(R.id.list_item_extended);
+            Bmi.updateAssessmentView(mContext,
+                    holder.itemView,
+                    R.id.assessment_compact_layout,
+                    R.id.bmi_compact_tv,
+                    weight.bmi(),
+                    false);
+            Bmi.updateAssessmentView(mContext,
+                    holder.itemView,
+                    R.id.assessment_compact_layout,
+                    R.id.bmi_compact_tv,
+                    weight.bmi(),
+                    false);
 
             if (mSelectedPos == position){
                 compactLayout.setVisibility(View.GONE);
@@ -301,13 +311,15 @@ public class LogFragment extends Fragment {
                         holder.itemView,
                         R.id.assessment_extended_layout,
                         R.id.bmi_extended_tv,
-                        weight.bmi());
+                        weight.bmi(),
+                        true);
                 // ToDo: Why do I have to call it twice to make it work ??
                 Bmi.updateAssessmentView(mContext,
                         holder.itemView,
                         R.id.assessment_extended_layout,
                         R.id.bmi_extended_tv,
-                        weight.bmi());
+                        weight.bmi(),
+                        true);
             }else{
                 compactLayout.setVisibility(View.VISIBLE);
                 extendedLayout.setVisibility(View.GONE);

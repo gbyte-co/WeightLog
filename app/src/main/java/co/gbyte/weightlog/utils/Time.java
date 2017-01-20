@@ -19,6 +19,10 @@ public class Time {
                    + DateFormat.getMediumDateFormat(context).format(time);
     }
 
+    public static String getShortDateString(Context context, Date time) {
+        return DateFormat.getDateFormat(context).format(time);
+    }
+
     public static String getTimeString(Context context, Date time) {
         return DateFormat.getTimeFormat(context).format(time);
     }

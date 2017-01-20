@@ -23,7 +23,7 @@
                 android:id="@+id/weight_compact_tv"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="12dp"
                 android:layout_centerVertical="true"
                 android:gravity="end"
                 android:textSize="@dimen/weight_list_text_size"
@@ -33,37 +33,42 @@
 
             <TextView
                 android:id="@+id/weight_date_compact_tv"
-                android:layout_width="80dp"
+                android:layout_width="84dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/weight_compact_tv"
                 android:gravity="end"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="2dp"
                 android:layout_centerVertical="true"
                 tools:text="Date"
             />
 
             <TextView
-                android:id="@+id/weight_time_compact_tv"
-                android:layout_width="60dp"
+                android:id="@+id/weight_change_compact_tv"
+                android:layout_width="42dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/weight_date_compact_tv"
-                tools:text="Time"
-            />
-
-            <TextView
-                android:id="@+id/weight_change_compact_tv"
-                android:layout_width="45dp"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/weight_time_compact_tv"
                 android:text=""
                 tools:text="@string/change_from_last"
             />
-
+            <LinearLayout
+                android:id="@+id/assessment_compact_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_marginStart="18dp"
+                android:layout_toEndOf="@id/weight_change_compact_tv"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                >
+                <TextView
+                    android:id="@+id/bmi_compact_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                />
+            </LinearLayout>
         </RelativeLayout>
         <LinearLayout
             android:id="@+id/list_item_extended"

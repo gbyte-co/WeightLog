@@ -81,11 +81,14 @@ public class Bmi {
         return color;
     }
 
+    // ToDo: 'quick and dirty' version for now:
     public static void updateAssessmentView(Context context,
                                             View parentView,
                                             int layoutResId,
                                             int bmiResTextViewId,
-                                            double bmi) {
+                                            double bmi,
+                                            boolean assessment
+                                            ) {
         LinearLayout layout = (LinearLayout) parentView.findViewById(layoutResId);
         SharedPreferences settings =
                 PreferenceManager.getDefaultSharedPreferences(parentView.getContext());
@@ -99,10 +102,15 @@ public class Bmi {
             Weight.setHeight(height);
             TextView bmiTv = (TextView) parentView.findViewById(bmiResTextViewId);
 
-            bmiTv.setText(String.format(Locale.getDefault(),
-                    " %.2f - %s",
-                    bmi,
-                    assessmentString(context, bmi)));
+            if (assessment) {
+                bmiTv.setText(String.format(Locale.getDefault(),
+                        " %.2f - %s",
+                        bmi,
+                        assessmentString(context, bmi)));
+            } else {
+                bmiTv.setText(String.format(Locale.getDefault(), "%.2f", bmi));
+            }
+
             bmiTv.setTextColor(Bmi.assessmentColor(context, bmi));
             layout.setVisibility(View.VISIBLE);
         } else {

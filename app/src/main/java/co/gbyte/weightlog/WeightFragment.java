@@ -169,8 +169,8 @@ public class WeightFragment extends Fragment {
                                  mView,
                                  R.id.assessment_layout,
                                  R.id.bmi_tv,
-                                 mWeight.bmi());
-
+                                 mWeight.bmi(),
+                                 true);
         return mView;
     }
 
@@ -262,7 +262,8 @@ public class WeightFragment extends Fragment {
                                      mView,
                                      R.id.assessment_layout,
                                      R.id.bmi_tv,
-                                     mWeight.bmi());
+                                     mWeight.bmi(),
+                                     true);
         }
     }
 

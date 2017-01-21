@@ -69,6 +69,16 @@
                     android:text=""
                 />
             </LinearLayout>
+            <ImageView
+                android:id="@+id/compat_note_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/assessment_compact_layout"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_icon_note_dark"
+                >
+            </ImageView>
         </RelativeLayout>
         <LinearLayout
             android:id="@+id/list_item_extended"

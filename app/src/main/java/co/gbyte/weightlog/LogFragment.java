@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -143,7 +144,7 @@ public class LogFragment extends Fragment {
 
         TextView mDateCompactTV;
         TextView mDateExtendedTV;
-        TextView mTimeCompactTV;
+        //TextView mTimeCompactTV;
         TextView mTimeExtendedTV;
 
         TextView mWeightCompactTV;
@@ -157,6 +158,7 @@ public class LogFragment extends Fragment {
 
         LinearLayout mExtendedWeightChangeView;
 
+        ImageView mCompactNoteIcon;
         TextView mExtendedNote;
 
         WeightHolder(View itemView) {
@@ -181,6 +183,7 @@ public class LogFragment extends Fragment {
             mExtendedWeightChangeView =
                     (LinearLayout) itemView.findViewById(R.id.weight_log_extended_change_view);
 
+            mCompactNoteIcon = (ImageView) itemView.findViewById(R.id.compat_note_icon);
             mExtendedNote = (TextView) itemView.findViewById(R.id.weight_note_extended_tv);
         }
 
@@ -199,8 +202,10 @@ public class LogFragment extends Fragment {
 
             String note = weight.getNote();
             if(note == null || note.isEmpty()) {
+                mCompactNoteIcon.setImageBitmap(null);
                 mExtendedNote.setVisibility(View.GONE);
             } else {
+                mCompactNoteIcon.setImageResource(R.drawable.ic_icon_note_dark);
                 mExtendedNote.setText(note);
                 mExtendedNote.setVisibility(View.VISIBLE);
             }

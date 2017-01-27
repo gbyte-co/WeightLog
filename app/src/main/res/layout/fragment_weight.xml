@@ -68,6 +68,16 @@
             />
     </LinearLayout>
 
+    <co.gbyte.android.weightpicker.WeightPicker
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+
+        weightpicker:minValue="5500"
+        weightpicker:maxValue="720000"
+        weightpicker:initialValue="83700"
+    />
+
     <LinearLayout
         android:id="@+id/assessment_layout"
         android:layout_width="wrap_content"

@@ -52,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
             mHeightPref = (HeightPreference)
                     findPreference(getResources().getString(height_pref_key));
 
-            // Use instance field for listener
+            // Use instance field for mListener
             // It will not be gc'd as long as this instance is kept referenced
             mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {

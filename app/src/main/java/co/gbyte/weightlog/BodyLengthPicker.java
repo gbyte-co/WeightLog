@@ -110,8 +110,8 @@ public class BodyLengthPicker extends LinearLayout {
         return mListener;
     }
 
-    public void setOnValueChangedListener(OnValueChangedListener listener) {
-        mListener = listener;
+    public void setOnValueChangedListener(OnValueChangedListener mListener) {
+        mListener = mListener;
     }
     */
 
@@ -185,7 +185,7 @@ public class BodyLengthPicker extends LinearLayout {
      */
     //public interface OnValueChangedListener {
         /**
-         * @param view The view associated with this listener.
+         * @param view The view associated with this mListener.
          * @param integerPart The current integer part.
          * @param decimalPart The current decimalPart.
          */
@@ -346,8 +346,8 @@ public class BodyLengthPicker extends LinearLayout {
      * Set the callback that indicates the time has been adjusted by the user.
      */
     /*
-    public void setOnValueChangedListener(OnValueChangedListener listener) {
-        mOnValueChangedListener = listener;
+    public void setOnValueChangedListener(OnValueChangedListener mListener) {
+        mOnValueChangedListener = mListener;
     }
 
     public void init(double number) {

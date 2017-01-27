@@ -47,7 +47,7 @@ public class DecimalNumberPicker extends LinearLayout {
      */
     public interface OnValueChangedListener {
         /**
-         * @param view The view associated with this listener.
+         * @param view The view associated with this mListener.
          * @param integerPart The current integer part.
          * @param decimalPart The current decimalPart.
          */

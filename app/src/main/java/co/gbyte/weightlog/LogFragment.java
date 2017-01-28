@@ -8,6 +8,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -105,6 +107,10 @@ public class LogFragment extends Fragment {
                     Intent intent = WeightActivity.newIntent(mContext, mWeight.getId());
                     startActivity(intent);
                 }
+                return true;
+            case R.id.menu_item_test:
+                FractionPartPickerTestDialog testDialog = new FractionPartPickerTestDialog();
+				testDialog.show(getActivity().getFragmentManager(), "Test Dialog");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

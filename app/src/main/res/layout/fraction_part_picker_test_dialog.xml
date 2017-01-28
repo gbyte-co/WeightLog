@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:weightpicker="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <co.gbyte.android.weightpicker.FractionPartPicker
+        android:id="@+id/tested_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        weightpicker:minValue="2654"
+        weightpicker:maxValue="5245"
+        weightpicker:initialValue="4600"
+        weightpicker:precision="100"
+        weightpicker:modDivisor="10"
+        android:layout_gravity="center_horizontal"
+    />
+    <TextView
+        android:id="@+id/tested_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="18dp"
+    />
+</LinearLayout>

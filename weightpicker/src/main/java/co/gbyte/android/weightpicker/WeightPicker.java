@@ -3,13 +3,9 @@ package co.gbyte.android.weightpicker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,12 +13,6 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
-
-import static android.text.InputType.TYPE_CLASS_DATETIME;
-import static android.text.InputType.TYPE_CLASS_NUMBER;
-import static android.text.InputType.TYPE_CLASS_PHONE;
-import static android.text.InputType.TYPE_DATETIME_VARIATION_TIME;
-import static android.text.InputType.TYPE_NULL;
 
 /**
  * Created by walt on 23/01/17.
@@ -35,11 +25,11 @@ public class WeightPicker extends RelativeLayout {
 
     private final int MIN_MIN_VALUE = 0;
     private final int MAX_MAX_VALUE = 999949;
-    private final int HECTO = 100;
+    private final int PRECISION = 100;
     private final int DECA = 10;
 
-    private NumberPicker mKilos = null;
-    private NumberPicker mHectos = null;
+    private NumberPicker mKilograms = null;
+    private NumberPicker mHectograms = null;
     private int mMinValue = MIN_MIN_VALUE;
     private int mMaxValue = MAX_MAX_VALUE;
 
@@ -66,40 +56,29 @@ public class WeightPicker extends RelativeLayout {
             separator.setText(String.format("%c", s));
         }
 
-        mKilos = (NumberPicker) findViewById(R.id.integer);
-        mKilos.setWrapSelectorWheel(false);
-        mKilos.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i0, int i1) {
-                int startValue = mValue;
-                mHectos.setValue(mHectos.getValue() + (i1 - i0) * DECA );
-                updateValue();
-                if (mListener != null) {
-                    mListener.onValueChange(WeightPicker.this, startValue, mValue);
-                }
-            }
-        });
+        mHectograms = (FractionPartPicker) findViewById(R.id.decimal);
 
-        mHectos = (NumberPicker) findViewById(R.id.decimal);
-        mHectos.setWrapSelectorWheel(false);
-        EditText editText = findInput(mHectos);
+        /*
+        EditText editText = findInput(mHectograms);
         if(editText != null) {
             editText.setInputType(TYPE_CLASS_NUMBER);
         }
-        mHectos.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        mHectograms.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i0, int i1) {
-                mKilos.setValue(mHectos.getValue() / DECA);
+                mKilograms.setValue(mHectograms.getValue() / DECA);
                 if (mListener != null) {
-                    mListener.onValueChange(WeightPicker.this, i0 * HECTO, i1 *HECTO);
+                    mListener.onValueChange(WeightPicker.this, i0 * PRECISION, i1 * PRECISION);
                 }
             }
         });
+        */
 
         if(attrs != null) {
             TypedArray a =
                     getContext().obtainStyledAttributes(attrs, R.styleable.WeightPicker, 0, 0);
 
+            /*
             int val = a.getInt(R.styleable.WeightPicker_minValue, MIN_MIN_VALUE);
             if (val < MIN_MIN_VALUE) {
                 mMinValue = MIN_MIN_VALUE;
@@ -121,25 +100,40 @@ public class WeightPicker extends RelativeLayout {
             val = a.getInt(R.styleable.WeightPicker_initialValue, mMinValue);
             setValue(val);
 
-            mHectos.setMinValue(getHectograms(mMinValue));
-            mHectos.setMaxValue(getHectograms(mMaxValue));
-            mHectos.setValue(getHectograms(mValue));
+            mHectograms.setMinValue(getHectograms(mMinValue));
+            mHectograms.setMaxValue(getHectograms(mMaxValue));
+            mHectograms.setValue(getHectograms(mValue));
             String hectoArray[] = new String[getHectograms(mMaxValue - mMinValue) + 1];
             for (int i = 0; i < hectoArray.length; ++i) {
-                hectoArray[i] = String.valueOf((mHectos.getMinValue() + i) % 10);
+                hectoArray[i] = String.valueOf((mHectograms.getMinValue() + i) % 10);
             }
-            mHectos.setDisplayedValues(hectoArray);
+            mHectograms.setDisplayedValues(hectoArray);
 
-            mKilos.setMinValue(getWholeKilograms(mMinValue));
-            mKilos.setMaxValue(getWholeKilograms(mMaxValue));
+            mKilograms.setMinValue(getWholeKilograms(mMinValue));
+            mKilograms.setMaxValue(getWholeKilograms(mMaxValue));
 
             updatePicker();
             a.recycle();
+            */
         }
+
+        mKilograms = (NumberPicker) findViewById(R.id.integer);
+        mKilograms.setWrapSelectorWheel(false);
+        mKilograms.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i0, int i1) {
+                int startValue = mValue;
+                mHectograms.setValue(mHectograms.getValue() + (i1 - i0) * DECA );
+                updateValue();
+                if (mListener != null) {
+                    mListener.onValueChange(WeightPicker.this, startValue, mValue);
+                }
+            }
+        });
     }
 
     private int getHectograms(int grams) {
-        return (int) Math.round((double) grams / HECTO);
+        return (int) Math.round((double) grams / PRECISION);
     }
 
     private int getWholeKilograms(int grams) {
@@ -148,7 +142,7 @@ public class WeightPicker extends RelativeLayout {
     }
 
     private void updateValue() {
-        mValue = mHectos.getValue() * HECTO;
+        mValue = mHectograms.getValue() * PRECISION;
     }
 
     public int getValue() {
@@ -167,13 +161,13 @@ public class WeightPicker extends RelativeLayout {
     }
 
     private void updatePicker() {
-        mHectos.setValue(getHectograms(mValue));
-        mKilos.setValue(getWholeKilograms(getValue()));
+        mHectograms.setValue(getHectograms(mValue));
+        mKilograms.setValue(getWholeKilograms(getValue()));
     }
 
     @Override
     protected Parcelable onSaveInstanceState() {
-        mValue = mHectos.getValue() * HECTO;
+        mValue = mHectograms.getValue() * PRECISION;
         Bundle state = new Bundle();
 
         state.putParcelable(SUPERSTATE, super.onSaveInstanceState());
@@ -202,19 +196,5 @@ public class WeightPicker extends RelativeLayout {
      */
     public interface OnValueChangedListener {
         void onValueChange(WeightPicker picker, int i0, int i1);
-    }
-
-    // Credits: http://stackoverflow.com/questions/18944997/numberpicker-doesnt-work-with-keyboard?rq=1
-    private EditText findInput(ViewGroup np) {
-        int count = np.getChildCount();
-        for (int i = 0; i < count; i++) {
-            final View child = np.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                findInput((ViewGroup) child);
-            } else if (child instanceof EditText) {
-                return (EditText) child;
-            }
-        }
-        return null;
     }
 }

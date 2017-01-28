@@ -21,7 +21,7 @@
         android:text="."
         tools:ignore="HardcodedText,RtlHardcoded"
     />
-    <NumberPicker
+    <co.gbyte.android.weightpicker.FractionPartPicker
         android:id="@+id/decimal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

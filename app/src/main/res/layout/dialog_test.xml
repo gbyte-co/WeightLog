@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <co.gbyte.android.weightpicker.FractionPartPicker
+    <co.gbyte.android.weightpicker.WeightPicker
         android:id="@+id/tested_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        weightpicker:minValue="2654"
-        weightpicker:maxValue="5245"
-        weightpicker:initialValue="4600"
+        weightpicker:minValue="2400"
+        weightpicker:maxValue="3700"
+        weightpicker:initialValue="2500"
         weightpicker:precision="100"
         weightpicker:modDivisor="10"
         android:layout_gravity="center_horizontal"

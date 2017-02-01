@@ -109,7 +109,7 @@ public class LogFragment extends Fragment {
                 }
                 return true;
             case R.id.menu_item_test:
-                FractionPartPickerTestDialog testDialog = new FractionPartPickerTestDialog();
+                TestDialog testDialog = new TestDialog();
 				testDialog.show(getActivity().getFragmentManager(), "Test Dialog");
                 return true;
             default:

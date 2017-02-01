@@ -16,6 +16,7 @@ import android.widget.NumberPicker;
 public class FractionPartPicker extends NumberPicker {
 
     private int mPrecision = 1;
+    private int mModDivisor = 1;
 
     public FractionPartPicker(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,7 +33,7 @@ public class FractionPartPicker extends NumberPicker {
                     getContext().obtainStyledAttributes(attrs, R.styleable.WeightPicker, 0, 0);
             mPrecision = a.getInt(R.styleable.WeightPicker_precision, 1);
 
-            int modDivisor = a.getInt(R.styleable.WeightPicker_modDivisor, 1);
+            mModDivisor = a.getInt(R.styleable.WeightPicker_modDivisor, 10);
 
             int value = a.getInt(R.styleable.WeightPicker_minValue, 0);
             int minValue = value > 0 ? value : 0;
@@ -51,12 +52,8 @@ public class FractionPartPicker extends NumberPicker {
             setMaxValue(toInternalValue(maxValue));
             setValue(toInternalValue(value));
 
-            String displayValuesArray[] = new String[getMaxValue() - getMinValue() + 1];
+            updateDisplayArray();
 
-            for (int i = 0; i < displayValuesArray.length; ++i) {
-                displayValuesArray[i] = String.valueOf((getMinValue() + i) % modDivisor);
-            }
-            setDisplayedValues(displayValuesArray);
             setWrapSelectorWheel(false);
 
             a.recycle();
@@ -69,6 +66,15 @@ public class FractionPartPicker extends NumberPicker {
             // irrelevant now because of the above:
             //input.setInputType(InputType.TYPE_CLASS_NUMBER);
         }
+    }
+
+    private void updateDisplayArray() {
+        String displayValuesArray[] = new String[getMaxValue() - getMinValue() + 1];
+
+        for (int i = 0; i < displayValuesArray.length; ++i) {
+            displayValuesArray[i] = String.valueOf((getMinValue() + i) % mModDivisor);
+        }
+        setDisplayedValues(displayValuesArray);
     }
 
     private EditText findInput(ViewGroup np) {
@@ -88,7 +94,25 @@ public class FractionPartPicker extends NumberPicker {
         return (int) Math.round((double) actualValue / mPrecision);
     }
 
+    public void setActualMinValue(int value) {
+        setMinValue(toInternalValue(value));
+    }
+
+    public void setActualMaxValue(int value) {
+        setMaxValue(toInternalValue(value));
+        updateDisplayArray();
+    }
+
+
+    public void setActualValue(int value) {
+       setValue(toInternalValue(value));
+    }
+
     public int getActualValue() {
         return getValue() * mPrecision;
+    }
+
+    public void setPrecision(int precision) {
+        mPrecision = precision;
     }
 }

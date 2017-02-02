@@ -21,9 +21,6 @@
         android:text="."
         tools:ignore="HardcodedText,RtlHardcoded"
     />
-    <!--
-    <co.gbyte.android.weightpicker.FractionPartPicker
-    -->
     <NumberPicker
         android:id="@+id/hectograms"
         android:layout_width="wrap_content"

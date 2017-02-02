@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +60,6 @@ public class WeightPicker extends RelativeLayout {
 
         mHectograms = (NumberPicker) findViewById(R.id.hectograms);
         mKilograms  = (NumberPicker) findViewById(R.id.kilograms);
-        mKilograms.setWrapSelectorWheel(false);
 
         if(attrs != null) {
             TypedArray a =
@@ -81,6 +79,7 @@ public class WeightPicker extends RelativeLayout {
             }
 
             setValue(a.getInt(R.styleable.WeightPicker_initialValue, mMinValue));
+            mKilograms.setWrapSelectorWheel(false);
 
             a.recycle();
         }

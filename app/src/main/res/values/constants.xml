@@ -2,6 +2,9 @@
 <resources>
     <integer name="min_human_height">540</integer>
     <integer name="max_human_height">2750</integer>
+    <integer name="min_weight">5000</integer>
+    <integer name="max_weight">635000</integer>
+    <integer name="average_weight">62000</integer>
     <integer name="average_human_height">1690</integer>
     <fraction name="optimal_bmi">2200%</fraction>
     <fraction name="underweight_bmi">1850%</fraction>

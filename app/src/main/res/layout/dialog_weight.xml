@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<co.gbyte.weightlog.DecimalNumberPicker
+<co.gbyte.android.weightpicker.WeightPicker
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:weightpicker="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dialog_weight_weight_picker"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    />
+    weightpicker:minValue="@integer/min_weight"
+    weightpicker:maxValue="@integer/max_weight"
+    weightpicker:initialValue="@integer/average_weight"
+    weightpicker:precision="100"
+    weightpicker:modDivisor="10"
+/>

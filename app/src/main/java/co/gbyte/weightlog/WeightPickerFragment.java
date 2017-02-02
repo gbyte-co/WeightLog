@@ -11,6 +11,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import co.gbyte.android.weightpicker.WeightPicker;
+
 /**
  * Created by walt on 21/10/16.
  *
@@ -20,11 +22,9 @@ public class WeightPickerFragment extends DialogFragment {
 
     public static final String EXTRA_WEIGHT = "co.gbyte.android.weightlog.weight";
     private static final String ARG_WEIGHT = "weight";
-    private static final int KILO = 1000;
-    private static final int DECA = 100;
 
     private int mWeight;
-    private DecimalNumberPicker mWeightPicker;
+    private WeightPicker mWeightPicker;
 
     public static WeightPickerFragment newInstance(int weight) {
         Bundle args = new Bundle();
@@ -43,17 +43,17 @@ public class WeightPickerFragment extends DialogFragment {
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_weight, null);
 
-        mWeightPicker = (DecimalNumberPicker) v.findViewById(R.id.dialog_weight_weight_picker);
-        mWeightPicker.init((float) mWeight / KILO);
-        mWeightPicker.setOnValueChangedListener(new DecimalNumberPicker.OnValueChangedListener() {
+        mWeightPicker = (WeightPicker) v.findViewById(R.id.dialog_weight_weight_picker);
+        mWeightPicker.setValue(mWeight);
+        mWeightPicker.setOnValueChangedListener(new WeightPicker.OnValueChangedListener() {
             @Override
-            public void onValueChanged(DecimalNumberPicker view, int integerPart, int decimalPart) {
-                mWeight = integerPart * KILO + decimalPart * DECA;
+            public void onValueChange(WeightPicker picker, int oldValue, int newValue) {
+                mWeight = mWeightPicker.getValue();
                 getArguments().putInt(EXTRA_WEIGHT, mWeight);
-                //weightDialog.setTitle("New weight: " +formatted(mWeight));
             }
         });
 
+        mWeightPicker.clearFocus();
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.weight_picker_title)
@@ -67,8 +67,6 @@ public class WeightPickerFragment extends DialogFragment {
                 .create();
     }
 
-
-
     private void sendResult(int resultCode, int weight) {
         if (getTargetFragment() == null) {
             return;
@@ -79,10 +77,4 @@ public class WeightPickerFragment extends DialogFragment {
 
         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
-
-    /*
-    private String formatted(int mWeight) {
-        return new DecimalFormat("##0.0 kg").format((float) mWeight / KILO);
-    }
-    */
 }

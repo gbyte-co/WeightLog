@@ -21,7 +21,7 @@
             >
             <TextView
                 android:id="@+id/weight_compact_tv"
-                android:layout_width="50dp"
+                android:layout_width="52dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
                 android:layout_centerVertical="true"
@@ -33,7 +33,7 @@
 
             <TextView
                 android:id="@+id/weight_date_compact_tv"
-                android:layout_width="84dp"
+                android:layout_width="86dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/weight_compact_tv"
                 android:gravity="end"
@@ -44,7 +44,7 @@
 
             <TextView
                 android:id="@+id/weight_change_compact_tv"
-                android:layout_width="42dp"
+                android:layout_width="48dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:layout_centerVertical="true"
@@ -54,18 +54,18 @@
             />
             <LinearLayout
                 android:id="@+id/assessment_compact_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="56dp"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
-                android:layout_marginStart="18dp"
                 android:layout_toEndOf="@id/weight_change_compact_tv"
                 android:layout_centerVertical="true"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="end"
                 >
                 <TextView
                     android:id="@+id/bmi_compact_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAlignment="textEnd"
                     android:text=""
                 />
             </LinearLayout>

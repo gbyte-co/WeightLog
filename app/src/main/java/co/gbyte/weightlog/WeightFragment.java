@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -19,11 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.Date;
-import java.util.Locale;
 import java.util.UUID;
 
 import co.gbyte.weightlog.model.Weight;
@@ -38,11 +35,14 @@ import co.gbyte.weightlog.utils.Time;
 
 public class WeightFragment extends Fragment {
 
-    private static final String ARG_WEIGHT_ID  = "weight_id";
+    private static final String ARG_WEIGHT_ID  = "arg_weight_id";
     private static final String DIALOG_DATE    = "DialogDate";
     private static final String DIALOG_TIME    = "DialogTime";
     private static final String DIALOG_WEIGHT  = "DialogWeight";
     private static final String DIALOG_CONFIRM = "DialogConfirm";
+
+    private static final String WEIGHT_TIME    = "weight_time";
+    private static final String WEIGHT         = "weight";
 
     private static final int REQUEST_DATE   = 0;
     private static final int REQUEST_TIME   = 1;
@@ -105,13 +105,15 @@ public class WeightFragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         mContext = getActivity();
+
         mView = inflater.inflate(R.layout.fragment_weight, container, false);
         mDateButton = (Button) mView.findViewById(R.id.weight_date_button);
-        updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,7 +125,6 @@ public class WeightFragment extends Fragment {
         });
 
         mTimeButton = (Button) mView.findViewById(R.id.weight_time_button);
-        updateTime();
         mTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,7 +136,6 @@ public class WeightFragment extends Fragment {
         });
 
         mWeightButton = (Button) mView.findViewById(R.id.weight_button);
-        mWeightButton.setText(mWeight.getWeightStringKg());
         mWeightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,21 +161,27 @@ public class WeightFragment extends Fragment {
             public void afterTextChanged(Editable editable) {}
         });
 
-        Bmi.updateAssessmentView(mContext,
-                                 mView,
-                                 R.id.assessment_layout,
-                                 R.id.bmi_tv,
-                                 mWeight.bmi(),
-                                 true);
+        updateUi();
         return mView;
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        // Don't want this:
-        //WeightLab.get(getActivity()).updateWeight(mWeight);
-        // ToDo: Save instance state instead!!!
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(mWeight != null) {
+            outState.putLong(WEIGHT_TIME, mWeight.getTime().getTime());
+            outState.putInt(WEIGHT, mWeight.getWeight());
+        }
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            mWeight.setTime(new Date(savedInstanceState.getLong("date")));
+            mWeight.setWeight(savedInstanceState.getInt("weight"));
+            updateUi();
+        }
     }
 
     @Override
@@ -236,9 +242,8 @@ public class WeightFragment extends Fragment {
         }
 
         if (requestCode == REQUEST_DATE) {
-            Date date = (Date)  data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mWeight.setTime(date);
-            updateDate();
             mDateButton.setText(Time.getDateString(getContext(), "EEE ", mWeight.getTime()));
             return;
         }
@@ -246,28 +251,26 @@ public class WeightFragment extends Fragment {
         if (requestCode == REQUEST_TIME) {
             Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
             mWeight.setTime(time);
-            updateTime();
             return;
         }
 
         if (requestCode == REQUEST_WEIGHT) {
             mWeight.setWeight(data.getIntExtra(WeightPickerFragment.EXTRA_WEIGHT, 0));
             mWeightButton.setText(mWeight.getWeightStringKg());
-
-            Bmi.updateAssessmentView(mContext,
-                                     mView,
-                                     R.id.assessment_layout,
-                                     R.id.bmi_tv,
-                                     mWeight.bmi(),
-                                     true);
         }
+
+        updateUi();
     }
 
-    private void updateDate() {
+    private void updateUi() {
         mDateButton.setText(Time.getDateString(mContext, "EEE, ", mWeight.getTime()));
-    }
-
-    private void updateTime() {
         mTimeButton.setText(Time.getTimeString(mContext, mWeight.getTime()));
+        mWeightButton.setText(mWeight.getWeightStringKg());
+        Bmi.updateAssessmentView(mContext,
+                mView,
+                R.id.assessment_layout,
+                R.id.bmi_tv,
+                mWeight.bmi(),
+                true);
     }
 }

@@ -17,7 +17,7 @@ public class Weight {
     // body height is stored in millimeters
     private static int sHeight = 0;
 
-    private static final int sHeightMin =  550;
+    private static final int sHeightMin =  540;
     private static final int sHeightMax = 2750;
 
     private static final int sWeightMin =   2000;

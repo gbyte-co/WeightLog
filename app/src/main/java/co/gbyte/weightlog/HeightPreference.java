@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 
+import co.gbyte.android.lengthpicker.LengthPicker;
 import co.gbyte.weightlog.model.WeightLab;
 
 /**
@@ -19,7 +20,8 @@ public class HeightPreference extends DialogPreference {
 
     private int mLastHeight = 0;
     private Context mContext;
-    private BodyLengthPicker mPicker = null;
+    //private BodyLengthPicker mPicker = null;
+    private LengthPicker mPicker = null;
     private SharedPreferences mPrefs = null;
 
 
@@ -33,7 +35,7 @@ public class HeightPreference extends DialogPreference {
     @Override
     protected View onCreateDialogView() {
         mContext = getContext();
-        mPicker = new BodyLengthPicker(mContext);
+        mPicker = new LengthPicker(mContext);
         mPicker.setGravity(Gravity.CENTER);
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         return (mPicker);
@@ -43,11 +45,12 @@ public class HeightPreference extends DialogPreference {
     protected  void onBindDialogView(View v) {
         super.onBindDialogView(v);
 
-        // ToDo: reconsider using Weight class for storing min and max weight
         int minHeight = mContext.getResources().getInteger(R.integer.min_human_height);
         int maxHeight = mContext.getResources().getInteger(R.integer.max_human_height);
+        mPicker.setMetricPrecision(10);
         mPicker.setMinValue(minHeight);
         mPicker.setMaxValue(maxHeight);
+        mPicker.setUnitLabel(mContext.getString(R.string.unit_centimeters_short));
 
         String heightPrefKey = mContext.getString(R.string.height_pref_key);
 
@@ -59,6 +62,7 @@ public class HeightPreference extends DialogPreference {
                 // calculate height for the last weight and the ideal Bmi
                 double bmi = mContext.getResources().getFraction(R.fraction.optimal_bmi, 1, 1);
 
+                // ToDo: move to utils/Bmi class and make static
                 mLastHeight = (int) ((Math.sqrt(weight * 1000 / bmi) + 5) / 10) * 10;
 
                 if (mLastHeight > maxHeight) {
@@ -90,19 +94,10 @@ public class HeightPreference extends DialogPreference {
                 persistInt(mLastHeight);
             }
         } else if (mPrefs.getInt(mContext.getString(R.string.height_pref_key), 0) == 0) {
-            // Bmi preference cannot be on if weight is not provided
+            // Bmi preference cannot be set if weight is not provided
             mPrefs.edit().putBoolean(mContext.getString(R.string.bmi_pref_key), false).apply();
         }
     }
-
-    /*
-    // ToDo: Don't I really need it?
-    @Override
-    protected Object onGetDefaultValue(TypedArray a, int index) {
-        return (a.getInt(index,
-                mContext.getResources().getInteger(R.integer.average_human_height)));
-    }
-    */
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {

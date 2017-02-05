@@ -5,9 +5,15 @@
 ## Local res
 /res
 
+## ignored for now:
+*/test
+*/androidTest
+*/
+
 ### Android ###
 ## Built application files
 build/
+
 
 ### Gradle files
 .gradle/

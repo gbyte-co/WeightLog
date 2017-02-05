@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <NumberPicker
+        android:id="@+id/metricLengthPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+    />
+    <TextView
+        android:id="@+id/metricLengthUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text=""
+    />
+</merge>
+
+<!-- imperial
+<LinearLayout
+android:id="@+id/body_length_picker_imperial"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:visibility="gone"
+>
+<NumberPicker
+    android:id="@+id/body_length_picker_feet"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+/>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:padding="6dp"
+    android:textSize="42sp"
+    android:text="'"
+    tools:ignore="HardcodedText"
+/>
+<NumberPicker
+    android:id="@+id/body_length_picker_inches"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+/>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:padding="3dp"
+    android:text=""
+    tools:ignore="HardcodedText"
+
+/>
+
+<NumberPicker
+    android:id="@+id/body_length_picker_inch_fractions"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+/>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:padding="6dp"
+    android:textSize="42sp"
+    android:text='"'
+    tools:ignore="HardcodedText"
+/>
+</LinearLayout>
+ -->

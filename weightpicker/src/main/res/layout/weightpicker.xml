@@ -28,4 +28,16 @@
         android:layout_toRightOf="@id/separator"
         tools:ignore="RtlHardcoded"
     />
+    <EditText
+        android:id="@+id/weightPickerEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/kilograms"
+        android:layout_alignEnd="@id/hectograms"
+        android:layout_centerVertical="true"
+        android:inputType="numberDecimal"
+        android:textAlignment="center"
+        android:maxLength="5"
+        android:visibility="gone"
+    />
 </merge>

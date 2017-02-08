@@ -57,10 +57,20 @@ public class WeightPickerFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.weight_picker_title)
+                .setNegativeButton(android.R.string.cancel,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                sendResult(Activity.RESULT_CANCELED, mWeight);
+                            }
+                    }
+                )
                 .setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                // needed when user edits the text field and clicks OK:
+                                mWeightPicker.clearFocus();
                                 sendResult(Activity.RESULT_OK, mWeight);
                             }
                         })

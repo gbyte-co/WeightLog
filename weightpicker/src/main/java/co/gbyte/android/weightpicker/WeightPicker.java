@@ -5,9 +5,15 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
@@ -33,9 +39,11 @@ public class WeightPicker extends RelativeLayout {
     private int mBase = 1;
     private int mMinValue = MIN_MIN_VALUE;
     private int mMaxValue = MAX_MAX_VALUE;
+    private int mOldValue = mMinValue;
 
     private NumberPicker mKilograms = null;
     private NumberPicker mHectograms = null;
+    private EditText mPickerEdit = null;
     private boolean mInitialSetup = true;
 
     public OnValueChangedListener mListener;
@@ -46,20 +54,94 @@ public class WeightPicker extends RelativeLayout {
     public WeightPicker(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
-    public WeightPicker(Context context, AttributeSet attrs, int defStyle) {
+    public WeightPicker(final Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        ((Activity)getContext()).getLayoutInflater().inflate(R.layout.weightpicker, this, true);
+        final Activity activity = (Activity) getContext();
+        activity.getLayoutInflater().inflate(R.layout.weightpicker, this, true);
 
         TextView separator = (TextView) findViewById(R.id.separator);
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
         if (numberFormat instanceof DecimalFormat) {
-            char s = ((DecimalFormat) numberFormat).getDecimalFormatSymbols().getDecimalSeparator();
-            separator.setText(String.format("%c", s));
+            char sep = ((DecimalFormat) numberFormat).getDecimalFormatSymbols().getDecimalSeparator();
+            separator.setText(String.format("%c", sep));
         }
 
         mHectograms = (NumberPicker) findViewById(R.id.hectograms);
         mKilograms  = (NumberPicker) findViewById(R.id.kilograms);
+        mPickerEdit = (EditText) findViewById(R.id.weightPickerEdit);
+
+        mPickerEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+
+                if(i == EditorInfo.IME_ACTION_DONE) {
+                    mPickerEdit.setVisibility(GONE);
+                }
+                mPickerEdit.clearFocus();
+                return true;
+            }
+        });
+
+        mPickerEdit.setSelectAllOnFocus(true);
+        mPickerEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    mOldValue = WeightPicker.this.getValue();
+                    ((InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                    mPickerEdit.selectAll();
+                } else {
+                    activity.getWindow().setSoftInputMode(WindowManager
+                            .LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                    double value = Double.parseDouble(mPickerEdit.getText().toString());
+                    setValue((int) (value * mPrecision * mBase));
+
+                    mListener.onValueChange(WeightPicker.this, mOldValue, getValue());
+                    mPickerEdit.setVisibility(GONE);
+                }
+            }
+        });
+
+        OnLongClickListener longClickListener = new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                mPickerEdit.setVisibility(VISIBLE);
+                mPickerEdit.setText(String.format(Locale.getDefault(),
+                                    "%.1f",
+                                    (double) getValue() / (mPrecision * mBase)));
+                mPickerEdit.requestFocus();
+
+                return true;
+            }
+        };
+
+        mHectograms.setOnLongClickListener(longClickListener);
+        separator.setOnLongClickListener(longClickListener);
+        mKilograms.setOnLongClickListener(longClickListener);
+
+        EditText hectogramsEditText = findInput(mHectograms);
+        if (hectogramsEditText != null) {
+            hectogramsEditText.setFocusable(false);
+        }
+
+        EditText kilogramsEditText = findInput(mKilograms);
+        if (kilogramsEditText != null) {
+            kilogramsEditText.setFocusable(false);
+        }
+
+        // Find out the background colour of the host window and use it for the input EditText
+        TypedValue typedValue = new TypedValue();
+        activity.getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true);
+        if (typedValue.type >= TypedValue.TYPE_FIRST_COLOR_INT
+                && typedValue.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+            // windowBackground is a color
+            mPickerEdit.setBackgroundColor(typedValue.data);
+        } else {
+            // windowBackground is not a color, probably a drawable
+            mPickerEdit.setBackground(ContextCompat.getDrawable(activity, typedValue.resourceId));
+        }
 
         if(attrs != null) {
             TypedArray a =
@@ -72,11 +154,6 @@ public class WeightPicker extends RelativeLayout {
             mInitialSetup = false;
 
             setDisplayValues(mHectograms, mBase);
-            EditText editText = findInput(mHectograms);
-            if (editText != null) {
-                editText.setFocusable(false);
-                //editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-            }
 
             setValue(a.getInt(R.styleable.WeightPicker_initialValue, mMinValue));
             mKilograms.setWrapSelectorWheel(false);
@@ -90,8 +167,8 @@ public class WeightPicker extends RelativeLayout {
                 mKilograms.setValue(getWholeKilograms(newValue));
                 if (mListener != null) {
                     mListener.onValueChange(WeightPicker.this,
-                                            oldValue * mPrecision,
-                                            newValue * mPrecision);
+                                            oldValue * mPrecision * mBase,
+                                            newValue * mPrecision * mBase);
                 }
             }
         });

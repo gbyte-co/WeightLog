@@ -1,1 +1,1 @@
-Kotlin (from scratch.)
+Kotlin. (From scratch.)

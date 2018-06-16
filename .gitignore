@@ -8,7 +8,7 @@
 ## ignored for now:
 */test
 */androidTest
-*/
+#*/
 
 ### Android ###
 ## Built application files

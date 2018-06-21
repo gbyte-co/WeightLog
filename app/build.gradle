@@ -35,6 +35,8 @@ dependencies {
     implementation "com.android.support:design:$support_version"
     api project(':weightpicker')
     api project(path: ':lengthpicker')
+    implementation project(':weightpicker')
+    implementation project(path: ':lengthpicker')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {

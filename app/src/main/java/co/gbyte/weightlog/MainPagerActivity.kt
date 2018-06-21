@@ -1,46 +1,36 @@
-package co.gbyte.weightlog;
+package co.gbyte.weightlog
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
+import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatActivity
+import android.view.View
 
-public class MainPagerActivity extends AppCompatActivity {
+class MainPagerActivity : AppCompatActivity() {
 
-    private ViewPager mPager;
-    private FloatingActionButton mFab;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.main_activity_pager)
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity_pager);
+        val pager = findViewById<ViewPager>(R.id.main_pager)
+        pager!!.adapter = MainPagerAdapter(supportFragmentManager)
 
-        mPager =  findViewById(R.id.main_pager);
-        mPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+        val fab = findViewById<FloatingActionButton>(R.id.fab_new_weight)
 
-        mFab =  findViewById(R.id.fab_new_weight);
-
-        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position,
-                                       float positionOffset,
-                                       int positionOffsetPixels) {
+        pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int,
+                                        positionOffset: Float,
+                                        positionOffsetPixels: Int) {
             }
 
-            @Override
-            public void onPageSelected(int position) {
-                if (mPager.getCurrentItem() == 0) {
-                    mFab.setVisibility(View.VISIBLE);
+            override fun onPageSelected(position: Int) {
+                if (pager.currentItem == 0) {
+                    fab!!.visibility = View.VISIBLE
                 } else {
-                    mFab.setVisibility(View.GONE);
+                    pager.visibility = View.GONE
                 }
             }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
+            override fun onPageScrollStateChanged(state: Int) {}
+        })
     }
 }

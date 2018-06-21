@@ -7,11 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-/**
- * Created by walt on 29/12/16.
- *
- */
-
 public class MainPagerActivity extends AppCompatActivity {
 
     private ViewPager mPager;
@@ -22,10 +17,10 @@ public class MainPagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity_pager);
 
-        mPager = (ViewPager) findViewById(R.id.main_pager);
+        mPager =  findViewById(R.id.main_pager);
         mPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
 
-        mFab = (FloatingActionButton) findViewById(R.id.fab_new_weight);
+        mFab =  findViewById(R.id.fab_new_weight);
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

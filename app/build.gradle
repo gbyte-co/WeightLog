@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 28
@@ -34,4 +35,8 @@ dependencies {
     implementation "com.android.support:design:$supportVersion"
     implementation project(':weightpicker')
     implementation project(path: ':lengthpicker')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

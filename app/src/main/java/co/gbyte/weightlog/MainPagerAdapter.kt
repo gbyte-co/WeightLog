@@ -1,29 +1,22 @@
-package co.gbyte.weightlog;
+package co.gbyte.weightlog
 
 /**
  * Created by walt on 29/12/16.
  *
  */
 
-class MainPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
+internal class MainPagerAdapter(mgr: android.support.v4.app.FragmentManager) :
+        android.support.v4.app.FragmentPagerAdapter(mgr) {
 
-    MainPagerAdapter(android.support.v4.app.FragmentManager mgr) {
-        super(mgr);
-    }
-
-    @Override
-    public android.support.v4.app.Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return new LogFragment();
-            case 1:
-                return new ChartFragment();
+    override fun getItem(position: Int): android.support.v4.app.Fragment? {
+        when (position) {
+            0 -> return LogFragment()
+            1 -> return ChartFragment()
         }
-        return null;
+        return null
     }
 
-    @Override
-    public int getCount() {
-        return 2;
+    override fun getCount(): Int {
+        return 2
     }
 }

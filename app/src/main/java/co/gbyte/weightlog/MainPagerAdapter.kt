@@ -1,10 +1,5 @@
 package co.gbyte.weightlog
 
-/**
- * Created by walt on 29/12/16.
- *
- */
-
 internal class MainPagerAdapter(mgr: android.support.v4.app.FragmentManager) :
         android.support.v4.app.FragmentPagerAdapter(mgr) {
 

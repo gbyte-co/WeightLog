@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -19,6 +18,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+
+import kotlinx.android.synthetic.main.fragment_weight_log.*
+import kotlinx.android.synthetic.main.list_item_weight.*
+import kotlinx.android.synthetic.main.list_item_weight.view.*
+import kotlinx.android.synthetic.main.main_activity_pager.*
 
 import java.util.Locale
 
@@ -43,13 +47,17 @@ class LogFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         mContext = activity
 
-        val view =
-                inflater.inflate(R.layout.fragment_weight_log, container, false)
-        mWeightRecycleView = view.findViewById<View>(R.id.weight_recycler_view) as RecyclerView
+        return inflater.inflate(R.layout.fragment_weight_log, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        mWeightRecycleView = weight_recycler_view
         mWeightRecycleView!!.layoutManager = LinearLayoutManager(mContext)
 
-        val addFab =
-                this.activity!!.findViewById<View>(R.id.fab_new_weight) as FloatingActionButton
+
+        val addFab = fab_new_weight
         addFab.setOnClickListener {
             val intent = WeightActivity.newIntent(mContext)
             startActivity(intent)
@@ -62,8 +70,6 @@ class LogFragment : Fragment() {
         }
 
         updateUI()
-
-        return view
     }
 
     override fun onResume() {
@@ -109,7 +115,7 @@ class LogFragment : Fragment() {
         val weightLab = WeightLab.get(mContext)
         val weights = weightLab.weights
 
-       var adapter: WeightAdapter? = null
+        var adapter: WeightAdapter? = null
         if (adapter == null) {
             adapter = WeightAdapter(weights)
             mWeightRecycleView!!.adapter = adapter
@@ -153,25 +159,24 @@ class LogFragment : Fragment() {
         internal var mExtendedNote: TextView
 
         init {
+            mCompactLayout = list_item_compact
+            mExtendedLayout = list_item_extended
 
-            mCompactLayout = itemView.findViewById<View>(R.id.list_item_compact) as RelativeLayout
-            mExtendedLayout = itemView.findViewById<View>(R.id.list_item_extended) as LinearLayout
+            mDateCompactTV = weight_date_compact_tv
+            mDateExtendedTV = weight_date_extended_tv
 
-            mDateCompactTV = itemView.findViewById<View>(R.id.weight_date_compact_tv) as TextView
-            mDateExtendedTV = itemView.findViewById<View>(R.id.weight_date_extended_tv) as TextView
+            mTimeExtendedTV = weight_time_extended_tv
 
-            mTimeExtendedTV = itemView.findViewById<View>(R.id.weight_time_extended_tv) as TextView
+            mWeightCompactTV = weight_compact_tv
+            mWeightExtendedTV = weight_extended_tv
 
-            mWeightCompactTV = itemView.findViewById<View>(R.id.weight_compact_tv) as TextView
-            mWeightExtendedTV = itemView.findViewById<View>(R.id.weight_extended_tv) as TextView
+            mWeightChangeCompactTV = weight_change_compact_tv
+            mWeightChangeExtendedTV = weight_log_extended_change_tv
 
-            mWeightChangeCompactTV = itemView.findViewById<View>(R.id.weight_change_compact_tv) as TextView
-            mWeightChangeExtendedTV = itemView.findViewById<View>(R.id.weight_log_extended_change_tv) as TextView
+            mExtendedWeightChangeView = weight_log_extended_change_view
 
-            mExtendedWeightChangeView = itemView.findViewById<View>(R.id.weight_log_extended_change_view) as LinearLayout
-
-            mCompactNoteIcon = itemView.findViewById<View>(R.id.compat_note_icon) as ImageView
-            mExtendedNote = itemView.findViewById<View>(R.id.weight_note_extended_tv) as TextView
+            mCompactNoteIcon = compat_note_icon
+            mExtendedNote = weight_note_extended_tv
         }
 
         internal fun bindWeight(weight: Weight, weightChange: Double?) {
@@ -200,10 +205,12 @@ class LogFragment : Fragment() {
             if (weightChange != null) {
                 mExtendedWeightChangeView.visibility = View.VISIBLE
                 if (weightChange < 0) {
-                    mWeightChangeCompactTV.text = String.format(Locale.getDefault(), "%.1f", weightChange)
+                    mWeightChangeCompactTV.text =
+                            String.format(Locale.getDefault(), "%.1f", weightChange)
                     mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorWeightLoss))
-                    mWeightChangeExtendedTV.text = String.format(Locale.getDefault(), "%.1f", weightChange)
+                                                        R.color.colorWeightLoss))
+                    mWeightChangeExtendedTV.text =
+                            String.format(Locale.getDefault(), "%.1f", weightChange)
                     mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
                             R.color.colorWeightLoss))
                     mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
@@ -211,10 +218,12 @@ class LogFragment : Fragment() {
                     mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
                             R.color.colorWeightLossDark))
                 } else if (weightChange > 0) {
-                    mWeightChangeCompactTV.text = String.format(Locale.getDefault(), "+%.1f", weightChange)
+                    mWeightChangeCompactTV.text =
+                            String.format(Locale.getDefault(), "+%.1f", weightChange)
                     mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
                             R.color.colorWeightGain))
-                    mWeightChangeExtendedTV.text = String.format(Locale.getDefault(), "+%.1f", weightChange)
+                    mWeightChangeExtendedTV.text =
+                            String.format(Locale.getDefault(), "+%.1f", weightChange)
                     mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
                             R.color.colorWeightGain))
                     mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
@@ -222,10 +231,12 @@ class LogFragment : Fragment() {
                     mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
                             R.color.colorWeightGainDark))
                 } else {
-                    mWeightChangeCompactTV.text = String.format(Locale.getDefault(), "%.1f", weightChange)
+                    mWeightChangeCompactTV.text =
+                            String.format(Locale.getDefault(), "%.1f", weightChange)
                     mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
                             R.color.colorSecondaryText))
-                    mWeightChangeExtendedTV.text = String.format(Locale.getDefault(), "%.1f", weightChange)
+                    mWeightChangeExtendedTV.text =
+                            String.format(Locale.getDefault(), "%.1f", weightChange)
                     mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
                             R.color.colorSecondaryText))
                     mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
@@ -267,8 +278,8 @@ class LogFragment : Fragment() {
                 difference = null
             }
 
-            val compactLayout = holder.itemView.findViewById<View>(R.id.list_item_compact) as RelativeLayout
-            val extendedLayout = holder.itemView.findViewById<View>(R.id.list_item_extended) as LinearLayout
+            val compactLayout = holder.itemView.list_item_compact
+            val extendedLayout = holder.itemView.list_item_extended
             Bmi.updateAssessmentView(mContext!!,
                     holder.itemView,
                     R.id.assessment_compact_layout,

@@ -204,45 +204,49 @@ class LogFragment : Fragment() {
 
             if (weightChange != null) {
                 mExtendedWeightChangeView.visibility = View.VISIBLE
-                if (weightChange < 0) {
-                    mWeightChangeCompactTV.text =
-                            String.format(Locale.getDefault(), "%.1f", weightChange)
-                    mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
-                                                        R.color.colorWeightLoss))
-                    mWeightChangeExtendedTV.text =
-                            String.format(Locale.getDefault(), "%.1f", weightChange)
-                    mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorWeightLoss))
-                    mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorWeightLossDark))
-                    mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorWeightLossDark))
-                } else if (weightChange > 0) {
-                    mWeightChangeCompactTV.text =
-                            String.format(Locale.getDefault(), "+%.1f", weightChange)
-                    mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorWeightGain))
-                    mWeightChangeExtendedTV.text =
-                            String.format(Locale.getDefault(), "+%.1f", weightChange)
-                    mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorWeightGain))
-                    mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorWeightGainDark))
-                    mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorWeightGainDark))
-                } else {
-                    mWeightChangeCompactTV.text =
-                            String.format(Locale.getDefault(), "%.1f", weightChange)
-                    mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorSecondaryText))
-                    mWeightChangeExtendedTV.text =
-                            String.format(Locale.getDefault(), "%.1f", weightChange)
-                    mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorSecondaryText))
-                    mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorSecondaryText))
-                    mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
-                            R.color.colorSecondaryText))
+                when {
+                    weightChange < 0 -> {
+                        mWeightChangeCompactTV.text =
+                                String.format(Locale.getDefault(), "%.1f", weightChange)
+                        mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorWeightLoss))
+                        mWeightChangeExtendedTV.text =
+                                String.format(Locale.getDefault(), "%.1f", weightChange)
+                        mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorWeightLoss))
+                        mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorWeightLossDark))
+                        mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorWeightLossDark))
+                    }
+                    weightChange > 0 -> {
+                        mWeightChangeCompactTV.text =
+                                String.format(Locale.getDefault(), "+%.1f", weightChange)
+                        mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorWeightGain))
+                        mWeightChangeExtendedTV.text =
+                                String.format(Locale.getDefault(), "+%.1f", weightChange)
+                        mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorWeightGain))
+                        mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorWeightGainDark))
+                        mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorWeightGainDark))
+                    }
+                    else -> {
+                        mWeightChangeCompactTV.text =
+                                String.format(Locale.getDefault(), "%.1f", weightChange)
+                        mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorSecondaryText))
+                        mWeightChangeExtendedTV.text =
+                                String.format(Locale.getDefault(), "%.1f", weightChange)
+                        mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorSecondaryText))
+                        mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorSecondaryText))
+                        mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                                R.color.colorSecondaryText))
+                    }
                 }
             } else {
                 mWeightChangeCompactTV.text = ""
@@ -270,12 +274,11 @@ class LogFragment : Fragment() {
 
         override fun onBindViewHolder(holder: WeightHolder, position: Int) {
             val weight = mWeights!![position]
-            val difference: Double?
-            if (position < mWeights!!.size - 1) {
+            val difference: Double? = if (position < mWeights!!.size - 1) {
                 val prevWeight = mWeights!![position + 1]
-                difference = (weight.weight - prevWeight.weight).toDouble() / 1000.0
+                (weight.weight - prevWeight.weight).toDouble() / 1000.0
             } else {
-                difference = null
+                null
             }
 
             val compactLayout = holder.itemView.list_item_compact

@@ -47,5 +47,6 @@
     <string name="very_severely_obese">very severely obese</string>
     <string name="edit_weight">Edit</string>
     <string name="change_from_last">Change from last:</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>

@@ -56,7 +56,7 @@ public class WeightFragment extends Fragment {
     private Button mWeightButton = null;
     private View mView = null;
 
-    public static WeightFragment newInstance() {
+    public static Fragment newInstance() {
         return new WeightFragment();
     }
 

@@ -53,15 +53,19 @@ class LogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mWeightRecycleView = weight_recycler_view
+        //mWeightRecycleView = view.weight_recycler_view
+        mWeightRecycleView = view.findViewById(R.id.weight_recycler_view)
         mWeightRecycleView!!.layoutManager = LinearLayoutManager(mContext)
 
 
-        val addFab = fab_new_weight
-        addFab.setOnClickListener {
+        //val addFab:FloatingActionButton? = view.findViewById(R.id.fab_new_weight) as FloatingActionButton?
+        /*
+        val addFab: FloatingActionButton? = fab_new_weight
+        addFab?.setOnClickListener {
             val intent = WeightActivity.newIntent(mContext)
             startActivity(intent)
         }
+        */
 
         val settings = PreferenceManager.getDefaultSharedPreferences(mContext)
         if (!settings.contains(getString(R.string.bmi_pref_key))) {
@@ -139,6 +143,7 @@ class LogFragment : Fragment() {
     private inner class WeightHolder internal constructor(itemView: View)
             :RecyclerView.ViewHolder(itemView) {
 
+        /*
         internal var mDateCompactTV: TextView
         internal var mDateExtendedTV: TextView
         //TextView mTimeCompactTV;
@@ -258,6 +263,7 @@ class LogFragment : Fragment() {
             }
 
         }
+        */
     }
 
     private inner class WeightAdapter internal constructor(private var mWeights: List<Weight>?)
@@ -281,6 +287,7 @@ class LogFragment : Fragment() {
                 null
             }
 
+            /*
             val compactLayout = holder.itemView.list_item_compact
             val extendedLayout = holder.itemView.list_item_extended
             Bmi.updateAssessmentView(mContext!!,
@@ -336,6 +343,7 @@ class LogFragment : Fragment() {
                 }
                 updateMenu()
             }
+            */
         }
 
         override fun getItemCount(): Int {

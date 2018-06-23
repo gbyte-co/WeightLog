@@ -25,7 +25,7 @@
             android:layout_marginEnd="16dp"
             android:text="86.3 kg"
             android:textStyle="italic"
-            />
+            android:layout_marginRight="16dp"/>
         <TextView
             android:id="@+id/dialog_confirm_delete_weight_date"
             android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
             android:layout_marginEnd="16dp"
             android:text="24/07/1958"
             android:textStyle="italic"
-            />
+            android:layout_marginRight="16dp"/>
         <TextView
             android:id="@+id/dialog_confirm_delete_weight_time"
             android:layout_width="wrap_content"
@@ -50,5 +50,4 @@
         android:layout_height="wrap_content"
         android:text="@string/confirm_delete_question"
         />
-
 </LinearLayout>

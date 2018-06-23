@@ -16,14 +16,16 @@
              android:layout_gravity="top"
         />
         -->
-    </android.support.v4.view.ViewPager>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_new_weight"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_menu_add"
+        app:elevation="4dp"
         android:layout_gravity="bottom|end"
     />
 </FrameLayout>
+    <!--
+    android:id="@+id/fab_new_weight"
+    -->

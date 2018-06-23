@@ -1,8 +1,9 @@
 package co.gbyte.weightlog
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 
 abstract class SingleFragmentActivity : AppCompatActivity() {
 
@@ -12,7 +13,8 @@ abstract class SingleFragmentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fragment)
 
-        val fm = supportFragmentManager
+        val fm: FragmentManager = supportFragmentManager
+
         var fragment: Fragment? = fm.findFragmentById(R.id.fragment_container)
 
         if (fragment == null) {

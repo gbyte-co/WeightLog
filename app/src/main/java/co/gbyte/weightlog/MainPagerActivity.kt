@@ -1,9 +1,11 @@
 package co.gbyte.weightlog
 
 import android.os.Bundle
-import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 import kotlinx.android.synthetic.main.main_activity_pager.*
 import kotlinx.android.synthetic.main.main_activity_pager.view.*
 
@@ -11,14 +13,14 @@ class MainPagerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity_pager)
 
-        val pager = main_pager
+        //val pager: ViewPager? = findViewById(R.id.)
 
-        pager.adapter = MainPagerAdapter(supportFragmentManager)
+        //adapter = MainPagerAdapter(supportFragmentManager)
 
-        val fab = pager.fab_new_weight
+        //val fab: FloatingActionButton? = pager?.fab_new_weight
 
+        /*
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int,
                                         positionOffset: Float,
@@ -26,13 +28,14 @@ class MainPagerActivity : AppCompatActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-                if (pager.currentItem == 0) {
-                    fab!!.visibility = View.VISIBLE
+                if (pager?.currentItem == 0) {
+                    fab?.visibility = View.VISIBLE
                 } else {
-                    pager.visibility = View.GONE
+                    pager?.visibility = View.GONE
                 }
             }
             override fun onPageScrollStateChanged(state: Int) {}
         })
+            */
     }
 }

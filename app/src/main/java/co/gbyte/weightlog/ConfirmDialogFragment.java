@@ -3,8 +3,6 @@ package co.gbyte.weightlog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -13,6 +11,8 @@ import android.widget.TextView;
 
 import java.util.UUID;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import co.gbyte.weightlog.model.Weight;
 import co.gbyte.weightlog.model.WeightLab;
 

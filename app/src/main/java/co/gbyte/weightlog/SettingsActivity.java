@@ -7,7 +7,8 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 import android.preference.SwitchPreference;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import static co.gbyte.weightlog.R.string.bmi_pref_key;
 import static co.gbyte.weightlog.R.string.height_pref_key;

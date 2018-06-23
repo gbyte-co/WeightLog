@@ -4,10 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -18,11 +14,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import co.gbyte.weightlog.R.id.list_item_compact
 
-import kotlinx.android.synthetic.main.fragment_weight_log.*
 import kotlinx.android.synthetic.main.list_item_weight.*
 import kotlinx.android.synthetic.main.list_item_weight.view.*
-import kotlinx.android.synthetic.main.main_activity_pager.*
 
 import java.util.Locale
 
@@ -30,6 +29,7 @@ import co.gbyte.weightlog.model.Weight
 import co.gbyte.weightlog.model.WeightLab
 import co.gbyte.weightlog.utils.Bmi
 import co.gbyte.weightlog.utils.Time
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class LogFragment : Fragment() {
 

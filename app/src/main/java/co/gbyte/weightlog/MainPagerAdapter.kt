@@ -1,9 +1,11 @@
 package co.gbyte.weightlog
 
-internal class MainPagerAdapter(mgr: android.support.v4.app.FragmentManager) :
-        android.support.v4.app.FragmentPagerAdapter(mgr) {
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 
-    override fun getItem(position: Int): android.support.v4.app.Fragment? {
+internal class MainPagerAdapter(mgr: FragmentManager) : FragmentPagerAdapter(mgr) {
+    override fun getItem(position: Int): Fragment? {
         when (position) {
             0 -> return LogFragment()
             1 -> return ChartFragment()

@@ -3,13 +3,13 @@ package co.gbyte.weightlog.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Locale;
 
+import androidx.core.content.ContextCompat;
 import co.gbyte.weightlog.R;
 import co.gbyte.weightlog.model.Weight;
 

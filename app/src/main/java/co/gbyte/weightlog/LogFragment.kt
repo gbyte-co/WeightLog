@@ -10,15 +10,12 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.gbyte.weightlog.R.id.list_item_compact
+import co.gbyte.weightlog.R.id.weight_recycler_view
 
 import kotlinx.android.synthetic.main.list_item_weight.*
 import kotlinx.android.synthetic.main.list_item_weight.view.*
@@ -30,6 +27,8 @@ import co.gbyte.weightlog.model.WeightLab
 import co.gbyte.weightlog.utils.Bmi
 import co.gbyte.weightlog.utils.Time
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.*
+import kotlinx.android.synthetic.main.fragment_weight_log.*
 
 class LogFragment : Fragment() {
 
@@ -53,9 +52,8 @@ class LogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //mWeightRecycleView = view.weight_recycler_view
-        mWeightRecycleView = view.findViewById(R.id.weight_recycler_view)
-        mWeightRecycleView!!.layoutManager = LinearLayoutManager(mContext)
+
+        //mWeightRecycleView!!.layoutManager = LinearLayoutManager(mContext)
 
 
         //val addFab:FloatingActionButton? = view.findViewById(R.id.fab_new_weight) as FloatingActionButton?
@@ -122,7 +120,8 @@ class LogFragment : Fragment() {
         var adapter: WeightAdapter? = null
         if (adapter == null) {
             adapter = WeightAdapter(weights)
-            mWeightRecycleView!!.adapter = adapter
+            // ToDo: fix this:
+            //mWeightRecycleView!!.adapter = adapter
         } else {
             adapter.setWeights(weights)
             adapter.notifyDataSetChanged()

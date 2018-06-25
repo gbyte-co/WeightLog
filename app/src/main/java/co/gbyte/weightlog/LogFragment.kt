@@ -1,6 +1,5 @@
 package co.gbyte.weightlog
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -10,30 +9,27 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import co.gbyte.weightlog.R.id.list_item_compact
-import co.gbyte.weightlog.R.id.weight_recycler_view
-
-import kotlinx.android.synthetic.main.list_item_weight.*
-import kotlinx.android.synthetic.main.list_item_weight.view.*
-
-import java.util.Locale
 
 import co.gbyte.weightlog.model.Weight
 import co.gbyte.weightlog.model.WeightLab
 import co.gbyte.weightlog.utils.Bmi
 import co.gbyte.weightlog.utils.Time
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_weight_log.*
+import kotlinx.android.synthetic.main.list_item_weight.*
+import kotlinx.android.synthetic.main.list_item_weight.view.*
+import java.util.*
 
 class LogFragment : Fragment() {
 
-    private var mWeightRecycleView: RecyclerView? = null
-    private var mContext: Context? = null
+    private var mWeightRecyclerView: RecyclerView? = null
     private var mWeight: Weight? = null
     private var mMenu: Menu? = null
 
@@ -44,7 +40,6 @@ class LogFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mContext = activity
 
         return inflater.inflate(R.layout.fragment_weight_log, container, false)
     }
@@ -94,7 +89,7 @@ class LogFragment : Fragment() {
             }
             R.id.menu_item_edit_weight -> {
                 if (mWeight != null) {
-                    val intent = WeightActivity.newIntent(mContext, mWeight!!.id)
+                    val intent = WeightActivity.newIntent(context, mWeight!!.id)
                     startActivity(intent)
                 }
                 return true
@@ -109,19 +104,18 @@ class LogFragment : Fragment() {
     }
 
     private fun showSettings() {
-        val intent = Intent(mContext, SettingsActivity::class.java)
+        val intent = Intent(context, SettingsActivity::class.java)
         startActivity(intent)
     }
 
     private fun updateUI() {
-        val weightLab = WeightLab.get(mContext)
+        val weightLab = WeightLab.get(context)
         val weights = weightLab.weights
 
         var adapter: WeightAdapter? = null
         if (adapter == null) {
             adapter = WeightAdapter(weights)
-            // ToDo: fix this:
-            //mWeightRecycleView!!.adapter = adapter
+            mWeightRecyclerView?.adapter = adapter
         } else {
             adapter.setWeights(weights)
             adapter.notifyDataSetChanged()
@@ -270,7 +264,7 @@ class LogFragment : Fragment() {
         private var mSelectedPos = -1
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeightHolder {
-            val layoutInflater = LayoutInflater.from(mContext)
+            val layoutInflater = LayoutInflater.from(context)
             val view =
                     layoutInflater.inflate(R.layout.list_item_weight, parent, false)
 
@@ -286,16 +280,15 @@ class LogFragment : Fragment() {
                 null
             }
 
-            /*
             val compactLayout = holder.itemView.list_item_compact
             val extendedLayout = holder.itemView.list_item_extended
-            Bmi.updateAssessmentView(mContext!!,
+            Bmi.updateAssessmentView(context!!,
                     holder.itemView,
                     R.id.assessment_compact_layout,
                     R.id.bmi_compact_tv,
                     weight.bmi(),
                     false)
-            Bmi.updateAssessmentView(mContext!!,
+            Bmi.updateAssessmentView(context!!,
                     holder.itemView,
                     R.id.assessment_compact_layout,
                     R.id.bmi_compact_tv,
@@ -306,14 +299,14 @@ class LogFragment : Fragment() {
                 compactLayout.visibility = View.GONE
                 extendedLayout.visibility = View.VISIBLE
 
-                Bmi.updateAssessmentView(mContext!!,
+                Bmi.updateAssessmentView(context!!,
                         holder.itemView,
                         R.id.assessment_extended_layout,
                         R.id.bmi_extended_tv,
                         weight.bmi(),
                         true)
                 // ToDo: Why do I have to call it twice to make it work ??
-                Bmi.updateAssessmentView(mContext!!,
+                Bmi.updateAssessmentView(context!!,
                         holder.itemView,
                         R.id.assessment_extended_layout,
                         R.id.bmi_extended_tv,

@@ -39,6 +39,7 @@ dependencies {
     implementation project(':weightpicker')
     implementation project(path: ':lengthpicker')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 }
 repositories {
     mavenCentral()

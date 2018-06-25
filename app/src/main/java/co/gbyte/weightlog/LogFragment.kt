@@ -125,25 +125,25 @@ class LogFragment : Fragment() {
     private inner class WeightHolder internal constructor(itemView: View)
             :RecyclerView.ViewHolder(itemView) {
 
-        /*
-        internal var mDateCompactTV: TextView
-        internal var mDateExtendedTV: TextView
+
+        internal var mDateCompactTV: TextView?
+        internal var mDateExtendedTV: TextView?
         //TextView mTimeCompactTV;
-        internal var mTimeExtendedTV: TextView
+        internal var mTimeExtendedTV: TextView?
 
-        internal var mWeightCompactTV: TextView
-        internal var mWeightExtendedTV: TextView
+        internal var mWeightCompactTV: TextView?
+        internal var mWeightExtendedTV: TextView?
 
-        internal var mWeightChangeCompactTV: TextView
-        internal var mWeightChangeExtendedTV: TextView
+        internal var mWeightChangeCompactTV: TextView?
+        internal var mWeightChangeExtendedTV: TextView?
 
-        internal var mCompactLayout: RelativeLayout
-        internal var mExtendedLayout: LinearLayout
+        internal var mCompactLayout: RelativeLayout?
+        internal var mExtendedLayout: LinearLayout?
 
-        internal var mExtendedWeightChangeView: LinearLayout
+        internal var mExtendedWeightChangeView: LinearLayout?
 
-        internal var mCompactNoteIcon: ImageView
-        internal var mExtendedNote: TextView
+        internal var mCompactNoteIcon: ImageView?
+        internal var mExtendedNote: TextView?
 
         init {
             mCompactLayout = list_item_compact
@@ -169,83 +169,82 @@ class LogFragment : Fragment() {
         internal fun bindWeight(weight: Weight, weightChange: Double?) {
 
             val weightTime = weight.time
-            mDateCompactTV.text = Time.getDateString(mContext, "", weightTime)
-            mDateExtendedTV.text = Time.getShortDateString(mContext, weightTime)
+            mDateCompactTV?.text = Time.getDateString(context, "", weightTime)
+            mDateExtendedTV?.text = Time.getShortDateString(context, weightTime)
 
-            val time = Time.getTimeString(mContext, weightTime)
+            val time = Time.getTimeString(context, weightTime)
             //mTimeCompactTV.setText(time);
-            mTimeExtendedTV.text = time
+            mTimeExtendedTV?.text = time
 
-            mWeightCompactTV.text = weight.weightStringKg
-            mWeightExtendedTV.text = weight.weightStringKg
+            mWeightCompactTV?.text = weight.weightStringKg
+            mWeightExtendedTV?.text = weight.weightStringKg
 
             val note = weight.note
             if (note == null || note.isEmpty()) {
-                mCompactNoteIcon.setImageBitmap(null)
-                mExtendedNote.visibility = View.GONE
+                mCompactNoteIcon?.setImageBitmap(null)
+                mExtendedNote?.visibility = View.GONE
             } else {
-                mCompactNoteIcon.setImageResource(R.drawable.ic_icon_note_dark)
-                mExtendedNote.text = note
-                mExtendedNote.visibility = View.VISIBLE
+                mCompactNoteIcon?.setImageResource(R.drawable.ic_icon_note_dark)
+                mExtendedNote?.text = note
+                mExtendedNote?.visibility = View.VISIBLE
             }
 
             if (weightChange != null) {
-                mExtendedWeightChangeView.visibility = View.VISIBLE
+                mExtendedWeightChangeView?.visibility = View.VISIBLE
                 when {
                     weightChange < 0 -> {
-                        mWeightChangeCompactTV.text =
+                        mWeightChangeCompactTV?.text =
                                 String.format(Locale.getDefault(), "%.1f", weightChange)
-                        mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightChangeCompactTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorWeightLoss))
-                        mWeightChangeExtendedTV.text =
+                        mWeightChangeExtendedTV?.text =
                                 String.format(Locale.getDefault(), "%.1f", weightChange)
-                        mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightChangeExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorWeightLoss))
-                        mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightCompactTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorWeightLossDark))
-                        mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorWeightLossDark))
                     }
                     weightChange > 0 -> {
-                        mWeightChangeCompactTV.text =
+                        mWeightChangeCompactTV?.text =
                                 String.format(Locale.getDefault(), "+%.1f", weightChange)
-                        mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightChangeCompactTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorWeightGain))
-                        mWeightChangeExtendedTV.text =
+                        mWeightChangeExtendedTV?.text =
                                 String.format(Locale.getDefault(), "+%.1f", weightChange)
-                        mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightChangeExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorWeightGain))
-                        mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightCompactTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorWeightGainDark))
-                        mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorWeightGainDark))
                     }
                     else -> {
-                        mWeightChangeCompactTV.text =
+                        mWeightChangeCompactTV?.text =
                                 String.format(Locale.getDefault(), "%.1f", weightChange)
-                        mWeightChangeCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightChangeCompactTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorSecondaryText))
-                        mWeightChangeExtendedTV.text =
+                        mWeightChangeExtendedTV?.text =
                                 String.format(Locale.getDefault(), "%.1f", weightChange)
-                        mWeightChangeExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightChangeExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorSecondaryText))
-                        mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightCompactTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorSecondaryText))
-                        mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                        mWeightExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
                                 R.color.colorSecondaryText))
                     }
                 }
             } else {
-                mWeightChangeCompactTV.text = ""
-                mExtendedWeightChangeView.visibility = View.GONE
-                mWeightCompactTV.setTextColor(ContextCompat.getColor(context!!,
+                mWeightChangeCompactTV?.text = ""
+                mExtendedWeightChangeView?.visibility = View.GONE
+                mWeightCompactTV?.setTextColor(ContextCompat.getColor(context!!,
                         R.color.colorPrimaryText))
-                mWeightExtendedTV.setTextColor(ContextCompat.getColor(context!!,
+                mWeightExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
                         R.color.colorPrimaryText))
             }
 
         }
-        */
     }
 
     private inner class WeightAdapter internal constructor(private var mWeights: List<Weight>?)
@@ -324,7 +323,6 @@ class LogFragment : Fragment() {
                 }
                 updateMenu()
             }
-            */
         }
 
         override fun getItemCount(): Int {

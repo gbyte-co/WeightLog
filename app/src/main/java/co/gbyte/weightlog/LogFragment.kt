@@ -47,25 +47,14 @@ class LogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mWeightRecyclerView = weight_recycler_view
+        mWeightRecyclerView?.layoutManager =  LinearLayoutManager(context)
 
-        //mWeightRecycleView!!.layoutManager = LinearLayoutManager(mContext)
-
-
-        //val addFab:FloatingActionButton? = view.findViewById(R.id.fab_new_weight) as FloatingActionButton?
-        /*
-        val addFab: FloatingActionButton? = fab_new_weight
-        addFab?.setOnClickListener {
-            val intent = WeightActivity.newIntent(mContext)
-            startActivity(intent)
-        }
-        */
-
-        val settings = PreferenceManager.getDefaultSharedPreferences(mContext)
+        val settings = PreferenceManager.getDefaultSharedPreferences(context)
         if (!settings.contains(getString(R.string.bmi_pref_key))) {
             // The app is running for the first time. Ask user for basic settings.
             showSettings()
         }
-
         updateUI()
     }
 

@@ -26,6 +26,3 @@
         android:layout_gravity="bottom|end"
     />
 </FrameLayout>
-    <!--
-    android:id="@+id/fab_new_weight"
-    -->

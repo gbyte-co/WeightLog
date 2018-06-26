@@ -9,29 +9,24 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
+import java.util.*
+
 import co.gbyte.weightlog.model.Weight
 import co.gbyte.weightlog.model.WeightLab
-import co.gbyte.weightlog.utils.Bmi
-import co.gbyte.weightlog.utils.Time
+
 import kotlinx.android.synthetic.main.fragment_weight_log.*
-import kotlinx.android.synthetic.main.list_item_weight.*
-import kotlinx.android.synthetic.main.list_item_weight.view.*
-import java.util.*
 
 class LogFragment : Fragment() {
 
     private var mWeightRecyclerView: RecyclerView? = null
     private var mWeight: Weight? = null
     private var mMenu: Menu? = null
+
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +41,9 @@ class LogFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        linearLayoutManager = LinearLayoutManager(context)
+        weight_recycler_view.layoutManager = linearLayoutManager
 
         mWeightRecyclerView = weight_recycler_view
         mWeightRecyclerView?.layoutManager =  LinearLayoutManager(context)
@@ -101,15 +99,16 @@ class LogFragment : Fragment() {
         val weightLab = WeightLab.get(context)
         val weights = weightLab.weights
 
-        var adapter: WeightAdapter? = null
+        var adapter: RecyclerAdapter? = null
         if (adapter == null) {
-            adapter = WeightAdapter(weights)
+            adapter = RecyclerAdapter(weights as ArrayList<Weight>)
             mWeightRecyclerView?.adapter = adapter
         } else {
-            adapter.setWeights(weights)
+            //adapter.setWeights(weights)
             adapter.notifyDataSetChanged()
-            // ToDo: Don't forget to switch to:
-            //adapter.notifyItemChanged(<position>);
+            // ToDo: find out if we still should:
+            // switch to:
+            // adapter.notifyItemChanged(<position>);
             //
             // Note:
             // The challenge is discovering which position has
@@ -120,217 +119,5 @@ class LogFragment : Fragment() {
     private fun updateMenu() {
         val editMenuItem = mMenu!!.findItem(R.id.menu_item_edit_weight)
         editMenuItem.isVisible = mWeight != null
-    }
-
-    private inner class WeightHolder internal constructor(itemView: View)
-            :RecyclerView.ViewHolder(itemView) {
-
-
-        internal var mDateCompactTV: TextView?
-        internal var mDateExtendedTV: TextView?
-        //TextView mTimeCompactTV;
-        internal var mTimeExtendedTV: TextView?
-
-        internal var mWeightCompactTV: TextView?
-        internal var mWeightExtendedTV: TextView?
-
-        internal var mWeightChangeCompactTV: TextView?
-        internal var mWeightChangeExtendedTV: TextView?
-
-        internal var mCompactLayout: RelativeLayout?
-        internal var mExtendedLayout: LinearLayout?
-
-        internal var mExtendedWeightChangeView: LinearLayout?
-
-        internal var mCompactNoteIcon: ImageView?
-        internal var mExtendedNote: TextView?
-
-        init {
-            mCompactLayout = list_item_compact
-            mExtendedLayout = list_item_extended
-
-            mDateCompactTV = weight_date_compact_tv
-            mDateExtendedTV = weight_date_extended_tv
-
-            mTimeExtendedTV = weight_time_extended_tv
-
-            mWeightCompactTV = weight_compact_tv
-            mWeightExtendedTV = weight_extended_tv
-
-            mWeightChangeCompactTV = weight_change_compact_tv
-            mWeightChangeExtendedTV = weight_log_extended_change_tv
-
-            mExtendedWeightChangeView = weight_log_extended_change_view
-
-            mCompactNoteIcon = compat_note_icon
-            mExtendedNote = weight_note_extended_tv
-        }
-
-        internal fun bindWeight(weight: Weight, weightChange: Double?) {
-
-            val weightTime = weight.time
-            mDateCompactTV?.text = Time.getDateString(context, "", weightTime)
-            mDateExtendedTV?.text = Time.getShortDateString(context, weightTime)
-
-            val time = Time.getTimeString(context, weightTime)
-            //mTimeCompactTV.setText(time);
-            mTimeExtendedTV?.text = time
-
-            mWeightCompactTV?.text = weight.weightStringKg
-            mWeightExtendedTV?.text = weight.weightStringKg
-
-            val note = weight.note
-            if (note == null || note.isEmpty()) {
-                mCompactNoteIcon?.setImageBitmap(null)
-                mExtendedNote?.visibility = View.GONE
-            } else {
-                mCompactNoteIcon?.setImageResource(R.drawable.ic_icon_note_dark)
-                mExtendedNote?.text = note
-                mExtendedNote?.visibility = View.VISIBLE
-            }
-
-            if (weightChange != null) {
-                mExtendedWeightChangeView?.visibility = View.VISIBLE
-                when {
-                    weightChange < 0 -> {
-                        mWeightChangeCompactTV?.text =
-                                String.format(Locale.getDefault(), "%.1f", weightChange)
-                        mWeightChangeCompactTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorWeightLoss))
-                        mWeightChangeExtendedTV?.text =
-                                String.format(Locale.getDefault(), "%.1f", weightChange)
-                        mWeightChangeExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorWeightLoss))
-                        mWeightCompactTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorWeightLossDark))
-                        mWeightExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorWeightLossDark))
-                    }
-                    weightChange > 0 -> {
-                        mWeightChangeCompactTV?.text =
-                                String.format(Locale.getDefault(), "+%.1f", weightChange)
-                        mWeightChangeCompactTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorWeightGain))
-                        mWeightChangeExtendedTV?.text =
-                                String.format(Locale.getDefault(), "+%.1f", weightChange)
-                        mWeightChangeExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorWeightGain))
-                        mWeightCompactTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorWeightGainDark))
-                        mWeightExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorWeightGainDark))
-                    }
-                    else -> {
-                        mWeightChangeCompactTV?.text =
-                                String.format(Locale.getDefault(), "%.1f", weightChange)
-                        mWeightChangeCompactTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorSecondaryText))
-                        mWeightChangeExtendedTV?.text =
-                                String.format(Locale.getDefault(), "%.1f", weightChange)
-                        mWeightChangeExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorSecondaryText))
-                        mWeightCompactTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorSecondaryText))
-                        mWeightExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
-                                R.color.colorSecondaryText))
-                    }
-                }
-            } else {
-                mWeightChangeCompactTV?.text = ""
-                mExtendedWeightChangeView?.visibility = View.GONE
-                mWeightCompactTV?.setTextColor(ContextCompat.getColor(context!!,
-                        R.color.colorPrimaryText))
-                mWeightExtendedTV?.setTextColor(ContextCompat.getColor(context!!,
-                        R.color.colorPrimaryText))
-            }
-
-        }
-    }
-
-    private inner class WeightAdapter internal constructor(private var mWeights: List<Weight>?)
-            : RecyclerView.Adapter<WeightHolder>() {
-        private var mSelectedPos = -1
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeightHolder {
-            val layoutInflater = LayoutInflater.from(context)
-            val view =
-                    layoutInflater.inflate(R.layout.list_item_weight, parent, false)
-
-            return WeightHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: WeightHolder, position: Int) {
-            val weight = mWeights!![position]
-            val difference: Double? = if (position < mWeights!!.size - 1) {
-                val prevWeight = mWeights!![position + 1]
-                (weight.weight - prevWeight.weight).toDouble() / 1000.0
-            } else {
-                null
-            }
-
-            val compactLayout = holder.itemView.list_item_compact
-            val extendedLayout = holder.itemView.list_item_extended
-            Bmi.updateAssessmentView(context!!,
-                    holder.itemView,
-                    R.id.assessment_compact_layout,
-                    R.id.bmi_compact_tv,
-                    weight.bmi(),
-                    false)
-            Bmi.updateAssessmentView(context!!,
-                    holder.itemView,
-                    R.id.assessment_compact_layout,
-                    R.id.bmi_compact_tv,
-                    weight.bmi(),
-                    false)
-
-            if (mSelectedPos == position) {
-                compactLayout.visibility = View.GONE
-                extendedLayout.visibility = View.VISIBLE
-
-                Bmi.updateAssessmentView(context!!,
-                        holder.itemView,
-                        R.id.assessment_extended_layout,
-                        R.id.bmi_extended_tv,
-                        weight.bmi(),
-                        true)
-                // ToDo: Why do I have to call it twice to make it work ??
-                Bmi.updateAssessmentView(context!!,
-                        holder.itemView,
-                        R.id.assessment_extended_layout,
-                        R.id.bmi_extended_tv,
-                        weight.bmi(),
-                        true)
-            } else {
-                compactLayout.visibility = View.VISIBLE
-                extendedLayout.visibility = View.GONE
-            }
-            holder.itemView.isSelected = mSelectedPos == position
-            mWeight = if (mSelectedPos == -1) null else mWeights!![mSelectedPos]
-
-            holder.bindWeight(weight, difference)
-
-            holder.itemView.setOnClickListener { view ->
-                if (view.isSelected) {
-                    notifyItemChanged(mSelectedPos)
-                    mSelectedPos = -1
-                    mWeight = null
-                    notifyItemChanged(mSelectedPos)
-                } else {
-                    notifyItemChanged(mSelectedPos)
-                    mSelectedPos = position
-                    mWeight = weight
-                    notifyItemChanged(mSelectedPos)
-                }
-                updateMenu()
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return mWeights!!.size
-        }
-
-        fun setWeights(weights: List<Weight>) {
-            mWeights = weights
-        }
     }
 }

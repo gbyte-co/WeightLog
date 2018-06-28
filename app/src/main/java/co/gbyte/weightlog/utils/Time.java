@@ -7,11 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by walt on 15/01/17.
- *
- */
-
 public class Time {
 
     public static String getDateString(Context context, String format, Date time) {

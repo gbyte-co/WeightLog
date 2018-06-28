@@ -51,15 +51,15 @@ class LogFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater!!.inflate(R.menu.fragment_log_menu, menu)
         mMenu = menu
-        updateMenu()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.menu_item_settings -> {
                 showSettings()
                 return true
             }
+            /*
             R.id.menu_item_edit_weight -> {
                 if (mWeight != null) {
                     val intent = WeightActivity.newIntent(context, mWeight?.id)
@@ -72,6 +72,7 @@ class LogFragment : Fragment() {
                 testDialog.show(activity?.supportFragmentManager, "Test Dialog")
                 return true
             }
+            */
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -79,21 +80,5 @@ class LogFragment : Fragment() {
     private fun showSettings() {
         val intent = Intent(context, SettingsActivity::class.java)
         startActivity(intent)
-    }
-
-    /*
-    private fun updateUI() {
-        adapter.notifyDataSetChanged()
-        // ToDo: find out if we still should:
-        // switch to:
-        // adapter.notifyItemChanged(<position>);
-        // The challenge may be discovering which position has
-        // changed and reloading the correct item.
-    }
-    */
-
-    private fun updateMenu() {
-        val editMenuItem = mMenu?.findItem(R.id.menu_item_edit_weight)
-        editMenuItem?.isVisible = mWeight != null
     }
 }

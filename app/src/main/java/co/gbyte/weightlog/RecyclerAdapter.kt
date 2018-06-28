@@ -58,44 +58,39 @@ class RecyclerAdapter(
             extendedLayout.visibility = View.GONE
         }
         holder.itemView.isSelected = (selectedPosition == position)
-        //weight = if (selectedPosition > -1) weights[selectedPosition] else null
 
         holder.bindWeight(weight, diff)
 
         holder.itemView.setOnClickListener { view ->
+            notifyItemChanged(selectedPosition)
             if (view.isSelected) {
-                notifyItemChanged(selectedPosition)
                 selectedPosition = -1
-                //weight = null
-                notifyItemChanged(selectedPosition)
             } else {
-                notifyItemChanged(selectedPosition)
                 selectedPosition = position
-                notifyItemChanged(selectedPosition)
             }
+            notifyItemChanged(selectedPosition)
         }
     }
 
-    class WeightHolder(v: View) : RecyclerView.ViewHolder(v)/*, View.OnClickListener*/ {
+    class WeightHolder(v: View) : RecyclerView.ViewHolder(v), View.OnLongClickListener {
         private val context = itemView.context
         private var view: View = v
         private var weight: Weight? = null
-        /*
-        private var isSelected = false
 
         init {
-            v.setOnClickListener(this)
+            v.setOnLongClickListener(this)
         }
 
-        override fun onClick(v: View) {
-            Log.d("RecyclerView", "CLICK")
-            toggleExtendedView(v)
-            val showWeightIntent = Intent(context, WeightActivity::class.java)
-            showWeightIntent.putExtra(WEIGHT_ID, weight?.id)
-            val context = itemView.context
-            context.startActivity(showWeightIntent)
+        override fun onLongClick(p0: View?): Boolean {
+            if (view.list_item_extended.visibility == View.VISIBLE) {
+                val intent = WeightActivity.newIntent(context, weight?.id)
+                val context = itemView.context
+                context.startActivity(intent)
+            }
+            return true
         }
 
+        /*
         companion object {
             private const val WEIGHT_ID = "WEIGHT"
         }
@@ -175,7 +170,5 @@ class RecyclerAdapter(
                         ContextCompat.getColor(context, R.color.colorPrimaryText))
             }
         }
-        // ToDo:
-        // somehow update menu: LogFragment.updateMenu() (from here?)
     }
 }

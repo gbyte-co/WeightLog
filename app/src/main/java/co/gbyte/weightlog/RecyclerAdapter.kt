@@ -83,7 +83,7 @@ class RecyclerAdapter(
 
         override fun onLongClick(p0: View?): Boolean {
             if (view.list_item_extended.visibility == View.VISIBLE) {
-                val intent = WeightActivity.newIntent(context, weight?.id)
+                val intent = WeightActivity.newIntent(context, weight!!.id)
                 val context = itemView.context
                 context.startActivity(intent)
             }

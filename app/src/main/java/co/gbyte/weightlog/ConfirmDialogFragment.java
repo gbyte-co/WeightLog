@@ -16,11 +16,6 @@ import androidx.fragment.app.DialogFragment;
 import co.gbyte.weightlog.model.Weight;
 import co.gbyte.weightlog.model.WeightLab;
 
-/**
- * Created by walt on 23/10/16.
- *
- */
-
 public class ConfirmDialogFragment extends DialogFragment {
 
     private static final String ARG_WEIGHT_ID = "weightId";
@@ -43,14 +38,13 @@ public class ConfirmDialogFragment extends DialogFragment {
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_confirm_delete, null);
 
-        TextView weightTextView =
-                (TextView) v.findViewById(R.id.dialog_confirm_delete_weight_weight);
+        TextView weightTextView = v.findViewById(R.id.dialog_confirm_delete_weight_weight);
         weightTextView.setText(weight.getWeightStringKg());
 
-        TextView dateTextView = (TextView) v.findViewById(R.id.dialog_confirm_delete_weight_date);
+        TextView dateTextView = v.findViewById(R.id.dialog_confirm_delete_weight_date);
         dateTextView.setText(DateFormat.getDateFormat(getActivity()).format(weight.getTime()));
 
-        TextView timeTextView = (TextView) v.findViewById(R.id.dialog_confirm_delete_weight_time);
+        TextView timeTextView = v.findViewById(R.id.dialog_confirm_delete_weight_time);
         timeTextView.setText(DateFormat.getTimeFormat(getActivity()).format(weight.getTime()));
 
         return new AlertDialog.Builder(getActivity())

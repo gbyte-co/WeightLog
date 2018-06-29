@@ -16,13 +16,7 @@ class WeightActivity : SingleFragmentActivity() {
     }
 
     companion object {
-        private val EXTRA_WEIGHT_ID = "co.gbyte.weightlog.weight_id"
-
-        /*
-        fun newIntent(packageContext: Context): Intent {
-            return Intent(packageContext, WeightActivity::class.java)
-        }
-        */
+        private const val EXTRA_WEIGHT_ID = "co.gbyte.weightlog.weight_id"
 
         fun newIntent(packageContext: Context, weightId: UUID): Intent {
             val intent = Intent(packageContext, WeightActivity::class.java)

@@ -198,7 +198,7 @@ public class WeightFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_item_delete_weight:
                 FragmentManager manager = getFragmentManager();
-                ConfirmDialogFragment dialog = ConfirmDialogFragment.newInstance(mWeight.getId());
+                ConfirmDialogFragment dialog = ConfirmDialogFragment.Companion.newInstance(mWeight.getId());
                 dialog.show(manager, DIALOG_CONFIRM);
                 return true;
 

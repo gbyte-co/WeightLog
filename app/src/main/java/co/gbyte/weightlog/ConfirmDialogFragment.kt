@@ -1,65 +1,61 @@
-package co.gbyte.weightlog;
+package co.gbyte.weightlog
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
+import android.app.Activity
+import android.app.Dialog
+import android.content.Intent
+import android.os.Bundle
+import android.text.format.DateFormat
+import android.view.LayoutInflater
 
-import java.util.UUID;
+import java.util.UUID
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
-import co.gbyte.weightlog.model.Weight;
-import co.gbyte.weightlog.model.WeightLab;
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
+import co.gbyte.weightlog.model.WeightLab
+import kotlinx.android.synthetic.main.dialog_confirm_delete.view.*
 
-public class ConfirmDialogFragment extends DialogFragment {
+class ConfirmDialogFragment : DialogFragment() {
 
-    private static final String ARG_WEIGHT_ID = "weightId";
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-    public static ConfirmDialogFragment newInstance(UUID id) {
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_WEIGHT_ID, id);
+        val id = arguments?.getSerializable(ARG_WEIGHT_ID) as UUID
+        val weight = WeightLab.get(activity).getWeight(id)
+        val v = LayoutInflater.from(activity)
+                .inflate(R.layout.dialog_confirm_delete, null)
 
-        ConfirmDialogFragment fragment = new ConfirmDialogFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+        val weightTextView = v.dialog_confirm_delete_weight_weight
+        weightTextView.text = weight!!.weightStringKg
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        val dateTextView = v.dialog_confirm_delete_weight_date
+        dateTextView.text = DateFormat.getDateFormat(activity).format(weight.time)
 
-        final UUID id = (UUID) getArguments().getSerializable(ARG_WEIGHT_ID);
+        val timeTextView = v.dialog_confirm_delete_weight_time
+        timeTextView.text = DateFormat.getTimeFormat(activity).format(weight.time)
 
-        Weight weight = WeightLab.get(getActivity()).getWeight(id);
-        View v = LayoutInflater.from(getActivity())
-                .inflate(R.layout.dialog_confirm_delete, null);
-
-        TextView weightTextView = v.findViewById(R.id.dialog_confirm_delete_weight_weight);
-        weightTextView.setText(weight.getWeightStringKg());
-
-        TextView dateTextView = v.findViewById(R.id.dialog_confirm_delete_weight_date);
-        dateTextView.setText(DateFormat.getDateFormat(getActivity()).format(weight.getTime()));
-
-        TextView timeTextView = v.findViewById(R.id.dialog_confirm_delete_weight_time);
-        timeTextView.setText(DateFormat.getTimeFormat(getActivity()).format(weight.getTime()));
-
-        return new AlertDialog.Builder(getActivity())
+        return AlertDialog.Builder(activity as Activity)
                 .setView(v)
                 .setTitle(R.string.confirm_delete_title)
-                .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                WeightLab.get(getActivity()).deleteWeight(id);
-                                Intent intent = new Intent(getActivity(), MainPagerActivity.class);
-                                startActivity(intent);
-                            }
-                        })
+                .setPositiveButton(android.R.string.ok
+                ) { dialogInterface, i ->
+                    WeightLab.get(activity).deleteWeight(id)
+                    val intent = Intent(activity, MainPagerActivity::class.java)
+                    startActivity(intent)
+                }
                 .setNegativeButton(android.R.string.cancel, null)
-                .create();
+                .create()
+    }
+
+    companion object {
+
+        private const val ARG_WEIGHT_ID = "weightId"
+
+        fun newInstance(id: UUID): ConfirmDialogFragment {
+            val args = Bundle()
+            args.putSerializable(ARG_WEIGHT_ID, id)
+
+            val fragment = ConfirmDialogFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

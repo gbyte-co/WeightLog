@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 class WeightActivity : SingleFragmentActivity() {
 
     override fun createFragment(): Fragment {
-        val weightId: UUID?  = intent.getSerializableExtra(EXTRA_WEIGHT_ID) as UUID
+        val weightId: UUID?  = intent.getSerializableExtra(EXTRA_WEIGHT_ID) as UUID?
         return if (weightId == null)
                 WeightFragment.newInstance() else WeightFragment.newInstance(weightId)
     }

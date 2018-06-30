@@ -140,7 +140,7 @@ public class WeightFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentManager manager = getFragmentManager();
-                WeightPickerFragment dialog = WeightPickerFragment.newInstance(mWeight.getWeight());
+                WeightPickerFragment dialog = WeightPickerFragment.Companion.newInstance(mWeight.getWeight());
                 dialog.setTargetFragment(WeightFragment.this, REQUEST_WEIGHT);
                 dialog.show(manager, DIALOG_WEIGHT);
             }
@@ -255,7 +255,7 @@ public class WeightFragment extends Fragment {
         }
 
         if (requestCode == REQUEST_WEIGHT) {
-            mWeight.setWeight(data.getIntExtra(WeightPickerFragment.EXTRA_WEIGHT, 0));
+            mWeight.setWeight(data.getIntExtra(WeightPickerFragment.Companion.getEXTRA_WEIGHT(), 0));
             mWeightButton.setText(mWeight.getWeightStringKg());
         }
 

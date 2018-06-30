@@ -13,11 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import co.gbyte.android.weightpicker.WeightPicker;
 
-/**
- * Created by walt on 21/10/16.
- *
- */
-
 public class WeightPickerFragment extends DialogFragment {
 
     public static final String EXTRA_WEIGHT = "co.gbyte.android.weightlog.weight";
@@ -43,7 +38,7 @@ public class WeightPickerFragment extends DialogFragment {
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_weight, null);
 
-        mWeightPicker = (WeightPicker) v.findViewById(R.id.dialog_weight_weight_picker);
+        mWeightPicker = v.findViewById(R.id.dialog_weight_weight_picker);
         mWeightPicker.setValue(mWeight);
         mWeightPicker.setOnValueChangedListener(new WeightPicker.OnValueChangedListener() {
             @Override

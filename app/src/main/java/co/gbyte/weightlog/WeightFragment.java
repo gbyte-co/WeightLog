@@ -28,11 +28,6 @@ import co.gbyte.weightlog.model.WeightLab;
 import co.gbyte.weightlog.utils.Bmi;
 import co.gbyte.weightlog.utils.Time;
 
-/**
- * Created by walt on 18/10/16.
- *
- */
-
 public class WeightFragment extends Fragment {
 
     private static final String ARG_WEIGHT_ID  = "arg_weight_id";
@@ -105,7 +100,6 @@ public class WeightFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -113,7 +107,7 @@ public class WeightFragment extends Fragment {
         mContext = getActivity();
 
         mView = inflater.inflate(R.layout.fragment_weight, container, false);
-        mDateButton = (Button) mView.findViewById(R.id.weight_date_button);
+        mDateButton = mView.findViewById(R.id.weight_date_button);
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,7 +118,7 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        mTimeButton = (Button) mView.findViewById(R.id.weight_time_button);
+        mTimeButton = mView.findViewById(R.id.weight_time_button);
         mTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,7 +129,7 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        mWeightButton = (Button) mView.findViewById(R.id.weight_button);
+        mWeightButton = mView.findViewById(R.id.weight_button);
         mWeightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,7 +140,7 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        EditText noteField = (EditText) mView.findViewById(R.id.weight_note);
+        EditText noteField = mView.findViewById(R.id.weight_note);
         noteField.setText(mWeight.getNote());
         noteField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -214,13 +208,6 @@ public class WeightFragment extends Fragment {
                 }
                 goBackToList();
                 return true;
-
-            /* ... I am not sure yet:
-            case R.id.menu_item_settings:
-                Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
-                startActivity(settingsIntent);
-                return true;
-            */
 
             default:
             return super.onOptionsItemSelected(item);

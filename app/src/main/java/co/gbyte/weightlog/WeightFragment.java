@@ -113,7 +113,7 @@ public class WeightFragment extends Fragment {
         mContext = getActivity();
 
         mView = inflater.inflate(R.layout.fragment_weight, container, false);
-        mDateButton = (Button) mView.findViewById(R.id.weight_date_button);
+        mDateButton = mView.findViewById(R.id.weight_date_button);
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,7 +124,7 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        mTimeButton = (Button) mView.findViewById(R.id.weight_time_button);
+        mTimeButton = mView.findViewById(R.id.weight_time_button);
         mTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,7 +135,7 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        mWeightButton = (Button) mView.findViewById(R.id.weight_button);
+        mWeightButton = mView.findViewById(R.id.weight_button);
         mWeightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,7 +146,7 @@ public class WeightFragment extends Fragment {
             }
         });
 
-        EditText noteField = (EditText) mView.findViewById(R.id.weight_note);
+        EditText noteField = mView.findViewById(R.id.weight_note);
         noteField.setText(mWeight.getNote());
         noteField.addTextChangedListener(new TextWatcher() {
             @Override

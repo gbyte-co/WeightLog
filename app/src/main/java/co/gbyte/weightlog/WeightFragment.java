@@ -28,11 +28,6 @@ import co.gbyte.weightlog.model.WeightLab;
 import co.gbyte.weightlog.utils.Bmi;
 import co.gbyte.weightlog.utils.Time;
 
-/**
- * Created by walt on 18/10/16.
- *
- */
-
 public class WeightFragment extends Fragment {
 
     private static final String ARG_WEIGHT_ID  = "arg_weight_id";
@@ -104,7 +99,6 @@ public class WeightFragment extends Fragment {
             mWeight = WeightLab.get(getActivity()).getWeight(weightId);
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -214,13 +208,6 @@ public class WeightFragment extends Fragment {
                 }
                 goBackToList();
                 return true;
-
-            /* ... I am not sure yet:
-            case R.id.menu_item_settings:
-                Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
-                startActivity(settingsIntent);
-                return true;
-            */
 
             default:
             return super.onOptionsItemSelected(item);

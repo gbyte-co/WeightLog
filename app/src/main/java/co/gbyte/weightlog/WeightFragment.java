@@ -251,6 +251,7 @@ public class WeightFragment extends Fragment {
         if (requestCode == REQUEST_TIME) {
             Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
             mWeight.setTime(time);
+            mTimeButton.setText(Time.getTimeString(getContext(), mWeight.getTime()));
             return;
         }
 

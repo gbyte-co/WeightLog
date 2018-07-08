@@ -17,11 +17,6 @@ import java.util.GregorianCalendar;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
-/**
- * Created by walt on 22/10/16.
- *
- */
-
 public class TimePickerFragment extends DialogFragment {
 
     public  static final String EXTRA_TIME = "co.gbyte.android.weightlog.time";
@@ -37,7 +32,6 @@ public class TimePickerFragment extends DialogFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @NonNull
     @Override
@@ -57,7 +51,7 @@ public class TimePickerFragment extends DialogFragment {
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_time, null);
 
-        mTimePicker = (TimePicker) v.findViewById(R.id.dialog_time_time_picker);
+        mTimePicker = v.findViewById(R.id.dialog_time_time_picker);
         mTimePicker.setCurrentHour(hour);
         mTimePicker.setCurrentMinute(minute);
 

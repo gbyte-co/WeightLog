@@ -15,6 +15,7 @@ internal class MainPagerAdapter(mgr: FragmentManager) : FragmentPagerAdapter(mgr
     }
 
     override fun getCount(): Int {
-        return 2
+        // ToDo: enable pager when needed
+        return 1
     }
 }

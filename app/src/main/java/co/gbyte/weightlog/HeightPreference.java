@@ -11,16 +11,10 @@ import android.view.View;
 import co.gbyte.android.lengthpicker.LengthPicker;
 import co.gbyte.weightlog.model.WeightLab;
 
-/**
- * Created by walt on 2/12/16.
- *
- */
-
 public class HeightPreference extends DialogPreference {
 
     private int mLastHeight = 0;
     private Context mContext;
-    //private BodyLengthPicker mPicker = null;
     private LengthPicker mPicker = null;
     private SharedPreferences mPrefs = null;
 

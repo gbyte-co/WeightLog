@@ -1,100 +1,101 @@
-package co.gbyte.weightlog;
+package co.gbyte.weightlog
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.DialogPreference;
-import android.preference.PreferenceManager;
-import android.util.AttributeSet;
-import android.view.Gravity;
-import android.view.View;
+import android.content.Context
+import android.content.SharedPreferences
+import android.preference.DialogPreference
+import android.preference.PreferenceManager
+import android.util.AttributeSet
+import android.view.Gravity
+import android.view.View
 
-import co.gbyte.android.lengthpicker.LengthPicker;
-import co.gbyte.weightlog.model.WeightLab;
+import co.gbyte.android.lengthpicker.LengthPicker
+import co.gbyte.weightlog.model.WeightLab
 
-public class HeightPreference extends DialogPreference {
+class HeightPreference(context: Context, attrs: AttributeSet) : DialogPreference(context, attrs) {
 
-    private int mLastHeight = 0;
-    private Context mContext;
-    private LengthPicker mPicker = null;
-    private SharedPreferences mPrefs = null;
+    private var mLastHeight = 0
+    private var mPicker: LengthPicker? = null
+    private var mPrefs: SharedPreferences? = null
 
+    init {
 
-    public HeightPreference(Context context, AttributeSet attrs) {
-        super(context, attrs);
-
-        setPositiveButtonText(context.getText(R.string.height_pref_set));
-        setNegativeButtonText(context.getText(R.string.height_pref_cancel));
+        positiveButtonText = context.getText(R.string.height_pref_set)
+        negativeButtonText = context.getText(R.string.height_pref_cancel)
     }
 
-    @Override
-    protected View onCreateDialogView() {
-        mContext = getContext();
-        mPicker = new LengthPicker(mContext);
-        mPicker.setGravity(Gravity.CENTER);
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return (mPicker);
+    override fun onCreateDialogView(): View {
+
+        var picker = LengthPicker(context)
+        if (picker != null) {
+
+            picker.gravity = Gravity.CENTER
+        }
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+        mPicker = picker
+        return picker
     }
 
-    @Override
-    protected  void onBindDialogView(View v) {
-        super.onBindDialogView(v);
 
-        int minHeight = mContext.getResources().getInteger(R.integer.min_human_height);
-        int maxHeight = mContext.getResources().getInteger(R.integer.max_human_height);
-        mPicker.setMetricPrecision(10);
-        mPicker.setMinValue(minHeight);
-        mPicker.setMaxValue(maxHeight);
-        mPicker.setUnitLabel(mContext.getString(R.string.unit_centimeters_short));
+    override fun onBindDialogView(v: View) {
+        super.onBindDialogView(v)
 
-        String heightPrefKey = mContext.getString(R.string.height_pref_key);
+        val minHeight = context.resources.getInteger(R.integer.min_human_height)
+        val maxHeight = context.resources.getInteger(R.integer.max_human_height)
 
-        mLastHeight = mPrefs.getInt(heightPrefKey, 0);
+        val picker = v as LengthPicker
+        picker.setMetricPrecision(10)
+        picker.minValue = minHeight
+        picker.maxValue = maxHeight
+        picker.setUnitLabel(context.getString(R.string.unit_centimeters_short))
+
+        val heightPrefKey = context.getString(R.string.height_pref_key)
+
+        mLastHeight = mPrefs!!.getInt(heightPrefKey, 0)
 
         if (mLastHeight == 0) {
-            int weight = WeightLab.get(mContext).getLastWeight();
+            val weight = WeightLab.get(context).lastWeight
             if (weight != 0) {
                 // calculate height for the last weight and the ideal Bmi
-                double bmi = mContext.getResources().getFraction(R.fraction.optimal_bmi, 1, 1);
+                val bmi = context.resources.getFraction(R.fraction.optimal_bmi, 1, 1).toDouble()
 
                 // ToDo: move to utils/Bmi class and make static
-                mLastHeight = (int) ((Math.sqrt(weight * 1000 / bmi) + 5) / 10) * 10;
+                mLastHeight = ((Math.sqrt(weight * 1000 / bmi) + 5) / 10).toInt() * 10
 
                 if (mLastHeight > maxHeight) {
-                    mLastHeight = maxHeight;
+                    mLastHeight = maxHeight
                 }
 
                 if (mLastHeight < minHeight) {
-                    mLastHeight = minHeight;
+                    mLastHeight = minHeight
                 }
 
             } else {
-                mLastHeight = mContext.getResources().getInteger(R.integer.average_human_height);
+                mLastHeight = context.resources.getInteger(R.integer.average_human_height)
             }
         }
-        mPicker.setValue(mLastHeight);
+        picker.value = mLastHeight
+        mPicker = picker
     }
 
-    @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        super.onDialogClosed(positiveResult);
+    override fun onDialogClosed(positiveResult: Boolean) {
+        super.onDialogClosed(positiveResult)
 
-        if(positiveResult) {
-            if(callChangeListener(mPicker.getValue())) {
+        if (positiveResult) {
+            if (callChangeListener(mPicker!!.value)) {
 
                 // needed when user edits the text field and clicks OK
-                mPicker.clearFocus();
+                mPicker!!.clearFocus()
 
-                mLastHeight = mPicker.getValue();
-                persistInt(mLastHeight);
+                mLastHeight = mPicker!!.value
+                persistInt(mLastHeight)
             }
-        } else if (mPrefs.getInt(mContext.getString(R.string.height_pref_key), 0) == 0) {
+        } else if (mPrefs!!.getInt(context.getString(R.string.height_pref_key), 0) == 0) {
             // Bmi preference cannot be set if weight is not provided
-            mPrefs.edit().putBoolean(mContext.getString(R.string.bmi_pref_key), false).apply();
+            mPrefs!!.edit().putBoolean(context.getString(R.string.bmi_pref_key), false).apply()
         }
     }
 
-    @Override
-    protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        mLastHeight = restoreValue ? getPersistedInt(mLastHeight) : (Integer)defaultValue ;
+    override fun onSetInitialValue(restoreValue: Boolean, defaultValue: Any) {
+        mLastHeight = if (restoreValue) getPersistedInt(mLastHeight) else defaultValue as Int
     }
 }

@@ -13,13 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import static co.gbyte.weightlog.R.string.bmi_pref_key;
 import static co.gbyte.weightlog.R.string.height_pref_key;
 
-/**
- * Created by walt on 22/11/16.
- *
- */
-
 public class SettingsActivity extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

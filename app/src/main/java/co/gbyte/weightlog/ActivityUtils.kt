@@ -3,7 +3,7 @@ package co.gbyte.weightlog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
-class AcitivityUtils {
+class ActivityUtils {
 
     companion object {
 

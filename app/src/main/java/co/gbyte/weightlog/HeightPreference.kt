@@ -25,9 +25,8 @@ class HeightPreference(context: Context, attrs: AttributeSet) : DialogPreference
 
     override fun onCreateDialogView(): View {
 
-        var picker = LengthPicker(context)
+        val picker = LengthPicker(context)
         if (picker != null) {
-
             picker.gravity = Gravity.CENTER
         }
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context)

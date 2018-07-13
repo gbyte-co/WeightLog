@@ -25,7 +25,7 @@
 
     <string name="bmi_pref_key">bmi_pref_key</string>
     <string name="bmi_pref_title">Body Mass Index (BMI)</string>
-    <string name="bmi_pref_summary">Requires body length</string>
+    <string name="bmi_pref_summary">Requires: Height</string>
 
     <string name="height_pref_key">height_pref_key</string>
     <string name="height_pref_title">Height</string>

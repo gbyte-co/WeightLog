@@ -19,7 +19,7 @@ abstract class SingleFragmentActivity : AppCompatActivity() {
 
         if (fragment == null) {
             fragment = createFragment()
-            fm.beginTransaction().add(R.id.fragment_container, fragment).commit()
+            addFragment(fragment, R.id.fragment_container)
         }
     }
 }

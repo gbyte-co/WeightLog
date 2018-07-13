@@ -14,9 +14,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fragment)
 
-        supportFragmentManager.inTransaction {
-            add(R.id.fragment_container, SettingsFragment())
-        }
+        addFragment(SettingsFragment(), R.id.fragment_container)
     }
 
     class SettingsFragment: PreferenceFragmentCompat() {

@@ -9,20 +9,14 @@ import androidx.preference.*
 //import co.gbyte.weightlog.R.string.height_pref_key
 
 class SettingsActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fragment)
 
-        /*
-        val settingsFragment: SettingsFragment
-        ActivityUtils.addFragmentToActivity(
-                supportFragmentManager, settingsFragment,  )
-        */
-
-        supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container, SettingsFragment())
-                .commit()
+        supportFragmentManager.inTransaction {
+            add(R.id.fragment_container, SettingsFragment())
+        }
     }
 
     class SettingsFragment: PreferenceFragmentCompat() {
@@ -39,9 +33,8 @@ class SettingsActivity : AppCompatActivity() {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.preferences)
         }
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            //super.onCreate(savedInstanceState)
-            //addPreferencesFromResource(R.xml.preferences)
         }
         /*
         override fun onCreate(savedInstanceState: Bundle?) {

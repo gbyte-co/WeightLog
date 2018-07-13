@@ -9,12 +9,16 @@ object Settings {
     private const val MODE = Context.MODE_PRIVATE
     private lateinit var preferences: SharedPreferences
 
-    private val IS_FIRST_RUN_PREF = Pair("is_first_run", true)
+    private val IS_FIRST_RUN_PREF = Pair("is_first_run", false)
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
     }
 
+    /**
+     * SharedPreferences extension function, so we won't need to call edit() and apply()
+     * ourselves on every SharedPreferences operation.
+     */
     private inline fun SharedPreferences.edit(
             operation: (SharedPreferences.Editor) -> Unit){
         val editor = edit()

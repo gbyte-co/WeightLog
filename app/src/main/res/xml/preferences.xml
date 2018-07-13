@@ -15,14 +15,20 @@
             />
 
         <!-- The visual style of a child is defined by this styled theme attribute. -->
+        <!--
+        ToDo: Fix causes casting error:
+        ClassCastException: co.gbyte.weightlog.HeightPreference cannot be cast to androidx.preference.Preference
         <co.gbyte.weightlog.HeightPreference
+            />
+        -->
+        <Preference
             android:key="@string/height_pref_key"
             android:dependency="@string/bmi_pref_key"
             android:defaultValue="2200"
             android:persistent="true"
             android:title="@string/height_pref_title"
             android:summary="@string/not_set"
-            />
+        />
     </PreferenceCategory>
 </PreferenceScreen>
 

@@ -1,116 +1,118 @@
-package co.gbyte.weightlog;
+package co.gbyte.weightlog
 
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceGroup;
-import android.preference.SwitchPreference;
+import android.content.SharedPreferences
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.*
 
-import androidx.appcompat.app.AppCompatActivity;
+//import co.gbyte.weightlog.R.string.bmi_pref_key
+//import co.gbyte.weightlog.R.string.height_pref_key
 
-import static co.gbyte.weightlog.R.string.bmi_pref_key;
-import static co.gbyte.weightlog.R.string.height_pref_key;
+class SettingsActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_fragment)
 
-public class SettingsActivity extends AppCompatActivity {
+        /*
+        val settingsFragment: SettingsFragment
+        ActivityUtils.addFragmentToActivity(
+                supportFragmentManager, settingsFragment,  )
+        */
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
-
-        getFragmentManager()
+        supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_container, new SettingsFragment())
-                .commit();
+                .add(R.id.fragment_container, SettingsFragment())
+                .commit()
     }
 
-    public static class SettingsFragment extends PreferenceFragment {
+    class SettingsFragment: PreferenceFragmentCompat() {
 
-        private SharedPreferences mPrefs;
-        private SharedPreferences.OnSharedPreferenceChangeListener mListener;
-        private PreferenceCategory mAssessmentPrefCategory;
-        private HeightPreference mHeightPref;
+        /*
+        private var mPrefs: SharedPreferences? = null
+        private var mListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
+        private var mAssessmentPrefCategory: PreferenceCategory? = null
+        private var mHeightPref: HeightPreference? = null
 
-        private SwitchPreference mBmiPref = null;
+        private var mBmiPref: SwitchPreference? = null
+        */
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            addPreferencesFromResource(R.xml.preferences)
+        }
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            //super.onCreate(savedInstanceState)
+            //addPreferencesFromResource(R.xml.preferences)
+        }
+        /*
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            addPreferencesFromResource(R.xml.preferences)
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.preferences);
-
-            mPrefs = getPreferenceManager().getSharedPreferences();
-            mAssessmentPrefCategory = (PreferenceCategory)
-                    findPreference(getResources().getString(R.string.assessment_pref_category_key));
-            mBmiPref = (SwitchPreference)  findPreference(getString(R.string.bmi_pref_key));
-            mHeightPref = (HeightPreference)
-                    findPreference(getResources().getString(height_pref_key));
+            mPrefs = preferenceManager.sharedPreferences
+            mAssessmentPrefCategory = findPreference(resources.getString(R.string.assessment_pref_category_key)) as PreferenceCategory
+            mBmiPref = findPreference(getString(R.string.bmi_pref_key)) as SwitchPreference
+            mHeightPref = findPreference(resources.getString(height_pref_key)) as HeightPreference
 
             // Use instance field for mListener
             // It will not be gc'd as long as this instance is kept referenced
-            mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-                public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                    mPrefs = prefs;
-                    Preference pref = getPreferenceScreen().findPreference(key);
-                    updatePreference(pref);
-                }
-            };
+            mListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+                mPrefs = prefs
+                val pref = preferenceScreen.findPreference(key)
+                //updatePreference(pref)
+            }
 
-            mPrefs.registerOnSharedPreferenceChangeListener(mListener);
+            mPrefs!!.registerOnSharedPreferenceChangeListener(mListener)
         }
 
 
-        @Override
-        public void onPause(){
-            super.onPause();
-            mPrefs.unregisterOnSharedPreferenceChangeListener(mListener);
+        override fun onPause() {
+            super.onPause()
+            mPrefs!!.unregisterOnSharedPreferenceChangeListener(mListener)
         }
 
-        @Override
-        public void onResume() {
-            super.onResume();
+        override fun onResume() {
+            super.onResume()
 
-            for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); ++i) {
-                Preference preference = getPreferenceScreen().getPreference(i);
-                if (preference instanceof PreferenceGroup) {
-                    PreferenceGroup preferenceGroup = (PreferenceGroup) preference;
-                    for (int j = 0; j < preferenceGroup.getPreferenceCount(); ++j) {
-                        Preference singlePref = preferenceGroup.getPreference(j);
-                        updatePreference(singlePref);
+            for (i in 0 until preferenceScreen.preferenceCount) {
+                val preference = preferenceScreen.getPreference(i)
+                if (preference is PreferenceGroup) {
+                    for (j in 0 until preference.preferenceCount) {
+                        val singlePref = preference.getPreference(j)
+                        //updatePreference(singlePref)
                     }
                 } else {
-                    updatePreference(preference);
+                    //updatePreference(preference)
                 }
             }
-            mPrefs.registerOnSharedPreferenceChangeListener(mListener);
+            mPrefs!!.registerOnSharedPreferenceChangeListener(mListener)
         }
 
 
-        private void updatePreference(Preference preference) {
+        private fun updatePreference(preference: Preference?) {
             if (preference == null) {
-                return;
+                return
             }
 
-            if(preference.getKey().equals(getResources().getString(bmi_pref_key))) {
-                boolean isOn = mPrefs.getBoolean(preference.getKey(), false);
-                if(isOn) {
-                    mAssessmentPrefCategory.addPreference(mHeightPref);
-                    updatePreference(mHeightPref);
+            if (preference.key == resources.getString(bmi_pref_key)) {
+                val isOn = mPrefs!!.getBoolean(preference.key, false)
+                if (isOn) {
+                    mAssessmentPrefCategory!!.addPreference(mHeightPref)
+                    updatePreference(mHeightPref)
                 } else {
-                    mAssessmentPrefCategory.removePreference(mHeightPref);
-                    mBmiPref.setChecked(isOn);
+                    mAssessmentPrefCategory!!.removePreference(mHeightPref)
+                    mBmiPref!!.isChecked = isOn
                 }
             }
 
-            if(preference.getKey().equals(getString(height_pref_key))) {
-                Integer height = mPrefs.getInt(preference.getKey(), 0);
+            if (preference.key == getString(height_pref_key)) {
+                var height: Int? = mPrefs!!.getInt(preference.key, 0)
                 // if metric:
-                height /= 10;
-                preference.setSummary("Set to " + (height).toString() + " cm");
+                height /= 10
+                preference.summary = "Set to " + height.toString() + " cm"
                 // ToDo: if imperial
             }
         }
+        */
     }
 }
 

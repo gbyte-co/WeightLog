@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.fragment_weight_log.*
 
 class LogFragment : Fragment() {
     private var mMenu: Menu? = null
-    private var mWeight: Weight? = null
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: RecyclerAdapter

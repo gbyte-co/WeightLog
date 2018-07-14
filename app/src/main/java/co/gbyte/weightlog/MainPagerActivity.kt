@@ -13,11 +13,7 @@ class MainPagerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity_pager)
 
-        /*
-        if (!Settings.firstRun) {
-            Settings.firstRun = true
-        }
-        */
+        Settings.init(application)
 
         val pager: ViewPager? = main_pager
         pager?.adapter  = MainPagerAdapter(supportFragmentManager)

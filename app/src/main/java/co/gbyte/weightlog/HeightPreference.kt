@@ -18,22 +18,17 @@ class HeightPreference(context: Context, attrs: AttributeSet) : DialogPreference
     private var mPrefs: SharedPreferences? = null
 
     init {
-
         positiveButtonText = context.getText(R.string.height_pref_set)
         negativeButtonText = context.getText(R.string.height_pref_cancel)
     }
 
     override fun onCreateDialogView(): View {
-
         val picker = LengthPicker(context)
-        if (picker != null) {
-            picker.gravity = Gravity.CENTER
-        }
+        picker.gravity = Gravity.CENTER
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         mPicker = picker
         return picker
     }
-
 
     override fun onBindDialogView(v: View) {
         super.onBindDialogView(v)

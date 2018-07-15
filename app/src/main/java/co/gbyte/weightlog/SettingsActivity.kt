@@ -17,6 +17,13 @@ class SettingsActivity : AppCompatActivity() {
         addFragment(SettingsFragment(), R.id.fragment_container)
     }
 
+    override fun onBackPressed() {
+        finish()
+        // Behave like navigate up.
+        // In particular apply all the changes in settings
+        super.onSupportNavigateUp()
+    }
+
     class SettingsFragment: PreferenceFragmentCompat() {
 
         private var mAssessmentPrefCategory: PreferenceCategory? = null

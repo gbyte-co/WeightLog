@@ -2,25 +2,24 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:key="@string/assessment_pref_category_key"
-        android:persistent="true"
         android:title="@string/assessment_pref_title"
+        android:persistent="true"
         >
-
         <SwitchPreference
-            android:defaultValue="false"
             android:key="@string/bmi_pref_key"
-            android:persistent="true"
             android:title="@string/bmi_pref_title"
             android:summary="@string/bmi_pref_summary"
+            android:defaultValue="false"
+            android:persistent="true"
             />
 
         <Preference
-            android:key="@string/height_pref_key"
             android:dependency="@string/bmi_pref_key"
-            android:defaultValue="2200"
-            android:persistent="true"
+            android:key="@string/height_pref_key"
             android:title="@string/height_pref_title"
             android:summary="@string/not_set"
+            android:defaultValue="2200"
+            android:persistent="true"
         />
     </PreferenceCategory>
 </PreferenceScreen>

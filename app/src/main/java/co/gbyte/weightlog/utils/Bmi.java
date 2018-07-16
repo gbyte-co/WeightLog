@@ -84,7 +84,7 @@ public class Bmi {
                                             double bmi,
                                             boolean assessment
                                             ) {
-        LinearLayout layout = (LinearLayout) parentView.findViewById(layoutResId);
+        LinearLayout layout = parentView.findViewById(layoutResId);
         SharedPreferences settings =
                 PreferenceManager.getDefaultSharedPreferences(parentView.getContext());
 
@@ -95,7 +95,7 @@ public class Bmi {
             int height =
                     settings.getInt(context.getResources().getString(R.string.height_pref_key), 0);
             Weight.setHeight(height);
-            TextView bmiTv = (TextView) parentView.findViewById(bmiResTextViewId);
+            TextView bmiTv = parentView.findViewById(bmiResTextViewId);
 
             if (assessment) {
                 bmiTv.setText(String.format(Locale.getDefault(),

@@ -6,11 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import co.gbyte.weightlog.db.WeightDbSchema.WeightTable;
 
-/**
- * Created by walt on 20/10/16.
- *
- */
-
 public class WeightBaseHelper extends SQLiteOpenHelper{
     private static final int VERSION = 1;
     private static final String DB_NAME = "weightBase.db";

@@ -16,11 +16,6 @@ import java.util.GregorianCalendar;
 
 import androidx.fragment.app.DialogFragment;
 
-/**
- * Created by walt on 20/10/16.
- *
- */
-
 public class DatePickerFragment extends DialogFragment {
 
     public static final String EXTRA_DATE = "co.gbyte.weightlog.date";

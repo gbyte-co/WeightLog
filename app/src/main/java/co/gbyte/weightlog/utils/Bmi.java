@@ -13,11 +13,6 @@ import androidx.core.content.ContextCompat;
 import co.gbyte.weightlog.R;
 import co.gbyte.weightlog.model.Weight;
 
-/**
- * Created by walt on 16/01/17.
- *
- */
-
 public class Bmi {
 
     private static String assessmentString (Context context, double bmi) {

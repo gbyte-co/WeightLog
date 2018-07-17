@@ -1,6 +1,7 @@
 package co.gbyte.weightlog
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.preference.PreferenceManager
 import android.os.Bundle
@@ -23,7 +24,6 @@ import androidx.fragment.app.Fragment
 import co.gbyte.weightlog.model.Weight
 import co.gbyte.weightlog.model.WeightLab
 import co.gbyte.weightlog.utils.Bmi
-import co.gbyte.weightlog.utils.Time
 
 class WeightFragment : Fragment() {
 
@@ -56,7 +56,8 @@ class WeightFragment : Fragment() {
                 val bmi = resources.getFraction(R.fraction.optimal_bmi, 1, 1).toDouble()
                 // weight is stored in grams, round it to hundreds
                 // ToDo: tested only manually
-                weight = ((bmi * height.toDouble() * height.toDouble() / 1000 + 50) / 100).toInt() * 100
+                weight = ((bmi * height.toDouble() * height.toDouble() / 1000 + 50) / 100)
+                        .toInt() * 100
 
                 mWeight?.weight = weight
             }
@@ -179,17 +180,19 @@ class WeightFragment : Fragment() {
             return
         }
 
+        val context = requireContext()
+
         if (requestCode == REQUEST_DATE) {
-            val date = data!!.getSerializableExtra(DatePickerFragment.EXTRA_DATE) as Date
+            val date = data?.getSerializableExtra(DatePickerFragment.EXTRA_DATE) as Date
             mWeight!!.time = date
-            mDateButton!!.text = Time.getDateString(context, "EEE ", mWeight!!.time)
+            mDateButton!!.text = mWeight!!.time.getDateString(context, "EEE ")
             return
         }
 
         if (requestCode == REQUEST_TIME) {
             val time = data!!.getSerializableExtra(TimePickerFragment.EXTRA_TIME) as Date
             mWeight!!.time = time
-            mTimeButton!!.text = Time.getTimeString(context, mWeight!!.time)
+            mTimeButton!!.text = mWeight!!.time.getTimeString(context)
             return
         }
 
@@ -201,9 +204,9 @@ class WeightFragment : Fragment() {
         updateUi()
     }
 
-    private fun updateUi() {
-        mDateButton?.text = Time.getDateString(activity, "EEE, ", mWeight?.time)
-        mTimeButton?.text = Time.getTimeString(activity, mWeight?.time)
+    private fun updateUi(context: Context) {
+        mDateButton?.text = mWeight?.time?.getDateString(context, "EEE, ")
+        mTimeButton?.text = mWeight?.time?.getTimeString(context)
         mWeightButton?.text = mWeight!!.weightStringKg
         Bmi.updateAssessmentView(activity,
                 mView!!,

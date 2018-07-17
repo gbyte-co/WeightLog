@@ -44,7 +44,7 @@ class WeightFragment : Fragment() {
             var weight = WeightLab.get(activity).lastWeight
 
             if (weight != 0) {
-                // start with most recently taken weight
+                // start with the most recently taken weight
                 mWeight?.weight = weight
             } else {
                 val context = activity
@@ -202,6 +202,7 @@ class WeightFragment : Fragment() {
         mDateButton?.text = mWeight?.time?.getDateString(context, "EEE, ")
         mTimeButton?.text = mWeight?.time?.getTimeString(context)
         mWeightButton?.text = mWeight!!.weightStringKg
+        // ToDo: only if BMI is on in Settings (?):
         Bmi.updateAssessmentView(activity,
                 mView!!,
                 R.id.assessment_layout,

@@ -110,7 +110,7 @@ class WeightFragment : Fragment() {
             override fun afterTextChanged(editable: Editable) {}
         })
 
-        updateUi()
+        updateUi(requireContext())
         return mView as View
     }
 
@@ -127,7 +127,7 @@ class WeightFragment : Fragment() {
         if (savedInstanceState != null) {
             mWeight?.time = Date(savedInstanceState.getLong("date"))
             mWeight?.weight = savedInstanceState.getInt("weight")
-            updateUi()
+            updateUi(requireContext())
         }
     }
 
@@ -200,8 +200,7 @@ class WeightFragment : Fragment() {
             mWeight!!.weight = data!!.getIntExtra(WeightPickerFragment.EXTRA_WEIGHT, 0)
             mWeightButton!!.text = mWeight!!.weightStringKg
         }
-
-        updateUi()
+        updateUi(context)
     }
 
     private fun updateUi(context: Context) {

@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import co.gbyte.weightlog.model.Weight
 import co.gbyte.weightlog.utils.Bmi
-import co.gbyte.weightlog.utils.Time
 
 import kotlinx.android.synthetic.main.list_item_weight.view.*
 import java.util.*
@@ -99,9 +98,9 @@ class RecyclerAdapter(
         fun bindWeight(weight: Weight, diff: Double? = null) {
             this.weight = weight
             val weightTime = weight.time
-            view.weight_date_compact_tv.text = Time.getDateString(context, "", weightTime)
-            view.weight_date_extended_tv.text = Time.getShortDateString(context, weightTime)
-            view.weight_time_extended_tv.text = Time.getTimeString(context, weightTime)
+            view.weight_date_compact_tv.text = weightTime.getDateString(context, "")
+            view.weight_date_extended_tv.text = weightTime.getShortDateString(context)
+            view.weight_time_extended_tv.text =weightTime.getTimeString(context)
 
             view.weight_compact_tv.text = weight.weightStringKg
             view.weight_extended_tv.text = weight.weightStringKg

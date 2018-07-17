@@ -185,20 +185,15 @@ class WeightFragment : Fragment() {
         if (requestCode == REQUEST_DATE) {
             val date = data?.getSerializableExtra(DatePickerFragment.EXTRA_DATE) as Date
             mWeight!!.time = date
-            mDateButton!!.text = mWeight!!.time.getDateString(context, "EEE ")
-            return
         }
 
         if (requestCode == REQUEST_TIME) {
             val time = data!!.getSerializableExtra(TimePickerFragment.EXTRA_TIME) as Date
             mWeight!!.time = time
-            mTimeButton!!.text = mWeight!!.time.getTimeString(context)
-            return
         }
 
         if (requestCode == REQUEST_WEIGHT) {
             mWeight!!.weight = data!!.getIntExtra(WeightPickerFragment.EXTRA_WEIGHT, 0)
-            mWeightButton!!.text = mWeight!!.weightStringKg
         }
         updateUi(context)
     }

@@ -24,11 +24,6 @@ import java.util.Locale;
 
 import androidx.core.content.ContextCompat;
 
-/**
- * Created by walt on 23/01/17.
- *
- */
-
 public class WeightPicker extends RelativeLayout {
     private static final String SUPERSTATE = "superState";
     private static final String VALUE = "value";
@@ -61,16 +56,16 @@ public class WeightPicker extends RelativeLayout {
         final Activity activity = (Activity) getContext();
         activity.getLayoutInflater().inflate(R.layout.weightpicker, this, true);
 
-        TextView separator = (TextView) findViewById(R.id.separator);
+        TextView separator = findViewById(R.id.separator);
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
         if (numberFormat instanceof DecimalFormat) {
             char sep = ((DecimalFormat) numberFormat).getDecimalFormatSymbols().getDecimalSeparator();
             separator.setText(String.format("%c", sep));
         }
 
-        mHectograms = (NumberPicker) findViewById(R.id.hectograms);
-        mKilograms  = (NumberPicker) findViewById(R.id.kilograms);
-        mPickerEdit = (EditText) findViewById(R.id.weightPickerEdit);
+        mHectograms = findViewById(R.id.hectograms);
+        mKilograms  = findViewById(R.id.kilograms);
+        mPickerEdit = findViewById(R.id.weightPickerEdit);
 
         mPickerEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

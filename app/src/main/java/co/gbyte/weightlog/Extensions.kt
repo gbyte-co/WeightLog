@@ -38,11 +38,9 @@ fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int) {
 fun Date.getTimeString(context: Context) : String
         = DateFormat.getTimeFormat(context).format(this)
 
-fun Date.getShortDateString(context: Context) :String
-        = DateFormat.getDateFormat(context).format(this)
-
-fun Date.getDateString(context: Context, format: String) : String {
-    return (SimpleDateFormat(format, Locale.getDefault()).format(this)
-            + DateFormat.getMediumDateFormat(context).format(this))
+fun Date.getDateString(context: Context, format: String? = null) : String {
+    return if (format == null) DateFormat.getDateFormat(context).format(this)
+           else (SimpleDateFormat(format, Locale.getDefault()).format(this)
+                   + DateFormat.getMediumDateFormat(context).format(this))
 }
 

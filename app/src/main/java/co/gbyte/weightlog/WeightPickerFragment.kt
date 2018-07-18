@@ -1,5 +1,6 @@
 package co.gbyte.weightlog
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
@@ -14,6 +15,7 @@ import co.gbyte.android.weightpicker.WeightPicker
 class WeightPickerFragment : DialogFragment() {
 
     @NonNull
+    @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         var weight = arguments?.getInt(ARG_WEIGHT)  ?: 0
@@ -55,8 +57,8 @@ class WeightPickerFragment : DialogFragment() {
     }
 
     companion object {
-        val EXTRA_WEIGHT = "co.gbyte.android.weightlog.weight"
-        private val ARG_WEIGHT = "weight"
+        const val EXTRA_WEIGHT = "co.gbyte.android.weightlog.weight"
+        private const val ARG_WEIGHT = "weight"
 
         fun newInstance(weight: Int): WeightPickerFragment {
             val args = Bundle()

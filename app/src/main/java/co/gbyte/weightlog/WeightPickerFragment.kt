@@ -24,7 +24,7 @@ class WeightPickerFragment : DialogFragment() {
         weightPicker.value = weight
         weightPicker!!.onValueChangedListener =
                 WeightPicker.OnValueChangedListener {
-            picker, oldValue, newValue -> weight = weightPicker.value
+            _, _, _ -> weight = weightPicker.value
             arguments?.putInt(EXTRA_WEIGHT, weight)
         }
 
@@ -33,9 +33,9 @@ class WeightPickerFragment : DialogFragment() {
                 .setView(v)
                 .setTitle(R.string.weight_picker_title)
                 .setNegativeButton(android.R.string.cancel)
-                        { dialog, whichButton -> sendResult(Activity.RESULT_CANCELED, weight) }
+                        { _, _ -> sendResult(Activity.RESULT_CANCELED, weight) }
                 .setPositiveButton(android.R.string.ok
-                ) { dialogInterface, i ->
+                ) { _, _ ->
                     // needed when user edits the text field and clicks OK:
                     weightPicker.clearFocus()
                     sendResult(Activity.RESULT_OK, weight)

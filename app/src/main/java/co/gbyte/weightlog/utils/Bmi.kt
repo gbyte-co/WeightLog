@@ -1,113 +1,105 @@
-package co.gbyte.weightlog.utils;
+package co.gbyte.weightlog.utils
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.content.Context
+import android.preference.PreferenceManager
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
 
-import java.util.Locale;
+import java.util.Locale
 
-import androidx.core.content.ContextCompat;
-import co.gbyte.weightlog.R;
-import co.gbyte.weightlog.model.Weight;
+import androidx.core.content.ContextCompat
+import co.gbyte.weightlog.R
+import co.gbyte.weightlog.model.Weight
 
-public class Bmi {
+object Bmi {
 
-    private static String assessmentString (Context context, double bmi) {
-        String assessment;
+    private fun assessmentString(context: Context, bmi: Double): String {
+        val assessment: String
         //if (bmi >= Resources.getSystem().getFraction(R.fraction.overweight_bmi, 1, 1)) {
-        if (bmi >= context.getResources().getFraction(R.fraction.overweight_bmi, 1, 1)) {
-            if (bmi < context.getResources().getFraction(R.fraction.moderately_obese_bmi, 1, 1)) {
-                assessment = context.getResources().getString(R.string.overweight);
-            } else if (bmi <
-                    context.getResources().getFraction(R.fraction.severely_obese_bmi, 1, 1)) {
-                assessment = context.getResources().getString(R.string.moderately_obese);
-            } else if (bmi < context.getResources().getFraction(R.fraction.very_severely_obese_bmi,
-                    1, 1)) {
-                assessment = context.getResources().getString(R.string.severely_obese);
+        if (bmi >= context.resources.getFraction(R.fraction.overweight_bmi, 1, 1)) {
+            if (bmi < context.resources.getFraction(R.fraction.moderately_obese_bmi, 1, 1)) {
+                assessment = context.resources.getString(R.string.overweight)
+            } else if (bmi < context.resources.getFraction(R.fraction.severely_obese_bmi, 1, 1)) {
+                assessment = context.resources.getString(R.string.moderately_obese)
+            } else if (bmi < context.resources.getFraction(R.fraction.very_severely_obese_bmi,
+                            1, 1)) {
+                assessment = context.resources.getString(R.string.severely_obese)
             } else {
-                assessment = context.getResources().getString(R.string.very_severely_obese);
+                assessment = context.resources.getString(R.string.very_severely_obese)
             }
-        } else if (bmi < context.getResources().getFraction(R.fraction.underweight_bmi, 1, 1)) {
-            if (bmi > context.getResources().getFraction(R.fraction.severely_underweight_bmi, 1, 1))
-            {
-                assessment = context.getResources().getString(R.string.underweight);
-            } else if (bmi > context.getResources().getFraction(R.fraction.
-                    very_severely_underweight_bmi, 1, 1)) {
-                assessment = context.getResources().getString(R.string.severely_underweight);
+        } else if (bmi < context.resources.getFraction(R.fraction.underweight_bmi, 1, 1)) {
+            if (bmi > context.resources.getFraction(R.fraction.severely_underweight_bmi, 1, 1)) {
+                assessment = context.resources.getString(R.string.underweight)
+            } else if (bmi > context.resources.getFraction(R.fraction.very_severely_underweight_bmi, 1, 1)) {
+                assessment = context.resources.getString(R.string.severely_underweight)
             } else {
-                assessment = context.getResources().getString(R.string.very_severely_underweight);
+                assessment = context.resources.getString(R.string.very_severely_underweight)
             }
         } else {
-            assessment = context.getResources().getString(R.string.healthy_weight);
+            assessment = context.resources.getString(R.string.healthy_weight)
         }
-        return assessment;
+        return assessment
     }
 
-    private static int assessmentColor (Context context, double bmi) {
-        int color;
-        if (bmi >= context.getResources().getFraction(R.fraction.overweight_bmi, 1, 1)) {
-            if (bmi < context.getResources().getFraction(R.fraction.moderately_obese_bmi, 1, 1)) {
-                color = ContextCompat.getColor(context, R.color.colorOverweight);
-            } else if (bmi <
-                    context.getResources().getFraction(R.fraction.severely_obese_bmi, 1, 1)) {
-                color = ContextCompat.getColor(context, R.color.colorModeratelyObese);
-            } else if (bmi < context.getResources().getFraction(R.fraction.very_severely_obese_bmi,
-                    1, 1)) {
-                color = ContextCompat.getColor(context, R.color.colorSeverelyObese);
+    private fun assessmentColor(context: Context, bmi: Double): Int {
+        val color: Int
+        if (bmi >= context.resources.getFraction(R.fraction.overweight_bmi, 1, 1)) {
+            if (bmi < context.resources.getFraction(R.fraction.moderately_obese_bmi, 1, 1)) {
+                color = ContextCompat.getColor(context, R.color.colorOverweight)
+            } else if (bmi < context.resources.getFraction(R.fraction.severely_obese_bmi, 1, 1)) {
+                color = ContextCompat.getColor(context, R.color.colorModeratelyObese)
+            } else if (bmi < context.resources.getFraction(R.fraction.very_severely_obese_bmi,
+                            1, 1)) {
+                color = ContextCompat.getColor(context, R.color.colorSeverelyObese)
             } else {
-                color = ContextCompat.getColor(context, R.color.colorVerySeverelyObese);
+                color = ContextCompat.getColor(context, R.color.colorVerySeverelyObese)
             }
-        } else if (bmi < context.getResources().getFraction(R.fraction.underweight_bmi, 1, 1)) {
-            if (bmi > context.getResources().getFraction(R.fraction.severely_underweight_bmi, 1, 1))
-            {
-                color = ContextCompat.getColor(context, R.color.colorUnderweight);
-            } else if (bmi > context.getResources().getFraction(R.fraction.
-                    very_severely_underweight_bmi, 1, 1)) {
-                color = ContextCompat.getColor(context, R.color.colorSeverelyUnderweight);
+        } else if (bmi < context.resources.getFraction(R.fraction.underweight_bmi, 1, 1)) {
+            if (bmi > context.resources.getFraction(R.fraction.severely_underweight_bmi, 1, 1)) {
+                color = ContextCompat.getColor(context, R.color.colorUnderweight)
+            } else if (bmi > context.resources.getFraction(R.fraction.very_severely_underweight_bmi, 1, 1)) {
+                color = ContextCompat.getColor(context, R.color.colorSeverelyUnderweight)
             } else {
-                color = ContextCompat.getColor(context, R.color.colorVerySeverelyUnderweight);
+                color = ContextCompat.getColor(context, R.color.colorVerySeverelyUnderweight)
             }
         } else {
-            color = ContextCompat.getColor(context, R.color.colorHealthyWeight);
+            color = ContextCompat.getColor(context, R.color.colorHealthyWeight)
         }
-        return color;
+        return color
     }
 
     // ToDo: 'quick and dirty' version for now:
-    public static void updateAssessmentView(Context context,
-                                            View parentView,
-                                            int layoutResId,
-                                            int bmiResTextViewId,
-                                            double bmi,
-                                            boolean assessment
-                                            ) {
-        LinearLayout layout = parentView.findViewById(layoutResId);
-        SharedPreferences settings =
-                PreferenceManager.getDefaultSharedPreferences(parentView.getContext());
+    fun updateAssessmentView(context: Context,
+                             parentView: View,
+                             layoutResId: Int,
+                             bmiResTextViewId: Int,
+                             bmi: Double,
+                             assessment: Boolean
+    ) {
+        val layout = parentView.findViewById<LinearLayout>(layoutResId)
+        val settings = PreferenceManager.getDefaultSharedPreferences(parentView.context)
 
-       boolean bmiIsSet = settings.getBoolean(context.getResources().getString(R.string.bmi_pref_key), false);
+        val bmiIsSet = settings.getBoolean(context.resources.getString(R.string.bmi_pref_key), false)
 
-       if (bmiIsSet) {
-           int height = settings.getInt(context.getResources().getString(R.string.height_pref_key), 0);
-           Weight.setHeight(height);
-           TextView bmiTv = parentView.findViewById(bmiResTextViewId);
+        if (bmiIsSet) {
+            val height = settings.getInt(context.resources.getString(R.string.height_pref_key), 0)
+            Weight.setHeight(height)
+            val bmiTv = parentView.findViewById<TextView>(bmiResTextViewId)
 
-           if (assessment) {
-               bmiTv.setText(String.format(Locale.getDefault(),
-                       " %.2f - %s",
-                       bmi,
-                       assessmentString(context, bmi)));
-           } else {
-               bmiTv.setText(String.format(Locale.getDefault(), "%.2f", bmi));
-           }
+            if (assessment) {
+                bmiTv.text = String.format(Locale.getDefault(),
+                        " %.2f - %s",
+                        bmi,
+                        assessmentString(context, bmi))
+            } else {
+                bmiTv.text = String.format(Locale.getDefault(), "%.2f", bmi)
+            }
 
-           bmiTv.setTextColor(Bmi.assessmentColor(context, bmi));
-           layout.setVisibility(View.VISIBLE);
-       } else {
-           layout.setVisibility(View.GONE);
-       }
+            bmiTv.setTextColor(Bmi.assessmentColor(context, bmi))
+            layout.visibility = View.VISIBLE
+        } else {
+            layout.visibility = View.GONE
+        }
     }
 }

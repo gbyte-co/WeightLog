@@ -203,7 +203,7 @@ class WeightFragment : Fragment() {
         mTimeButton?.text = mWeight?.time?.getTimeString(context)
         mWeightButton?.text = mWeight!!.weightStringKg
         // ToDo: only if BMI is on in Settings (?):
-        Bmi.updateAssessmentView(activity,
+        Bmi.updateAssessmentView(context,
                 mView!!,
                 R.id.assessment_layout,
                 R.id.bmi_tv,

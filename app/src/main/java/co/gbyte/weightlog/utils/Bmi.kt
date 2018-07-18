@@ -88,28 +88,26 @@ public class Bmi {
         SharedPreferences settings =
                 PreferenceManager.getDefaultSharedPreferences(parentView.getContext());
 
-       boolean bmiIsSet =
-               settings.getBoolean(context.getResources().getString(R.string.bmi_pref_key), false);
+       boolean bmiIsSet = settings.getBoolean(context.getResources().getString(R.string.bmi_pref_key), false);
 
-        if (bmiIsSet) {
-            int height =
-                    settings.getInt(context.getResources().getString(R.string.height_pref_key), 0);
-            Weight.setHeight(height);
-            TextView bmiTv = parentView.findViewById(bmiResTextViewId);
+       if (bmiIsSet) {
+           int height = settings.getInt(context.getResources().getString(R.string.height_pref_key), 0);
+           Weight.setHeight(height);
+           TextView bmiTv = parentView.findViewById(bmiResTextViewId);
 
-            if (assessment) {
-                bmiTv.setText(String.format(Locale.getDefault(),
-                        " %.2f - %s",
-                        bmi,
-                        assessmentString(context, bmi)));
-            } else {
-                bmiTv.setText(String.format(Locale.getDefault(), "%.2f", bmi));
-            }
+           if (assessment) {
+               bmiTv.setText(String.format(Locale.getDefault(),
+                       " %.2f - %s",
+                       bmi,
+                       assessmentString(context, bmi)));
+           } else {
+               bmiTv.setText(String.format(Locale.getDefault(), "%.2f", bmi));
+           }
 
-            bmiTv.setTextColor(Bmi.assessmentColor(context, bmi));
-            layout.setVisibility(View.VISIBLE);
-        } else {
-            layout.setVisibility(View.GONE);
-        }
+           bmiTv.setTextColor(Bmi.assessmentColor(context, bmi));
+           layout.setVisibility(View.VISIBLE);
+       } else {
+           layout.setVisibility(View.GONE);
+       }
     }
 }

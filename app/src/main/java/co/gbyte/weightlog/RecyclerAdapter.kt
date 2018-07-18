@@ -62,10 +62,10 @@ class RecyclerAdapter(
 
         holder.itemView.setOnClickListener { view ->
             notifyItemChanged(selectedPosition)
-            if (view.isSelected) {
-                selectedPosition = -1
+            selectedPosition = if (view.isSelected) {
+                -1
             } else {
-                selectedPosition = position
+                position
             }
             notifyItemChanged(selectedPosition)
         }
@@ -98,9 +98,9 @@ class RecyclerAdapter(
         fun bindWeight(weight: Weight, diff: Double? = null) {
             this.weight = weight
             val weightTime = weight.time
-            view.weight_date_compact_tv.text = weightTime.getDateString(context, "")
-            view.weight_date_extended_tv.text = weightTime.getShortDateString(context)
-            view.weight_time_extended_tv.text =weightTime.getTimeString(context)
+            view.weight_date_compact_tv.text = weightTime?.getDateString(context, "")
+            view.weight_date_extended_tv.text = weightTime?.getShortDateString(context)
+            view.weight_time_extended_tv.text =weightTime?.getTimeString(context)
 
             view.weight_compact_tv.text = weight.weightStringKg
             view.weight_extended_tv.text = weight.weightStringKg

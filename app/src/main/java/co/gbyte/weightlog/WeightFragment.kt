@@ -117,7 +117,7 @@ class WeightFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if (mWeight != null) {
-            outState.putLong(WEIGHT_TIME, mWeight!!.time.time)
+            outState.putLong(WEIGHT_TIME, mWeight?.time!!.time)
             outState.putInt(WEIGHT, mWeight!!.weight)
         }
     }

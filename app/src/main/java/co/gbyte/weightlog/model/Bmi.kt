@@ -1,4 +1,4 @@
-package co.gbyte.weightlog.utils
+package co.gbyte.weightlog.model
 
 import android.content.Context
 import android.preference.PreferenceManager
@@ -10,7 +10,6 @@ import java.util.Locale
 
 import androidx.core.content.ContextCompat
 import co.gbyte.weightlog.R
-import co.gbyte.weightlog.model.Weight
 
 object Bmi {
 
@@ -96,7 +95,7 @@ object Bmi {
                 bmiTv.text = String.format(Locale.getDefault(), "%.2f", bmi)
             }
 
-            bmiTv.setTextColor(Bmi.assessmentColor(context, bmi))
+            bmiTv.setTextColor(assessmentColor(context, bmi))
             layout.visibility = View.VISIBLE
         } else {
             layout.visibility = View.GONE

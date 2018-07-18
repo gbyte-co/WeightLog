@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import co.gbyte.weightlog.model.Weight
-import co.gbyte.weightlog.utils.Bmi
+import co.gbyte.weightlog.model.Bmi
 
 import kotlinx.android.synthetic.main.list_item_weight.view.*
 import java.util.*

@@ -23,7 +23,7 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import co.gbyte.weightlog.model.Weight
 import co.gbyte.weightlog.model.WeightLab
-import co.gbyte.weightlog.utils.Bmi
+import co.gbyte.weightlog.model.Bmi
 
 class WeightFragment : Fragment() {
 

@@ -12,10 +12,9 @@ class Weight @JvmOverloads constructor(val id: UUID = UUID.randomUUID()) {
     var weight: Int = 0
         @Throws(IllegalArgumentException::class)
         set(weight) {
-
-            if (weight < sWeightMin || weight > sWeightMax) {
-                throw IllegalArgumentException("weight must be between " + sWeightMin
-                        + " and " + sWeightMax + " grams")
+            if (weight < MIN_WEIGHT || weight > MAX_WEIGHT) {
+                throw IllegalArgumentException("weight must be between " + MIN_WEIGHT
+                        + " and " + MAX_WEIGHT + " grams")
             }
 
             field = weight
@@ -38,40 +37,35 @@ class Weight @JvmOverloads constructor(val id: UUID = UUID.randomUUID()) {
      * Otherwise returns 0.
      */
     fun bmi(): Double {
-        if (sHeight < sHeightMin || sHeight > sHeightMax) {
+        if (userHeight < MIN_HEIGHT || userHeight > MAX_HEIGHT) {
             return 0.0
         }
-
-        return if (this.weight == 0) {
-            0.0
-        } else weight.toDouble() * 1000 / (sHeight * sHeight)
-
+        return if (this.weight == 0)  0.0 else weight.toDouble() * 1000 / (userHeight * userHeight)
     }
 
     companion object {
         // body height is stored in millimeters
-        private var sHeight = 0
+        // ToDo: this should be a setting
+        private var userHeight = 0
 
-        private val sHeightMin = 540
-        private val sHeightMax = 2750
+        private const val MIN_HEIGHT = 540
+        private const val MAX_HEIGHT = 2750
 
-        private val sWeightMin = 2000
-        private val sWeightMax = 640000
+        private const val MIN_WEIGHT = 2000
+        private const val MAX_WEIGHT = 640000
 
         @Throws(IllegalArgumentException::class)
         fun setHeight(height: Int) {
 
-            if (height < sHeightMin || height > sHeightMax) {
-                throw IllegalArgumentException("height must be between " + sHeightMin
-                        + " and " + sHeightMax + " millimeters")
+            if (height < MIN_HEIGHT || height > MAX_HEIGHT) {
+                throw IllegalArgumentException("height must be between " + MIN_HEIGHT
+                        + " and " + MAX_HEIGHT + " millimeters")
             }
-
-            sHeight = height
+            userHeight = height
         }
 
         fun resetHeight() {
-
-            sHeight = 0
+            userHeight = 0
         }
     }
 }

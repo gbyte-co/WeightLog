@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * Created by walt on 18/10/16.
- *
  * Provides abstraction of body weight and calculates Body Mass Index.
  */
 public class Weight {

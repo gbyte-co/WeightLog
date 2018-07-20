@@ -13,11 +13,6 @@ import co.gbyte.weightlog.db.WeightBaseHelper;
 import co.gbyte.weightlog.db.WeightCursorWrapper;
 import co.gbyte.weightlog.db.WeightDbSchema.WeightTable;
 
-/**
- * Created by walt on 19/10/16.
- *
- */
-
 public class WeightLab {
     private static WeightLab sWeightLab;
 

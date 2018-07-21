@@ -41,7 +41,7 @@ class WeightFragment : Fragment() {
         if (mIsNew) {
             // new entry:
             mWeight = Weight()
-            var weight = WeightLab.get(activity).lastWeight
+            var weight = WeightLab.getInstance(context).lastWeight
 
             if (weight != 0) {
                 // start with the most recently taken weight
@@ -65,7 +65,7 @@ class WeightFragment : Fragment() {
         } else {
             // picked an existing weight
             val weightId = arguments?.getSerializable(ARG_WEIGHT_ID) as UUID
-            mWeight = WeightLab.get(activity).getWeight(weightId)
+            mWeight = WeightLab.getInstance(context).getWeight(weightId)
         }
     }
 
@@ -155,9 +155,9 @@ class WeightFragment : Fragment() {
 
             R.id.menu_item_accept_weight -> {
                 if (mIsNew) {
-                    WeightLab.get(activity).addWeight(mWeight)
+                    WeightLab.getInstance(context).addWeight(mWeight!!)
                 } else {
-                    WeightLab.get(activity).updateWeight(mWeight)
+                    WeightLab.getInstance(context).updateWeight(mWeight!!)
                 }
                 goBackToList()
                 return true

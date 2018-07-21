@@ -19,7 +19,7 @@ class ConfirmDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val id = arguments?.getSerializable(ARG_WEIGHT_ID) as UUID
-        val weight = WeightLab.get(activity).getWeight(id)
+        val weight = WeightLab.getInstance(context).getWeight(id)
         val v = LayoutInflater.from(activity)
                 .inflate(R.layout.dialog_confirm_delete, null)
 
@@ -36,8 +36,8 @@ class ConfirmDialogFragment : DialogFragment() {
                 .setView(v)
                 .setTitle(R.string.confirm_delete_title)
                 .setPositiveButton(android.R.string.ok
-                ) { dialogInterface, i ->
-                    WeightLab.get(activity).deleteWeight(id)
+                ) { _, _ ->
+                    WeightLab.getInstance(context).deleteWeight(id)
                     val intent = Intent(activity, MainPagerActivity::class.java)
                     startActivity(intent)
                 }

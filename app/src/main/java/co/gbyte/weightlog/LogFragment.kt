@@ -10,13 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import co.gbyte.weightlog.model.Weight
+
 import co.gbyte.weightlog.model.WeightLab
 
-import java.util.*
-
 import kotlinx.android.synthetic.main.fragment_weight_log.*
+import java.util.ArrayList
 
 class LogFragment : Fragment() {
     private var mMenu: Menu? = null
@@ -36,13 +35,13 @@ class LogFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weightLab = WeightLab.get(context)
-        val weights = weightLab.weights as ArrayList<Weight>
+        val weightLab = WeightLab.getInstance(context)
+        val weights = weightLab.getWeights()
 
         linearLayoutManager = LinearLayoutManager(context)
         weight_recycler_view.layoutManager = linearLayoutManager
 
-        adapter = RecyclerAdapter(weights)
+        adapter = RecyclerAdapter(weights as ArrayList<Weight>)
         weight_recycler_view.adapter = adapter
     }
 

@@ -3,7 +3,7 @@ package co.gbyte.weightlog.model
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
+import android.database.SQLException
 
 import java.util.ArrayList
 import java.util.UUID
@@ -14,52 +14,58 @@ import co.gbyte.weightlog.db.WeightDbSchema.WeightTable
 
 class WeightLab private constructor(context: Context) {
 
-    private val mDb: SQLiteDatabase
+    private val mDb = WeightBaseHelper(context).writableDatabase
 
-    val weights: List<Weight>
-        get() {
-            val weights = ArrayList<Weight>()
+    companion object {
 
-            val cursor = queryWeights(// groupBy
-                    null, null,
-                    WeightTable.Cols.TIME + " DESC"
-            )
+        @Volatile private var INSTANCE: WeightLab? = null
 
-            try {
-                cursor.moveToFirst()
-                while (!cursor.isAfterLast) {
-                    weights.add(cursor.weight)
-                    cursor.moveToNext()
+        fun getInstance(context: Context?): WeightLab =
+                INSTANCE ?: synchronized(this) {
+                    INSTANCE ?: createWeightLab(context).also { INSTANCE = it }
                 }
-            } finally {
-                cursor.close()
-            }
-            return weights
-        }
 
+        private fun createWeightLab(context: Context?): WeightLab =
+                WeightLab(context!!.applicationContext)
+    }
+
+    fun getWeights(): List<Weight>  {
+        val weights: ArrayList<Weight> = ArrayList()
+        val cursor = queryWeights(null, null,
+                WeightTable.Cols.TIME + " DESC"
+        )
+        try {
+            cursor.moveToFirst()
+            while (!cursor.isAfterLast) {
+                weights.add(cursor.weight)
+                cursor.moveToNext()
+            }
+        } catch (e: SQLException) {
+        } finally {
+            cursor.close()
+        }
+        return weights
+    }
+
+    private var _lastWeight = Weight()
     val lastWeight: Int
         get() {
-            var weight = Weight()
-
             val cursor = queryWeights(null, null, WeightTable.Cols.TIME + " DESC")
             try {
                 if (cursor.count == 0) {
                     return 0
                 }
                 cursor.moveToFirst()
-                weight = cursor.weight
+                _lastWeight = cursor.weight
             } finally {
                 cursor.close()
             }
-            return weight.weight
+            return _lastWeight.weight
         }
 
-    init {
-        mDb = WeightBaseHelper(context).writableDatabase
-    }
 
-    fun addWeight(w: Weight) {
-        val values = getContentValues(w)
+    fun addWeight(weight: Weight) {
+        val values = getContentValues(weight)
         mDb.insert(WeightTable.NAME, null, values)
     }
 
@@ -90,12 +96,21 @@ class WeightLab private constructor(context: Context) {
     private fun queryWeights(whereClause: String?,
                              whereArgs: Array<String>?,
                              orderClause: String?): WeightCursorWrapper {
-        val cursor = mDb.query(
-                WeightTable.NAME, null, // Columns = null selects all columns
-                whereClause,
-                whereArgs, null, null, // having
-                orderClause  // orderBy
-        )
+        var cursor: Cursor? = null
+        try {
+            cursor = mDb.query(
+                    WeightTable.NAME,
+                    null, // Columns = null selects all columns
+                    whereClause,
+                    whereArgs,
+                    null,
+                    null,
+                    orderClause  // orderBy
+            )
+        } catch (e: SQLException) {
+        }
+        // ToDo: test it:
+        //cursor.close()
         return WeightCursorWrapper(cursor)
     }
 
@@ -104,24 +119,13 @@ class WeightLab private constructor(context: Context) {
         mDb.delete(WeightTable.NAME, WeightTable.Cols.UUID + " = ?", arrayOf(uuidString))
     }
 
-    companion object {
-        private var sWeightLab: WeightLab? = null
+    private fun getContentValues(weight: Weight): ContentValues {
+        val values = ContentValues()
+        values.put(WeightTable.Cols.UUID, weight.id.toString())
+        values.put(WeightTable.Cols.TIME, weight.time!!.time)
+        values.put(WeightTable.Cols.WEIGHT, weight.weight)
+        values.put(WeightTable.Cols.NOTE, weight.note)
 
-        operator fun get(context: Context): WeightLab? {
-            if (sWeightLab == null) {
-                sWeightLab = WeightLab(context)
-            }
-            return sWeightLab
-        }
-
-        private fun getContentValues(weight: Weight): ContentValues {
-            val values = ContentValues()
-            values.put(WeightTable.Cols.UUID, weight.id.toString())
-            values.put(WeightTable.Cols.TIME, weight.time!!.time)
-            values.put(WeightTable.Cols.WEIGHT, weight.weight)
-            values.put(WeightTable.Cols.NOTE, weight.note)
-
-            return values
-        }
+        return values
     }
 }

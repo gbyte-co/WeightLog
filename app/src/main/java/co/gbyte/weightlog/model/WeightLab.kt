@@ -1,5 +1,6 @@
 package co.gbyte.weightlog.model
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -32,17 +33,14 @@ class WeightLab private constructor(context: Context) {
     fun getWeights(): List<Weight>  {
         val weights: ArrayList<Weight> = ArrayList()
         val cursor = queryWeights(null, null,
-                WeightTable.Cols.TIME + " DESC"
+                                  WeightTable.Cols.TIME + " DESC"
         )
-        try {
+        cursor.use {
             cursor.moveToFirst()
             while (!cursor.isAfterLast) {
                 weights.add(cursor.weight)
                 cursor.moveToNext()
             }
-        } catch (e: SQLException) {
-        } finally {
-            cursor.close()
         }
         return weights
     }
@@ -50,15 +48,14 @@ class WeightLab private constructor(context: Context) {
     private var _lastWeight = Weight()
     val lastWeight: Int
         get() {
-            val cursor = queryWeights(null, null, WeightTable.Cols.TIME + " DESC")
-            try {
+            val cursor = queryWeights(null, null,
+                                      WeightTable.Cols.TIME + " DESC")
+            cursor.use {
                 if (cursor.count == 0) {
                     return 0
                 }
                 cursor.moveToFirst()
                 _lastWeight = cursor.weight
-            } finally {
-                cursor.close()
             }
             return _lastWeight.weight
         }
@@ -72,15 +69,12 @@ class WeightLab private constructor(context: Context) {
     fun getWeight(id: UUID): Weight? {
         val cursor = queryWeights(WeightTable.Cols.UUID + " = ?",
                 arrayOf(id.toString()), null)
-        try {
+        cursor.use {
             if (cursor.count == 0) {
                 return null
             }
-
             cursor.moveToFirst()
             return cursor.weight
-        } finally {
-            cursor.close()
         }
     }
 
@@ -89,28 +83,25 @@ class WeightLab private constructor(context: Context) {
         val values = getContentValues(weight)
 
         mDb.update(WeightTable.NAME, values,
-                WeightTable.Cols.UUID + " = ?",
-                arrayOf(uuidString))
+                   WeightTable.Cols.UUID + " = ?", arrayOf(uuidString))
     }
 
+    @SuppressLint("Recycle")
     private fun queryWeights(whereClause: String?,
                              whereArgs: Array<String>?,
                              orderClause: String?): WeightCursorWrapper {
         var cursor: Cursor? = null
         try {
-            cursor = mDb.query(
-                    WeightTable.NAME,
-                    null, // Columns = null selects all columns
-                    whereClause,
-                    whereArgs,
-                    null,
-                    null,
-                    orderClause  // orderBy
-            )
+            cursor = mDb.query(WeightTable.NAME,
+                               null, // Columns = null selects all columns
+                               whereClause,
+                               whereArgs,
+                               null,
+                               null,
+                               orderClause  // orderBy
+                              )
         } catch (e: SQLException) {
         }
-        // ToDo: test it:
-        //cursor.close()
         return WeightCursorWrapper(cursor)
     }
 

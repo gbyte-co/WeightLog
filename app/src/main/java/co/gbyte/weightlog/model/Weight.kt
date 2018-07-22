@@ -63,9 +63,5 @@ class Weight @JvmOverloads constructor(val id: UUID = UUID.randomUUID()) {
             }
             userHeight = height
         }
-
-        fun resetHeight() {
-            userHeight = 0
-        }
     }
 }

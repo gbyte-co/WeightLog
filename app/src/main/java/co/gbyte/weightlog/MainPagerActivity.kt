@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.main_activity_pager.*
 
 class MainPagerActivity : AppCompatActivity() {
@@ -15,27 +14,26 @@ class MainPagerActivity : AppCompatActivity() {
 
         Settings.init(application)
 
-        val pager: ViewPager? = main_pager
-        pager?.adapter  = MainPagerAdapter(supportFragmentManager)
+        val pager: ViewPager = main_pager
+        pager.adapter  = MainPagerAdapter(supportFragmentManager)
 
-        val fab: FloatingActionButton? = fab_weight
-        fab?.setOnClickListener {
+        fab_weight.setOnClickListener {
             val intent = Intent(this, WeightActivity::class.java)
             startActivity(intent)
         }
 
-        pager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int,
                                         positionOffset: Float,
                                         positionOffsetPixels: Int) {
             }
 
             override fun onPageSelected(position: Int) {
-                fab?.visibility = View.GONE
+                fab_weight.visibility = View.GONE
                 if (pager.currentItem == 0) {
-                    fab?.visibility = View.VISIBLE
+                    fab_weight.visibility = View.VISIBLE
                 } else {
-                    fab?.visibility = View.GONE
+                    fab_weight.visibility = View.GONE
                 }
             }
             override fun onPageScrollStateChanged(state: Int) {}

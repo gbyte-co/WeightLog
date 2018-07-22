@@ -18,7 +18,6 @@ class WeightLab private constructor(context: Context) {
     private val mDb = WeightBaseHelper(context).writableDatabase
 
     companion object {
-
         @Volatile private var INSTANCE: WeightLab? = null
 
         fun getInstance(context: Context?): WeightLab =
@@ -59,7 +58,6 @@ class WeightLab private constructor(context: Context) {
             }
             return _lastWeight.weight
         }
-
 
     fun addWeight(weight: Weight) {
         val values = getContentValues(weight)

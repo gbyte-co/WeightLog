@@ -40,7 +40,7 @@ fun Date.getTimeString(context: Context) : String
 
 fun Date.getDateString(context: Context, format: String? = null) : String {
     return if (format == null) DateFormat.getDateFormat(context).format(this)
-           else (SimpleDateFormat(format, Locale.getDefault()).format(this)
-                   + DateFormat.getMediumDateFormat(context).format(this))
+        else (SimpleDateFormat(format, Locale.getDefault()).format(this)
+            + DateFormat.getMediumDateFormat(context).format(this))
 }
 

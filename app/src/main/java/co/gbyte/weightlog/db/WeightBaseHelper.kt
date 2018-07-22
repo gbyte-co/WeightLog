@@ -3,24 +3,27 @@ package co.gbyte.weightlog.db
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.provider.BaseColumns._ID
 
-import co.gbyte.weightlog.db.WeightDbSchema.WeightTable
+import co.gbyte.weightlog.db.WeightDbSchema.WeightTable.Cols.*
+import co.gbyte.weightlog.db.WeightDbSchema.WeightTable.NAME
 
 class WeightBaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, VERSION) {
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("create table " + WeightTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                WeightTable.Cols.UUID + " TEXT, " +
-                WeightTable.Cols.TIME + " TEXT, " +
-                WeightTable.Cols.WEIGHT + " INT, " +
-                WeightTable.Cols.NOTE + " TEXT" +
-                ")"
+        db.execSQL( """CREATE TABLE $NAME (
+                      |$_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                      |$UUID TEXT,
+                      |$TIME TEXT,
+                      |$WEIGHT INTEGER,
+                      |$NOTE TEXT)"""
+                .trimMargin()
         )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-
+        db.execSQL("DROP TABLE IF EXISTS $NAME")
+        onCreate(db)
     }
 
     companion object {

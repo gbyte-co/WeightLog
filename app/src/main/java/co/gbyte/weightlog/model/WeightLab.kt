@@ -11,7 +11,8 @@ import java.util.UUID
 
 import co.gbyte.weightlog.db.WeightBaseHelper
 import co.gbyte.weightlog.db.WeightCursorWrapper
-import co.gbyte.weightlog.db.WeightDbSchema.WeightTable
+import co.gbyte.weightlog.db.WeightDbSchema.WeightTable.Cols.*
+import co.gbyte.weightlog.db.WeightDbSchema.WeightTable.NAME
 
 class WeightLab private constructor(context: Context) {
 
@@ -31,9 +32,7 @@ class WeightLab private constructor(context: Context) {
 
     fun getWeights(): List<Weight>  {
         val weights: ArrayList<Weight> = ArrayList()
-        val cursor = queryWeights(null, null,
-                                  WeightTable.Cols.TIME + " DESC"
-        )
+        val cursor = queryWeights(null, null, "$TIME DESC")
         cursor.use {
             cursor.moveToFirst()
             while (!cursor.isAfterLast) {
@@ -45,8 +44,7 @@ class WeightLab private constructor(context: Context) {
     }
 
     fun getLastWeight(): Int {
-        val cursor = queryWeights(null, null,
-                WeightTable.Cols.TIME + " DESC")
+        val cursor = queryWeights(null, null, "$TIME DESC")
         cursor.use {
             if (cursor.count == 0) {
                 return 0
@@ -58,12 +56,11 @@ class WeightLab private constructor(context: Context) {
 
     fun addWeight(weight: Weight) {
         val values = getContentValues(weight)
-        mDb.insert(WeightTable.NAME, null, values)
+        mDb.insert(NAME, null, values)
     }
 
     fun getWeight(id: UUID): Weight? {
-        val cursor = queryWeights(WeightTable.Cols.UUID + " = ?",
-                arrayOf(id.toString()), null)
+        val cursor = queryWeights("$UUID = ?", arrayOf(id.toString()), null)
         cursor.use {
             if (cursor.count == 0) {
                 return null
@@ -77,8 +74,7 @@ class WeightLab private constructor(context: Context) {
         val uuidString = weight.id.toString()
         val values = getContentValues(weight)
 
-        mDb.update(WeightTable.NAME, values,
-                   WeightTable.Cols.UUID + " = ?", arrayOf(uuidString))
+        mDb.update(NAME, values, UUID, arrayOf(uuidString))
     }
 
     @SuppressLint("Recycle")
@@ -87,7 +83,7 @@ class WeightLab private constructor(context: Context) {
                              orderClause: String?): WeightCursorWrapper {
         var cursor: Cursor? = null
         try {
-            cursor = mDb.query(WeightTable.NAME,
+            cursor = mDb.query(NAME,
                                null, // Columns = null selects all columns
                                whereClause,
                                whereArgs,
@@ -102,15 +98,15 @@ class WeightLab private constructor(context: Context) {
 
     fun deleteWeight(id: UUID) {
         val uuidString = id.toString()
-        mDb.delete(WeightTable.NAME, WeightTable.Cols.UUID + " = ?", arrayOf(uuidString))
+        mDb.delete(NAME, "$UUID  = ?", arrayOf(uuidString))
     }
 
     private fun getContentValues(weight: Weight): ContentValues {
         val values = ContentValues()
-        values.put(WeightTable.Cols.UUID, weight.id.toString())
-        values.put(WeightTable.Cols.TIME, weight.time!!.time)
-        values.put(WeightTable.Cols.WEIGHT, weight.weight)
-        values.put(WeightTable.Cols.NOTE, weight.note)
+        values.put(UUID, weight.id.toString())
+        values.put(TIME, weight.time.time)
+        values.put(WEIGHT, weight.weight)
+        values.put(NOTE, weight.note)
 
         return values
     }

@@ -47,7 +47,7 @@ class HeightPreference(context: Context, attrs: AttributeSet) : DialogPreference
         mLastHeight = mPrefs!!.getInt(heightPrefKey, 0)
 
         if (mLastHeight == 0) {
-            val weight = WeightLab.getInstance(context).lastWeight
+            val weight = WeightLab.getInstance(context).getLastWeight()
             if (weight != 0) {
                 // calculate height for the last weight and the ideal Bmi
                 val bmi = context.resources.getFraction(R.fraction.optimal_bmi, 1, 1).toDouble()

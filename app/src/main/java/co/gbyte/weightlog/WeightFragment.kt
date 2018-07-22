@@ -41,7 +41,7 @@ class WeightFragment : Fragment() {
         if (mIsNew) {
             // new entry:
             mWeight = Weight()
-            var weight = WeightLab.getInstance(context).lastWeight
+            var weight = WeightLab.getInstance(context).getLastWeight()
 
             if (weight != 0) {
                 // start with the most recently taken weight

@@ -44,20 +44,17 @@ class WeightLab private constructor(context: Context) {
         return weights
     }
 
-    private var _lastWeight = Weight()
-    val lastWeight: Int
-        get() {
-            val cursor = queryWeights(null, null,
-                                      WeightTable.Cols.TIME + " DESC")
-            cursor.use {
-                if (cursor.count == 0) {
-                    return 0
-                }
-                cursor.moveToFirst()
-                _lastWeight = cursor.weight
+    fun getLastWeight(): Int {
+        val cursor = queryWeights(null, null,
+                WeightTable.Cols.TIME + " DESC")
+        cursor.use {
+            if (cursor.count == 0) {
+                return 0
             }
-            return _lastWeight.weight
+            cursor.moveToFirst()
+            return cursor.weight.weight
         }
+    }
 
     fun addWeight(weight: Weight) {
         val values = getContentValues(weight)

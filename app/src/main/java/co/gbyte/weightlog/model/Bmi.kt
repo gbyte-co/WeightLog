@@ -87,7 +87,8 @@ object Bmi {
             val bmiTv = parentView.findViewById<TextView>(bmiResTextViewId)
 
             if (assessment) {
-                bmiTv.text = String.format(Locale.getDefault(),
+                bmiTv.text = String.format(
+                        Locale.getDefault(),
                         " %.2f - %s",
                         bmi,
                         assessmentString(context, bmi))

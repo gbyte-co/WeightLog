@@ -9,11 +9,6 @@ import java.util.UUID
 import co.gbyte.weightlog.db.WeightDbSchema.WeightTable
 import co.gbyte.weightlog.model.Weight
 
-/**
- * Created by walt on 20/10/16.
- *
- */
-
 class WeightCursorWrapper(cursor: Cursor) : CursorWrapper(cursor) {
 
     val weight: Weight

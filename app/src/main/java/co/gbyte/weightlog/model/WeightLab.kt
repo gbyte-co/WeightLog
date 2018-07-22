@@ -97,7 +97,7 @@ class WeightLab private constructor(context: Context) {
                               )
         } catch (e: SQLException) {
         }
-        return WeightCursorWrapper(cursor)
+        return WeightCursorWrapper(cursor!!)
     }
 
     fun deleteWeight(id: UUID) {

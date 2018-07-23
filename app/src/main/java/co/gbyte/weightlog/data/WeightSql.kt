@@ -27,7 +27,7 @@ object WeightSql {
                       |$NOTE TEXT
                       |)""".trimMargin()
 
-    val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS $_TABLE_NAME"
+    const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS $TABLE_NAME"
 
-    val SQL_SELECT_ALL = "SELECT * FROM $_TABLE_NAME ORDER BY $CREATED_AT DESC"
+    const val SQL_SELECT_ALL = "SELECT * FROM $TABLE_NAME ORDER BY $CREATED_AT DESC"
 }

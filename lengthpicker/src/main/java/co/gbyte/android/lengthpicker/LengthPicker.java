@@ -10,11 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-/**
- * Created by walt on 5/02/17.
- *
- */
-
 public class LengthPicker extends LinearLayout {
 
     private static final int MIN_MIN_VALUE = 0;
@@ -45,8 +40,8 @@ public class LengthPicker extends LinearLayout {
                 .getLayoutInflater()
                 .inflate(R.layout.lengthpicker, this, true);
 
-        mMetric = (NumberPicker) findViewById(R.id.metricLengthPicker);
-        mUnitsTv = (TextView) findViewById(R.id.metricLengthUnits);
+        mMetric = findViewById(R.id.metricLengthPicker);
+        mUnitsTv = findViewById(R.id.metricLengthUnits);
 
         if(attrs != null) {
             TypedArray a = getContext()
@@ -130,10 +125,6 @@ public class LengthPicker extends LinearLayout {
         Bundle state = (Bundle) ss;
         super.onRestoreInstanceState(state.getParcelable(SUPERSTATE));
         setValue(state.getInt(LENGTH));
-    }
-
-    public void setOnValueChangedListener (OnValueChangeListener listener) {
-        mListener = listener;
     }
 
     public interface OnValueChangeListener {

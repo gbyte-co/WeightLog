@@ -15,7 +15,7 @@ import co.gbyte.weightlog.data.WeightSql.WeightTable.CREATED_AT
 import co.gbyte.weightlog.data.WeightSql.WeightTable.NOTE
 import co.gbyte.weightlog.data.WeightSql.WeightTable.UUID
 import co.gbyte.weightlog.data.WeightSql.WeightTable.WEIGHT
-import co.gbyte.weightlog.data.WeightSql.WeightTable._TABLE_NAME
+import co.gbyte.weightlog.data.WeightSql.WeightTable.TABLE_NAME
 
 class WeightLab private constructor(context: Context) {
 
@@ -59,7 +59,7 @@ class WeightLab private constructor(context: Context) {
 
     fun addWeight(weight: Weight) {
         val values = getContentValues(weight)
-        mDb.insert(_TABLE_NAME, null, values)
+        mDb.insert(TABLE_NAME, null, values)
     }
 
     fun getWeight(id: UUID): Weight? {
@@ -77,7 +77,7 @@ class WeightLab private constructor(context: Context) {
         val uuidString = weight.id.toString()
         val values = getContentValues(weight)
 
-        mDb.update(_TABLE_NAME, values, "$UUID = ?", arrayOf(uuidString))
+        mDb.update(TABLE_NAME, values, "$UUID = ?", arrayOf(uuidString))
     }
 
     @SuppressLint("Recycle")
@@ -86,7 +86,7 @@ class WeightLab private constructor(context: Context) {
                              orderClause: String?): WeightCursorWrapper {
         var cursor: Cursor? = null
         try {
-            cursor = mDb.query(_TABLE_NAME,
+            cursor = mDb.query(TABLE_NAME,
                                null, // Columns = null selects all columns
                                whereClause,
                                whereArgs,
@@ -101,7 +101,7 @@ class WeightLab private constructor(context: Context) {
 
     fun deleteWeight(id: UUID) {
         val uuidString = id.toString()
-        mDb.delete(_TABLE_NAME, "$UUID  = ?", arrayOf(uuidString))
+        mDb.delete(TABLE_NAME, "$UUID  = ?", arrayOf(uuidString))
     }
 
     private fun getContentValues(weight: Weight): ContentValues {

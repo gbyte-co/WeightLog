@@ -1,84 +1,75 @@
-package co.gbyte.weightlog;
+package co.gbyte.weightlog
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.DatePicker;
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.DatePicker
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
 
-import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.DialogFragment
 
-public class DatePickerFragment extends DialogFragment {
+class DatePickerFragment : DialogFragment() {
 
-    public static final String EXTRA_DATE = "co.gbyte.weightlog.date";
-    private static final String ARG_DATE = "date";
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val date = arguments?.getSerializable(ARG_DATE) as Date
 
-    private DatePicker mDatePicker;
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-    public static DatePickerFragment newInstance(Date date) {
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_DATE, date);
+        val hour = calendar.get(Calendar.HOUR)
+        val minute = calendar.get(Calendar.MINUTE)
 
-        DatePickerFragment fragment = new DatePickerFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+        val v = LayoutInflater.from(activity).inflate(R.layout.dialog_date, null)
+        val datePicker = v.findViewById<DatePicker>(R.id.dialog_date_date_picker)
+        datePicker.init(year, month, day, null)
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Date date = (Date) getArguments().getSerializable(ARG_DATE);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        final int hour = calendar.get(Calendar.HOUR);
-        final int minute = calendar.get(Calendar.MINUTE);
-
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_date, null);
-
-        mDatePicker = v.findViewById(R.id.dialog_date_date_picker);
-        mDatePicker.init(year, month, day, null);
-
-        return new AlertDialog.Builder(getActivity())
+        return AlertDialog.Builder(activity)
                 .setView(v)
                 .setTitle(R.string.date_picker_title)
-                .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                final int minutesInHour = 60;
-                                final int msInMinute = 60000;
-                                int year = mDatePicker.getYear();
-                                int month = mDatePicker.getMonth();
-                                int day = mDatePicker.getDayOfMonth();
-                                Date date = new GregorianCalendar(year, month, day).getTime();
-                                long timeMs = date.getTime()
-                                        + (((hour * minutesInHour) + minute) * msInMinute);
-                                date.setTime(timeMs);
-                                sendResult(Activity.RESULT_OK, date);
-                            }
-                })
-                .create();
+                .setPositiveButton(android.R.string.ok
+                ) { _, _ ->
+                    val minutesInHour = 60
+                    val msInMinute = 60000
+                    val lYear = datePicker.year
+                    val lMonth = datePicker.month
+                    val lDay = datePicker.dayOfMonth
+                    val lDate = GregorianCalendar(lYear, lMonth, lDay).time
+                    lDate.time = lDate.time + (hour * minutesInHour + minute) * msInMinute
+                    sendResult(Activity.RESULT_OK, lDate)
+                }
+                .create()
     }
 
-    private void sendResult(int resultCode, Date date) {
-        if (getTargetFragment() == null) {
-            return;
+    private fun sendResult(resultCode: Int, date: Date) {
+        if (targetFragment == null) {
+            return
         }
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_DATE, date);
+        val intent = Intent()
+        intent.putExtra(EXTRA_DATE, date)
 
-        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
+        targetFragment?.onActivityResult(targetRequestCode, resultCode, intent)
+    }
+
+    companion object {
+        const val EXTRA_DATE = "co.gbyte.weightlog.date"
+        private const val ARG_DATE = "date"
+
+        fun newInstance(date: Date): DatePickerFragment {
+            val args = Bundle()
+            args.putSerializable(ARG_DATE, date)
+
+            val fragment = DatePickerFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

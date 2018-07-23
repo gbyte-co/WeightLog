@@ -77,7 +77,7 @@ class WeightFragment : Fragment() {
         mDateButton = mView?.findViewById(R.id.weight_date_button)
         mDateButton?.setOnClickListener {
             val manager = fragmentManager
-            val dialog = DatePickerFragment.newInstance(mWeight?.time)
+            val dialog = DatePickerFragment.newInstance(mWeight!!.time)
             dialog.setTargetFragment(this@WeightFragment, REQUEST_DATE)
             dialog.show(manager, DIALOG_DATE)
         }

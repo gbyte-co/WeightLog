@@ -1,90 +1,83 @@
-package co.gbyte.weightlog;
+package co.gbyte.weightlog
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TimePicker;
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.TimePicker
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
+import androidx.annotation.NonNull
+import androidx.fragment.app.DialogFragment
 
-public class TimePickerFragment extends DialogFragment {
-
-    public  static final String EXTRA_TIME = "co.gbyte.android.weightlog.time";
-    private static final String ARG_TIME = "time";
-
-    private TimePicker mTimePicker;
-
-    public static TimePickerFragment newInstance(Date time) {
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_TIME, time);
-
-        TimePickerFragment fragment = new TimePickerFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+class TimePickerFragment : DialogFragment() {
 
     @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        final Date time = (Date) getArguments().getSerializable(ARG_TIME);
+        val time = arguments?.getSerializable(ARG_TIME) as Date
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(time);
-        final int year = calendar.get(Calendar.YEAR);
-        final int month = calendar.get(Calendar.MONTH);
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+        val calendar = Calendar.getInstance()
+        calendar.time = time
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
 
-        View v = LayoutInflater.from(getActivity())
-                .inflate(R.layout.dialog_time, null);
+        val v = LayoutInflater.from(activity)
+                .inflate(R.layout.dialog_time, null)
 
-        mTimePicker = v.findViewById(R.id.dialog_time_time_picker);
-        mTimePicker.setCurrentHour(hour);
-        mTimePicker.setCurrentMinute(minute);
+        val timePicker = v.findViewById<TimePicker>(R.id.dialog_time_time_picker)
+        timePicker.currentHour = hour
+        timePicker!!.currentMinute = minute
 
-        return new AlertDialog.Builder(getActivity())
+        return AlertDialog.Builder(activity)
                 .setView(v)
                 .setTitle(R.string.time_picker_title)
-                .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                final int minutesInHour = 60;
-                                final int msInMinute = 60000;
-                                Date newTime = new GregorianCalendar(year, month, day).getTime();
-                                int hour = mTimePicker.getCurrentHour();
-                                int minute = mTimePicker.getCurrentMinute();
-                                long timeMs = newTime.getTime()
-                                        + (((hour * minutesInHour) + minute) * msInMinute);
-                                newTime.setTime(timeMs);
-                                sendResult(Activity.RESULT_OK, newTime);
-                            }
-                })
-                .create();
+                .setPositiveButton(android.R.string.ok
+                ) { _, _ ->
+                    val minutesInHour = 60
+                    val msInMinute = 60000
+                    val newTime = GregorianCalendar(year, month, day).time
+                    val lHour = timePicker.currentHour
+                    val lMinute = timePicker.currentMinute
+                    val timeMs = newTime.time + (lHour * minutesInHour + lMinute) * msInMinute
+                    newTime.time = timeMs
+                    sendResult(Activity.RESULT_OK, newTime)
+                }
+                .create()
     }
 
-    private void sendResult(int resultCode, Date time) {
+    private fun sendResult(resultCode: Int, time: Date) {
 
-        if(getTargetFragment() == null) {
-            return;
+        if (targetFragment == null) {
+            return
         }
 
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_TIME, time);
+        val intent = Intent()
+        intent.putExtra(EXTRA_TIME, time)
 
-        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
+        targetFragment?.onActivityResult(targetRequestCode, resultCode, intent)
+    }
+
+    companion object {
+        const val EXTRA_TIME = "co.gbyte.android.weightlog.time"
+        private const val ARG_TIME = "time"
+
+        fun newInstance(time: Date): TimePickerFragment {
+            val args = Bundle()
+            args.putSerializable(ARG_TIME, time)
+
+            val fragment = TimePickerFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

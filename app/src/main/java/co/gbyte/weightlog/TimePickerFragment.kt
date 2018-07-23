@@ -1,9 +1,11 @@
 package co.gbyte.weightlog
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.TimePicker
@@ -31,12 +33,19 @@ class TimePickerFragment : DialogFragment() {
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
 
-        val v = LayoutInflater.from(activity)
-                .inflate(R.layout.dialog_time, null)
+        @SuppressLint("InflateParams")
+        val v = LayoutInflater.from(activity).inflate(R.layout.dialog_time, null)
 
         val timePicker = v.findViewById<TimePicker>(R.id.dialog_time_time_picker)
-        timePicker.currentHour = hour
-        timePicker!!.currentMinute = minute
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            timePicker.hour = hour
+            timePicker.minute = minute
+        } else {
+            @Suppress("DEPRECATION")
+            timePicker.currentHour = hour
+            @Suppress("DEPRECATION")
+            timePicker.currentMinute = minute
+        }
 
         return AlertDialog.Builder(activity)
                 .setView(v)
@@ -46,8 +55,18 @@ class TimePickerFragment : DialogFragment() {
                     val minutesInHour = 60
                     val msInMinute = 60000
                     val newTime = GregorianCalendar(year, month, day).time
-                    val lHour = timePicker.currentHour
-                    val lMinute = timePicker.currentMinute
+                    val lHour = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        timePicker.hour
+                    } else {
+                        @Suppress("DEPRECATION")
+                        timePicker.currentHour
+                    }
+                    val lMinute = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        timePicker.minute
+                    } else {
+                        @Suppress("DEPRECATION")
+                        timePicker.currentMinute
+                    }
                     val timeMs = newTime.time + (lHour * minutesInHour + lMinute) * msInMinute
                     newTime.time = timeMs
                     sendResult(Activity.RESULT_OK, newTime)

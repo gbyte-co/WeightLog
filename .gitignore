@@ -8,7 +8,6 @@
 ## ignored for now:
 */test
 */androidTest
-*/
 
 ### Android ###
 ## Built application files
@@ -44,10 +43,6 @@ captures/
 ## ALL!
 *.iml
 .idea/
-#.idea/workspace.xml
-#.idea/vcs.xml
-#.idea/libraries
-#.idea/misc.xml 
 
 ## User-specific stuff:
 #.idea/tasks.xml
@@ -89,4 +84,3 @@ fabric.properties
 
 ## External native build folder generated in Android Studio 2.2 and later
 #.externalNativeBuild
-

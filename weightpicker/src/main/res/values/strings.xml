@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WeightPicker</string>
+    <string name="weight_edit_kg">WeightPicker EditText</string>
 </resources>

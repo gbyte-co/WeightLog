@@ -35,6 +35,7 @@
         android:layout_alignStart="@id/kilograms"
         android:layout_alignEnd="@id/hectograms"
         android:layout_centerVertical="true"
+        android:hint="@string/weight_edit_kg"
         android:inputType="numberDecimal"
         android:textAlignment="center"
         android:maxLength="5"

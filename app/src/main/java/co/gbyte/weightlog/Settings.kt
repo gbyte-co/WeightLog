@@ -35,7 +35,9 @@ object Settings {
         }
 
     private const val HEIGHT_KEY = "height"
-    private const val INITIAL_HEIGHT = 160
+    // ToDo: hardcoded?!
+    //private const val INITIAL_HEIGHT = 160
+    private const val INITIAL_HEIGHT = 173
     private val HEIGHT = Pair(HEIGHT_KEY, INITIAL_HEIGHT)
     var height: Int
         get() = preferences.getInt(HEIGHT.first, HEIGHT.second)

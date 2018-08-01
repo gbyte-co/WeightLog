@@ -268,7 +268,6 @@ public class WeightPicker extends RelativeLayout {
         return mListener;
     }
 
-
     public void setOnValueChangedListener (OnValueChangedListener listener) {
         mListener = listener;
     }

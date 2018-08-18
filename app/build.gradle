@@ -34,7 +34,7 @@ dependencies {
     implementation "androidx.legacy:legacy-support-v4:$support_version"
     implementation "androidx.legacy:legacy-support-v13:$support_version"
     implementation "androidx.cardview:cardview:$support_version"
-    implementation 'com.github.PhilJay:MuAndroidChart:v3.0.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     testImplementation 'junit:junit:4.12'
     implementation project(':weightpicker')
     implementation project(path: ':lengthpicker')

@@ -13,7 +13,7 @@
             android:persistent="true"
             />
 
-        <Preference
+        <co.gbyte.weightlog.HeightPreference
             android:dependency="@string/bmi_pref_key"
             android:key="@string/height_pref_key"
             android:title="@string/height_pref_title"

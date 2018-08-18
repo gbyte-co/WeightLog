@@ -3,7 +3,11 @@ package co.gbyte.weightlog
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.*
+import androidx.fragment.app.DialogFragment
+import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 
 import co.gbyte.weightlog.R.string.bmi_pref_key
 import co.gbyte.weightlog.R.string.height_pref_key
@@ -39,7 +43,7 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             mBmiPref = findPreference(getString(bmi_pref_key)) as SwitchPreference?
-            //mHeightPref = findPreference(getString(height_pref_key))
+            mHeightPref = findPreference(getString(height_pref_key)) as HeightPreference?
             mListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
                 mPrefs = prefs
                 val pref = preferenceScreen.findPreference(key)
@@ -48,8 +52,27 @@ class SettingsActivity : AppCompatActivity() {
                 // Use instance field for mListener
                 // It will not be gc'd as long as this instance is kept referenced
                 mPrefs.registerOnSharedPreferenceChangeListener(mListener)
-                updatePreference(pref)
+                //updatePreference(pref)
             }
+        }
+
+        override fun onDisplayPreferenceDialog(preference: Preference) {
+            // Try if the preference is one of our custom Preferences
+            var dialogFragment: DialogFragment? = null
+            if (preference is HeightPreference) {
+                // Create a new instance of TimePreferenceDialogFragment with the key of the related
+                // Preference
+                dialogFragment = HeightPreferenceDialogFragment.newInstance(preference.key)
+            }
+
+            // If it was one of our custom Preferences, show its dialog
+            if (dialogFragment != null) {
+                dialogFragment.setTargetFragment(this, 0)
+                dialogFragment.show(this.fragmentManager,
+                        "android.support.v7.preference" + ".PreferenceFragment.DIALOG")
+            } else {
+                super.onDisplayPreferenceDialog(preference)
+            }// Could not be handled here. Try with the super method.
         }
 
         override fun onPause() {
@@ -64,15 +87,17 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun updatePreferences() {
             for (i in 0 until preferenceScreen.preferenceCount) {
-                val preference = preferenceScreen.getPreference(i)
-                if (preference is PreferenceGroup) {
-                    for (j in 0 until preference.preferenceCount) {
+
+                /*
+                if (mPrefs is PreferenceGroup) {
+                    for (j in 0 until mPrefs.preferenceCount) {
                         val singlePref = preference.getPreference(j)
                         updatePreference(singlePref)
                     }
                 } else {
                     updatePreference(preference)
                 }
+                */
             }
             mPrefs.registerOnSharedPreferenceChangeListener(mListener)
         }
@@ -81,10 +106,10 @@ class SettingsActivity : AppCompatActivity() {
             if (preference?.key == resources.getString(bmi_pref_key)) {
                 val isOn = Settings.showBmi
                 if (isOn) {
-                    //mAssessmentPrefCategory?.addPreference(mHeightPref)
-                    //updatePreference(mHeightPref)
+                    mAssessmentPrefCategory?.addPreference(mHeightPref as Preference?)
+                    updatePreference(mHeightPref as Preference?)
                 } else {
-                    //mAssessmentPrefCategory?.removePreference(mHeightPref)
+                    mAssessmentPrefCategory?.removePreference(mHeightPref as Preference?)
                     mBmiPref?.isChecked = isOn
                 }
             }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<co.gbyte.android.lengthpicker.LengthPicker
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:weightpicker="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialog_length_picker"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    weightpicker:minValue="@integer/min_human_height"
+    weightpicker:maxValue="@integer/max_human_height"
+    weightpicker:initialValue="@integer/average_human_height"
+    />

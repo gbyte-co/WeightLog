@@ -4,21 +4,20 @@ import android.content.Context
 import android.content.SharedPreferences
 
 object Settings {
-
     private const val NAME = "WeightLog"
     private const val MODE = Context.MODE_PRIVATE
     lateinit var preferences: SharedPreferences
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
+        INITIAL_HEIGHT = context.resources.getInteger(R.integer.average_human_height)
     }
 
     /**
      * SharedPreferences extension function, so we won't need to call edit() and apply()
      * ourselves on every SharedPreferences operation.
      */
-    private inline fun SharedPreferences.edit(
-            operation: (SharedPreferences.Editor) -> Unit){
+    private inline fun SharedPreferences.edit(operation: (SharedPreferences.Editor) -> Unit){
         val editor = edit()
         operation(editor)
         editor.apply()
@@ -35,9 +34,7 @@ object Settings {
         }
 
     private const val HEIGHT_KEY = "height"
-    // ToDo: hardcoded?!
-    //private const val INITIAL_HEIGHT = 160
-    private const val INITIAL_HEIGHT = 173
+    private var INITIAL_HEIGHT = 0
     private val HEIGHT = Pair(HEIGHT_KEY, INITIAL_HEIGHT)
     var height: Int
         get() = preferences.getInt(HEIGHT.first, HEIGHT.second)

@@ -3,13 +3,16 @@ package co.gbyte.weightlog
 import androidx.preference.PreferenceDialogFragmentCompat
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.preference.DialogPreference
 import androidx.preference.PreferenceManager
 import co.gbyte.android.lengthpicker.LengthPicker
 import co.gbyte.weightlog.model.WeightLab
 
 class HeightPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
 
-    var mPicker: LengthPicker? = null
+    private var mPicker: LengthPicker? = null
+    private var mAverageHumanHeight = 0
 
     companion object {
         fun newInstance(key: String): HeightPreferenceDialogFragment {
@@ -27,6 +30,7 @@ class HeightPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
 
         val minHeight = resources.getInteger(R.integer.min_human_height)
         val maxHeight = resources.getInteger(R.integer.max_human_height)
+        mAverageHumanHeight = resources.getInteger(R.integer.average_human_height)
 
         val picker = v as LengthPicker
         picker.setMetricPrecision(10)
@@ -35,53 +39,57 @@ class HeightPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
         picker.setUnitLabel(getString(R.string.unit_centimeters_short))
 
         val heightPrefKey = getString(R.string.height_pref_key)
-
-        var lastHeight
+        var height
                 = PreferenceManager.getDefaultSharedPreferences(context).getInt(heightPrefKey, 0)
 
-        if (lastHeight == 0) {
+        if (height == 0) {
             val weight = WeightLab.getInstance(context).getLastWeight()
             if (weight != 0) {
                 // calculate height for the last weight and the ideal Bmi
                 val bmi = resources.getFraction(R.fraction.optimal_bmi, 1, 1).toDouble()
 
                 // ToDo: move to utils/Bmi class and make static
-                lastHeight = ((Math.sqrt(weight * 1000 / bmi) + 5) / 10).toInt() * 10
+                height = ((Math.sqrt(weight * 1000 / bmi) + 5) / 10).toInt() * 10
 
-                if (lastHeight > maxHeight) {
-                    lastHeight = maxHeight
+                if (height > maxHeight) {
+                    height = maxHeight
                 }
 
-                if (lastHeight < minHeight) {
-                    lastHeight = minHeight
+                if (height < minHeight) {
+                    height = minHeight
                 }
 
             } else {
-                lastHeight = resources.getInteger(R.integer.average_human_height)
+                height = mAverageHumanHeight
             }
         }
-        picker.value = lastHeight
+        picker.value = height
         mPicker = picker
-
     }
 
     override fun onDialogClosed(positiveResult: Boolean) {
-        /* ToDo:
-        super.onDialogClosed(positiveResult)
-
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val heightPreference: DialogPreference = preference
         if (positiveResult) {
-            if (callChangeListener(mPicker!!.value)) {
+            val newHeight = mPicker?.value ?: mAverageHumanHeight
+            if (heightPreference is HeightPreference) {
+                if (preference.callChangeListener(mPicker?.value)) {
 
-                // needed when user edits the text field and clicks OK
-                mPicker!!.clearFocus()
-
-                mLastHeight = mPicker!!.value
-                persistInt(mLastHeight)
+                    // needed when user edits the text field and clicks OK
+                    // ToDo: or is it?
+                    mPicker?.clearFocus()
+                    heightPreference.height = newHeight
+                    // ToDo: make it work:
+                    //Settings.height = newHeight
+                }
+                Toast.makeText(context,"Height set to ${heightPreference.height / 10} cm",
+                        Toast.LENGTH_LONG).show()
             }
-        } else if (mPrefs!!.getInt(context.getString(R.string.height_pref_key), 0) == 0) {
+        } else if (prefs.getInt(context?.getString(R.string.height_pref_key), 0) == 0) {
             // Bmi preference cannot be set if weight is not provided
-            mPrefs!!.edit().putBoolean(context.getString(R.string.bmi_pref_key), false).apply()
+            prefs.edit().putBoolean(context?.getString(R.string.bmi_pref_key), false).apply()
+            // ToDo: make it work:
+            //Settings.showBmi = false
         }
-        */
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
+import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
@@ -52,7 +53,7 @@ class SettingsActivity : AppCompatActivity() {
                 // Use instance field for mListener
                 // It will not be gc'd as long as this instance is kept referenced
                 mPrefs.registerOnSharedPreferenceChangeListener(mListener)
-                //updatePreference(pref)
+                updatePreference(pref)
             }
         }
 
@@ -87,17 +88,16 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun updatePreferences() {
             for (i in 0 until preferenceScreen.preferenceCount) {
-
-                /*
+                val preference = preferenceScreen.getPreference(i)
                 if (mPrefs is PreferenceGroup) {
-                    for (j in 0 until mPrefs.preferenceCount) {
+                    val preferenceGroup = preference as PreferenceGroup
+                    for (j in 0 until preferenceGroup.preferenceCount) {
                         val singlePref = preference.getPreference(j)
                         updatePreference(singlePref)
                     }
                 } else {
                     updatePreference(preference)
                 }
-                */
             }
             mPrefs.registerOnSharedPreferenceChangeListener(mListener)
         }

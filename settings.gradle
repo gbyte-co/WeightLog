@@ -1,1 +1,1 @@
-include ':app', ':weightpicker', ':lengthpicker'
+include ':app', ':weightpicker', ':lengthpicker', ':heightpicker'

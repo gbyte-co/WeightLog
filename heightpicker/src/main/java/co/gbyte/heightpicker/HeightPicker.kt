@@ -15,38 +15,45 @@ class HeightPicker (context: Context, attrs : AttributeSet, defStyle : Int) :
         LinearLayout (context, attrs, defStyle) {
 
     companion object {
-        const val MIN_MIN_VALUE = 0
-        const val MAX_MAX_VALUE = Integer.MAX_VALUE
-        const val SUPERSTATE = "superState"
-        const val LENGTH = "length"
+        private const val MIN_MIN_VALUE = 0
+        private const val MAX_MAX_VALUE = Integer.MAX_VALUE
+        private const val SUPERSTATE = "superState"
+        private const val LENGTH = "length"
     }
 
     var value: Int
-        get() =  metricNumberPicker!!.value * metricPrecision
+        get() =  metricNumberPicker.value * metricPrecision
         set(value) {
             when {
                 value <= minValue -> minValue
                 value >= maxValue -> maxValue
             }
-            metricNumberPicker!!.value = toPickerValue(value, metricPrecision)
+            metricNumberPicker.value = toPickerValue(value, metricPrecision)
         }
 
     var metricPrecision = 1
     var minValue = MIN_MIN_VALUE
-    set(value) {
-            if (value <= MIN_MIN_VALUE) MAX_MAX_VALUE
-            metricNumberPicker!!.minValue = toPickerValue(minValue, metricPrecision)
+        set(value) {
+            // ToDo: is it right? Test!!!
+            //field = if (value <= MIN_MIN_VALUE) MAX_MAX_VALUE else value
+            field = if (value >= maxValue) maxValue else value
+            metricNumberPicker.minValue = toPickerValue(field, metricPrecision)
         }
+
     var maxValue = MAX_MAX_VALUE
         set(value) {
-            if (value <= minValue)
-            metricNumberPicker!!.maxValue = toPickerValue(maxValue, metricPrecision)
+            field = if (value <= minValue) minValue else value
+            metricNumberPicker.maxValue = toPickerValue(field, metricPrecision)
         }
 
-    private var metricNumberPicker: NumberPicker? = null
-    private var unitsTv: TextView? = null
+    var unitsLabel = ""
+        set(value) {
+            unitsTv.text = value
+        }
 
-    private var mListener: NumberPicker.OnValueChangeListener? = null
+    private val metricNumberPicker: NumberPicker
+    private val unitsTv: TextView
+
 
     init {
         (getContext() as Activity).layoutInflater.inflate(R.layout.heightpicker, this, true)
@@ -58,28 +65,24 @@ class HeightPicker (context: Context, attrs : AttributeSet, defStyle : Int) :
         minValue = a.getInt(R.styleable.HeightPicker_minValue, MIN_MIN_VALUE)
         maxValue = a.getInt(R.styleable.HeightPicker_maxValue, MAX_MAX_VALUE)
         value = a.getInt(R.styleable.HeightPicker_value, 0)
-        unitsTv!!.text = a.getString(R.styleable.HeightPicker_unitLabel)
+        unitsTv.text = a.getString(R.styleable.HeightPicker_unitLabel)
 
-        metricNumberPicker!!.setOnValueChangedListener { numberPicker, i0, i1 ->
-            if (mListener != null) {
-                mListener!!.onValueChange(numberPicker,
-                        i0 * metricPrecision,
-                        i1 * metricPrecision)
-            }
+        // ToDo: fix the following. This can't be right
+        val mListener: NumberPicker.OnValueChangeListener? = null
+
+        metricNumberPicker.setOnValueChangedListener { numberPicker, i0, i1 ->
+            mListener?.onValueChange(numberPicker, i0 * metricPrecision, i1 * metricPrecision)
         }
         a.recycle()
     }
 
     constructor (context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
+    // ToDo:
     //constructor (context: Context) : this(context, null)
 
     private fun toPickerValue(value: Int, precision: Int): Int {
         return Math.round(value.toDouble() / precision).toInt()
-    }
-
-    fun setUnitLabel(text: String) {
-        unitsTv!!.text = text
     }
 
     override fun onSaveInstanceState(): Parcelable? {

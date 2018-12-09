@@ -39,7 +39,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     testImplementation 'junit:junit:4.12'
     implementation project(':weightpicker')
-    implementation project(path: ':lengthpicker')
+    implementation project(':heightpicker')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 

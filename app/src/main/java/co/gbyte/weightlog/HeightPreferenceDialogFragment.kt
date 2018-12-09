@@ -6,13 +6,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.preference.DialogPreference
 import androidx.preference.PreferenceManager
-import co.gbyte.android.lengthpicker.LengthPicker
+import co.gbyte.heightpicker.HeightPicker
 import co.gbyte.weightlog.model.WeightLab
 
 class HeightPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
 
-    private var mPicker: LengthPicker? = null
-    private var mAverageHumanHeight = 0
+    private var mPicker: HeightPicker? = null
+    //private var mPicker: LengthPicker? = null
+    private var averageHumanHeight = 0
 
     companion object {
         fun newInstance(key: String): HeightPreferenceDialogFragment {
@@ -30,17 +31,18 @@ class HeightPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
 
         val minHeight = resources.getInteger(R.integer.min_human_height)
         val maxHeight = resources.getInteger(R.integer.max_human_height)
-        mAverageHumanHeight = resources.getInteger(R.integer.average_human_height)
+        averageHumanHeight = resources.getInteger(R.integer.average_human_height)
 
-        val picker = v as LengthPicker
-        picker.setMetricPrecision(10)
+        val picker = v as HeightPicker
+        picker.metricPrecision = 10
         picker.minValue = minHeight
         picker.maxValue = maxHeight
-        picker.setUnitLabel(getString(R.string.unit_centimeters_short))
+        picker.value = averageHumanHeight
+        picker.unitsLabel = getString(R.string.unit_centimeters_short)
+
 
         val heightPrefKey = getString(R.string.height_pref_key)
-        var height
-                = PreferenceManager.getDefaultSharedPreferences(context).getInt(heightPrefKey, 0)
+        var height = PreferenceManager.getDefaultSharedPreferences(context).getInt(heightPrefKey, 0)
 
         if (height == 0) {
             val weight = WeightLab.getInstance(context).getLastWeight()
@@ -60,7 +62,7 @@ class HeightPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
                 }
 
             } else {
-                height = mAverageHumanHeight
+                height = averageHumanHeight
             }
         }
         picker.value = height
@@ -71,7 +73,7 @@ class HeightPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val heightPreference: DialogPreference = preference
         if (positiveResult) {
-            val newHeight = mPicker?.value ?: mAverageHumanHeight
+            val newHeight = mPicker?.value ?: averageHumanHeight
             if (heightPreference is HeightPreference) {
                 if (preference.callChangeListener(mPicker?.value)) {
 

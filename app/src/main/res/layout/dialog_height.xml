@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<co.gbyte.android.lengthpicker.LengthPicker
+<co.gbyte.heightpicker.HeightPicker
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:weightpicker="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dialog_length_picker"

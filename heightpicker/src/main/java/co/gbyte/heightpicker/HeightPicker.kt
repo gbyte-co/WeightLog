@@ -11,7 +11,7 @@ import android.widget.TextView
 import co.gbyte.android.heightpicker.R
 import kotlinx.android.synthetic.main.heightpicker.view.*
 
-class HeightPicker (context: Context, attrs : AttributeSet, defStyle : Int) :
+class HeightPicker (context: Context, attrs: AttributeSet?, defStyle : Int) :
         LinearLayout (context, attrs, defStyle) {
 
     companion object {
@@ -34,8 +34,6 @@ class HeightPicker (context: Context, attrs : AttributeSet, defStyle : Int) :
     var metricPrecision = 1
     var minValue = MIN_MIN_VALUE
         set(value) {
-            // ToDo: is it right? Test!!!
-            //field = if (value <= MIN_MIN_VALUE) MAX_MAX_VALUE else value
             field = if (value >= maxValue) maxValue else value
             metricNumberPicker.minValue = toPickerValue(field, metricPrecision)
         }
@@ -76,10 +74,9 @@ class HeightPicker (context: Context, attrs : AttributeSet, defStyle : Int) :
         a.recycle()
     }
 
-    constructor (context: Context, attrs: AttributeSet) : this(context, attrs, 0)
+    constructor (context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    // ToDo:
-    //constructor (context: Context) : this(context, null)
+    constructor (context: Context) : this(context, null)
 
     private fun toPickerValue(value: Int, precision: Int): Int {
         return Math.round(value.toDouble() / precision).toInt()
@@ -98,7 +95,10 @@ class HeightPicker (context: Context, attrs : AttributeSet, defStyle : Int) :
         value = state.getInt(LENGTH)
     }
 
+    /*
+    ToDo: ???
     interface OnValueChangeListener {
         fun onValueChange(picker: HeightPicker, oldValue: Int, newValue: Int)
     }
+    */
 }

@@ -1,5 +1,6 @@
 package co.gbyte.weightlog
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
@@ -11,17 +12,17 @@ import java.util.UUID
 
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import co.gbyte.weightlog.R.layout.dialog_confirm_delete
 import co.gbyte.weightlog.model.WeightLab
 import kotlinx.android.synthetic.main.dialog_confirm_delete.view.*
 
 class ConfirmDialogFragment : DialogFragment() {
 
+    @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
         val id = arguments?.getSerializable(ARG_WEIGHT_ID) as UUID
         val weight = WeightLab.getInstance(context).getWeight(id)
-        val v = LayoutInflater.from(activity)
-                .inflate(R.layout.dialog_confirm_delete, null)
+        val v = LayoutInflater.from(activity).inflate(dialog_confirm_delete, null)
 
         val weightTextView = v.dialog_confirm_delete_weight_weight
         weightTextView.text = weight!!.weightStringKg

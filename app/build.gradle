@@ -3,16 +3,19 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
+
     defaultConfig {
         applicationId 'co.gbyte.android.weightlog'
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false

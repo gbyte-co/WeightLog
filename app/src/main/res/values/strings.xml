@@ -48,5 +48,8 @@
     <string name="edit_weight">Edit</string>
     <string name="change_from_last">Change from last:</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="dummy_time">0:00 am</string>
+    <string name="dummy_date">00/00/0000</string>
+    <string name="dummy_weight">00.0 kg</string>
 
 </resources>

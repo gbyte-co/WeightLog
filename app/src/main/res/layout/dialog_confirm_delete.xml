@@ -23,26 +23,24 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="16dp"
-            android:text="86.3 kg"
+            android:text="@string/dummy_weight"
             android:textStyle="italic"
-            android:layout_marginRight="16dp"/>
+            />
         <TextView
             android:id="@+id/dialog_confirm_delete_weight_date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="16dp"
-            android:text="24/07/1958"
+            android:text="@string/dummy_date"
             android:textStyle="italic"
-            android:layout_marginRight="16dp"/>
+            />
         <TextView
             android:id="@+id/dialog_confirm_delete_weight_time"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="9:30 am"
+            android:text="@string/dummy_time"
             android:textStyle="italic"
             />
-
-
     </LinearLayout>
 
     <TextView

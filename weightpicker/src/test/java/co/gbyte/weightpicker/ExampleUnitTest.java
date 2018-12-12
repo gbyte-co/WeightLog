@@ -1,4 +1,4 @@
-package co.gbyte.weightpicker2;
+package co.gbyte.weightpicker;
 
 import org.junit.Test;
 

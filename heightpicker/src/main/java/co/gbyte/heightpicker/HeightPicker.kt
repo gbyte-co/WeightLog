@@ -21,14 +21,15 @@ class HeightPicker (context: Context, attrs: AttributeSet?, defStyle : Int) :
         private const val LENGTH = "length"
     }
 
-    var value: Int
+    var value = 0
         get() =  metricNumberPicker.value * metricPrecision
         set(value) {
-            when {
+            field = when {
                 value <= minValue -> minValue
                 value >= maxValue -> maxValue
+                else -> value
             }
-            metricNumberPicker.value = toPickerValue(value, metricPrecision)
+            metricNumberPicker.value = toPickerValue(field, metricPrecision)
         }
 
     var metricPrecision = 1
@@ -52,7 +53,6 @@ class HeightPicker (context: Context, attrs: AttributeSet?, defStyle : Int) :
     private val metricNumberPicker: NumberPicker
     private val unitsTv: TextView
 
-
     init {
         (getContext() as Activity).layoutInflater.inflate(R.layout.heightpicker, this, true)
 
@@ -73,9 +73,7 @@ class HeightPicker (context: Context, attrs: AttributeSet?, defStyle : Int) :
         }
         a.recycle()
     }
-
     constructor (context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-
     constructor (context: Context) : this(context, null)
 
     private fun toPickerValue(value: Int, precision: Int): Int {

@@ -6,14 +6,14 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 
 import androidx.annotation.NonNull
 import androidx.fragment.app.DialogFragment
-import co.gbyte.android.weightpicker.WeightPicker
+import co.gbyte.weightpicker.WeightPicker
 
 class WeightPickerFragment : DialogFragment() {
-
     @NonNull
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -24,10 +24,13 @@ class WeightPickerFragment : DialogFragment() {
         val weightPicker = v.findViewById<WeightPicker>(R.id.dialog_weight_weight_picker)
 
         weightPicker.value = weight
-        weightPicker!!.onValueChangedListener =
-                WeightPicker.OnValueChangedListener {
-            _, _, _ -> weight = weightPicker.value
-            arguments?.putInt(EXTRA_WEIGHT, weight)
+
+        weightPicker.onValueChangedListener = object : WeightPicker.OnValueChangedListener {
+            override fun onValueChange(picker: WeightPicker, oldValue: Int, newValue: Int) {
+                weight = weightPicker.value
+                arguments?.putInt(EXTRA_WEIGHT, weight)
+                Log.d("BLAH", "oldValue: $oldValue, newValue: $newValue")
+            }
         }
 
         weightPicker.clearFocus()

@@ -33,8 +33,8 @@ class WeightPicker constructor(context: Context, attrs: AttributeSet?, defStyle:
     var value: Int = 0
         set(value) {
             field = when {
-                value < minValue -> minValue
-                value > maxValue -> maxValue
+                value < _minValue -> _minValue
+                value > _maxValue -> _maxValue
                 else -> value
             }
             _hectograms.value = toPickerValue(field)
@@ -49,11 +49,11 @@ class WeightPicker constructor(context: Context, attrs: AttributeSet?, defStyle:
         return (grams - grams % (_base * _precision)) / (_base * _precision)
     }
 
-    private var minValue = MIN_MIN_VALUE
+    private var _minValue = MIN_MIN_VALUE
         set(value) {
             field = when {
                 value < MIN_MIN_VALUE -> MIN_MIN_VALUE
-                value > maxValue -> maxValue
+                value > _maxValue -> _maxValue
                 value > MAX_MAX_VALUE -> MAX_MAX_VALUE
                 else -> value
             }
@@ -61,11 +61,11 @@ class WeightPicker constructor(context: Context, attrs: AttributeSet?, defStyle:
             _kilograms.minValue = getWholeKilograms(field)
         }
 
-    private var maxValue = MAX_MAX_VALUE
+    private var _maxValue = MAX_MAX_VALUE
         set(value) {
             field = when {
                 value > MAX_MAX_VALUE -> MAX_MAX_VALUE
-                value < minValue -> minValue
+                value < _minValue -> _minValue
                 value < MIN_MIN_VALUE -> MIN_MIN_VALUE
                 else -> value
             }
@@ -78,7 +78,7 @@ class WeightPicker constructor(context: Context, attrs: AttributeSet?, defStyle:
 
     private var _precision = 1
     private var _base = 1
-    private var _oldValue = minValue
+    private var _oldValue = _minValue
     private val _hectograms: NumberPicker
     private val _kilograms: NumberPicker
     private val _pickerEdit: EditText
@@ -173,13 +173,13 @@ class WeightPicker constructor(context: Context, attrs: AttributeSet?, defStyle:
             _precision = a.getInt(R.styleable.WeightPicker_precision, 1)
             _base = a.getInt(R.styleable.WeightPicker_modDivisor, 1)
 
-            minValue = a.getInt(R.styleable.WeightPicker_minValue, MIN_MIN_VALUE)
-            maxValue = a.getInt(R.styleable.WeightPicker_maxValue, MAX_MAX_VALUE)
+            _minValue = a.getInt(R.styleable.WeightPicker_minValue, MIN_MIN_VALUE)
+            _maxValue = a.getInt(R.styleable.WeightPicker_maxValue, MAX_MAX_VALUE)
             _initialSetup = false
 
             setDisplayValues(_hectograms, _base)
 
-            value = a.getInt(R.styleable.WeightPicker_initialValue, minValue)
+            value = a.getInt(R.styleable.WeightPicker_initialValue, _minValue)
             _kilograms.wrapSelectorWheel = false
 
             a.recycle()

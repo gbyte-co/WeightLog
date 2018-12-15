@@ -120,10 +120,11 @@ class WeightPicker constructor(context: Context, attrs: AttributeSet?, defStyle:
             } else {
                 activity.window.setSoftInputMode(WindowManager
                         .LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-                val value = java.lang.Double.parseDouble(_pickerEdit.text.toString()).toInt()
-                this@WeightPicker.value = (value * _precision * _base)
+                val value = java.lang.Double.parseDouble(_pickerEdit.text.toString())
+                this@WeightPicker.value = (value * _precision * _base).toInt()
 
-                onValueChangedListener.onValueChange(this@WeightPicker, _oldValue, value)
+                onValueChangedListener
+                        .onValueChange(this@WeightPicker, _oldValue, this@WeightPicker.value)
 
                 _pickerEdit.visibility = View.GONE
             }
